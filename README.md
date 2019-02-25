@@ -1,6 +1,6 @@
 # SEG Group Project
 
-[![CircleCI](https://circleci.com/gh/marsianin88/SEG.svg?style=svg)](https://circleci.com/gh/marsianin88/SEG)
+[![CircleCI](https://circleci.com/gh/marsianin88/SEG.svg?style=svg&circle-token=7747fba3509cbbf972a024f5efa9ac5877dc0e69)](https://circleci.com/gh/marsianin88/SEG)
 
 Java 8 with JavaFX.
 
