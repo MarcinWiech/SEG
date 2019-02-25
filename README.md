@@ -1,5 +1,7 @@
 # SEG Group Project
 
+[![CircleCI](https://circleci.com/gh/marsianin88/SEG.svg?style=svg)](https://circleci.com/gh/marsianin88/SEG)
+
 Java 8 with JavaFX.
 
 ## How to contribute code
