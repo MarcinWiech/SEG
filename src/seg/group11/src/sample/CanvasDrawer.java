@@ -52,9 +52,15 @@ public class CanvasDrawer
 
         // Layers get set
         Rectangle grassRect = new Rectangle(0.1*canvasWidth, 0.1*canvasHeight, 0.8*canvasWidth, 0.8*canvasHeight);
+
         Rectangle runwayStripRect = new Rectangle(0.15*canvasWidth, 0.15*canvasHeight, 0.7*canvasWidth, 0.7*canvasHeight);
+
         Rectangle clearedGradedRect1 = new Rectangle(0.3*canvasWidth, 0.2*canvasHeight, 0.4*canvasWidth, 0.6*canvasHeight);
+
+        //wide rectangle
         Rectangle clearedGradedRect2 = new Rectangle(0.15*canvasWidth, 0.30*canvasHeight, 0.7*canvasWidth, 0.4*canvasHeight);
+
+        //asphalt area
         Rectangle runwayRect = new Rectangle(0.18*canvasWidth, 0.35*canvasHeight, 0.64*canvasWidth, 0.3*canvasHeight);
 
         /*
@@ -76,6 +82,36 @@ public class CanvasDrawer
         gc.setFill(Color.GRAY);
         fillRect(gc, runwayRect);
 
+        //fill in the rectangles on the sides
+        gc.setFill(Color.DARKBLUE);
+        gc.fillPolygon(new double[]{
+                0.25*canvasWidth,
+                0.3*canvasWidth+1,
+                0.3*canvasWidth+1,}, new double[]{
+                0.3*canvasHeight+1,
+                0.3*canvasHeight+1,
+                0.2*canvasHeight, }, 3);
+        gc.fillPolygon(new double[]{
+                0.7*canvasWidth-1,
+                0.7*canvasWidth-1,
+                0.75*canvasWidth,}, new double[]{
+                0.2*canvasHeight,
+                0.3*canvasHeight+1,
+                0.3*canvasHeight+1, }, 3);
+        gc.fillPolygon(new double[]{
+                0.3*canvasWidth+1,
+                0.3*canvasWidth+1,
+                0.25*canvasWidth,}, new double[]{
+                0.8*canvasHeight,
+                0.7*canvasHeight-1,
+                0.7*canvasHeight-1, }, 3);
+        gc.fillPolygon(new double[]{
+                0.7*canvasWidth-1,
+                0.7*canvasWidth-1,
+                0.75*canvasWidth,}, new double[]{
+                0.8*canvasHeight,
+                0.7*canvasHeight-1,
+                0.7*canvasHeight-1, }, 3);
 
         // The runway centerline gets drawn here
         double centerlineX = 0.3*canvasWidth;

@@ -70,7 +70,7 @@
                   </Tab>
                </tabs>
             </TabPane>
-            <GridPane maxHeight="300" minHeight="300">
+            <GridPane maxHeight="270" minHeight="270">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -89,7 +89,7 @@
                       <RowConstraints maxHeight="211.33334350585938" minHeight="10.0" prefHeight="206.66665649414062" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Pane prefHeight="74.0" prefWidth="300.0">
+                        <Pane prefHeight="59.0" prefWidth="300.0">
                            <children>
                               <Label layoutX="20.0" layoutY="7.0" text="Obstacle details">
                                  <font>
