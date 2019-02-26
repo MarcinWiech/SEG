@@ -20,6 +20,7 @@ public class Controller
     @FXML private Canvas topDownCanvas;
     @FXML private Canvas sideOnCanvas;
     @FXML private Pane topDownPane;
+    @FXML private Pane sideOnPane;
     @FXML private TextField obstacleXField;
     @FXML private TextField obstacleYField;
     @FXML private TextField obstacleHeightField;
@@ -33,10 +34,6 @@ public class Controller
     @FXML private TextField asdaOutputField;
     @FXML private TextField ldaOutputField;
     @FXML private TextField dispTreshOutputField;
-
-
-
-
 
 
     private CanvasDrawer canvasDrawer;
@@ -70,9 +67,15 @@ public class Controller
 
         // REALLY IMPORTANT: the following 4 make the topDownPane resizable by binding it to topDownPane
         topDownCanvas.widthProperty().bind(topDownPane.widthProperty());
-        topDownCanvas.heightProperty().bind(topDownPane.heightProperty());
+        //topDownCanvas.heightProperty().bind(topDownPane.heightProperty());
         topDownCanvas.widthProperty().addListener(event -> canvasDrawer.drawTopDownCanvas());
-        topDownCanvas.heightProperty().addListener(event -> canvasDrawer.drawTopDownCanvas());
+        //topDownCanvas.heightProperty().addListener(event -> canvasDrawer.drawTopDownCanvas());
+
+        sideOnCanvas.widthProperty().bind(sideOnPane.widthProperty());
+        //sideOnCanvas.heightProperty().bind(sideOnPane.heightProperty());
+        sideOnCanvas.widthProperty().addListener(event -> canvasDrawer.drawSideOnCanvas());
+        //sideOnCanvas.heightProperty().addListener(event -> canvasDrawer.drawSideOnCanvas());
+
 
 
 
@@ -92,7 +95,6 @@ public class Controller
         redeclarationComputer.setObstacleDetails(obstacleX, obstacleY, obstacleWidth);
 
         // Recalculation of parameters
-
         double toraInput = Double.parseDouble(toraInputField.getText());
         double todaInput = Double.parseDouble(todaInputField.getText());
         double asdaInput = Double.parseDouble(asdaInputField.getText());

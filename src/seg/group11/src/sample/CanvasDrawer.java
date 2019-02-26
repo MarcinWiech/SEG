@@ -1,17 +1,12 @@
 package sample;
 
-import com.sun.org.apache.xpath.internal.SourceTree;
-import javafx.fxml.FXML;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.*;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-
-import java.awt.*;
 
 public class CanvasDrawer
 {
@@ -53,11 +48,13 @@ public class CanvasDrawer
         // Layers get set
         Rectangle grassRect = new Rectangle(0.1*canvasWidth, 0.1*canvasHeight, 0.8*canvasWidth, 0.8*canvasHeight);
 
+        //pink area
         Rectangle runwayStripRect = new Rectangle(0.15*canvasWidth, 0.15*canvasHeight, 0.7*canvasWidth, 0.7*canvasHeight);
 
+        //"vertical" dark blue rectangle
         Rectangle clearedGradedRect1 = new Rectangle(0.3*canvasWidth, 0.2*canvasHeight, 0.4*canvasWidth, 0.6*canvasHeight);
 
-        //wide rectangle
+        //wide dark blue rectangle
         Rectangle clearedGradedRect2 = new Rectangle(0.15*canvasWidth, 0.30*canvasHeight, 0.7*canvasWidth, 0.4*canvasHeight);
 
         //asphalt area
@@ -134,12 +131,14 @@ public class CanvasDrawer
 
 
         // The next 2 while draw the sets of lines that look like crosswalks
-        double y = 0.35*canvasHeight;
         stripWidth = 0.05*canvasWidth;
         stripHeight = 0.006*canvasHeight;
+        double y = 0.35*canvasHeight;
         double stripStartLeftX = 0.2*canvasWidth;
         double stripStartRightX = 0.74*canvasWidth;
+
         gc.setFill(Color.WHITE);
+
         while(y + 4 < 0.65*canvasHeight)
         {
             Rectangle whiteRect = new Rectangle(stripStartLeftX, y, stripWidth, stripHeight);
@@ -151,7 +150,7 @@ public class CanvasDrawer
         }
 
         //draw plane --the image needs to be in the assets folder
-        ImageView imageView = new ImageView("sample/top-down-plane.png");
+        ImageView imageView = new ImageView("assets/top-down-plane.png");
         imageView.setRotate(-90);
         imageView.setPreserveRatio(true);
         imageView.setFitHeight(canvasHeight*0.2);
@@ -165,7 +164,35 @@ public class CanvasDrawer
 
     public void drawSideOnCanvas()
     {
-        // gc = sideOnCanvas.getGraphicsContext2D();
+        gc = sideOnCanvas.getGraphicsContext2D();
+
+
+        double canvasWidth = sideOnCanvas.getWidth();
+        double canvasHeight = canvasWidth/3;
+
+        gc.clearRect(0, 0, canvasWidth, canvasHeight);
+
+        // Layers get set
+        Rectangle grassRect = new Rectangle(0.1*canvasWidth, 0.7*canvasHeight, 0.8*canvasWidth, 0.1*canvasHeight);
+
+        //asphalt area
+        Rectangle asphaltRect = new Rectangle(0.1*canvasWidth, 0.7*canvasHeight, 0.8*canvasWidth, 0.01*canvasHeight);
+        // Layers are drawn - from the bottom up
+        gc.setFill(Color.GREEN);
+        fillRect(gc, grassRect);
+        gc.setFill(Color.GRAY);
+        fillRect(gc, asphaltRect);
+
+        //draw plane --the image needs to be in the assets folder
+        ImageView imageView = new ImageView("assets/side-view-plane.png");
+        imageView.setRotate(-4);
+        imageView.setPreserveRatio(true);
+        imageView.setFitHeight(canvasHeight*0.1);
+        SnapshotParameters parameters = new SnapshotParameters();
+        parameters.setFill(Color.TRANSPARENT);
+        Image image1 = imageView.snapshot(parameters, null);
+        gc.drawImage(image1,canvasWidth*0.7,canvasHeight*0.3);
+
     }
 
     public void drawBothCanvases()
