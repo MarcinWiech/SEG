@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<Airports>
+	<Airport>
+		<name>Test</name>
+		<numberunways>1</numberunways>
+	</Airport>
+	<Airport>
+		<name>Test2</name>
+		<numberunways>2</numberunways>
+	</Airport>
+</Airports>
