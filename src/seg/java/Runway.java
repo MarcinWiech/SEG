@@ -1,4 +1,4 @@
-package classes;
+package seg.java;
 
 public class Runway {
     private String runwayName;

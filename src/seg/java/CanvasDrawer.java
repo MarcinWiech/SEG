@@ -1,4 +1,4 @@
-package classes;
+package seg.java;
 
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.*;

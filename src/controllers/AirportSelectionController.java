@@ -1,6 +1,6 @@
 package controllers;
 
-import classes.Airport;
+import seg.java.Airport;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -12,8 +12,9 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import seg.java.XMLReaderDOM;
+
 import java.net.URL;
-import java.util.Iterator;
 import java.util.ResourceBundle;
 
 public class AirportSelectionController implements Initializable {
@@ -21,12 +22,12 @@ public class AirportSelectionController implements Initializable {
     public ChoiceBox airportDroplist;
     public Button selectButton;
 
-    private classes.XMLReaderDOM xmlReaderDOM;
+    private XMLReaderDOM xmlReaderDOM;
 
     /** INITIALIZE - ADDS AIRPORTS TO DROPLIST (READ IN FROM XML FILE) */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        xmlReaderDOM = new classes.XMLReaderDOM();
+        xmlReaderDOM = new XMLReaderDOM();
         addToAirportDroplist();
     }
 

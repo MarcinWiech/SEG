@@ -1,6 +1,6 @@
 package controllers;
 
-import classes.XMLReaderDOM;
+import seg.java.XMLReaderDOM;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
