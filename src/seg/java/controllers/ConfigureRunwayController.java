@@ -1,6 +1,6 @@
-package controllers;
+package seg.java.controllers;
 
-import classes.XMLReaderDOM;
+import seg.java.XMLReaderDOM;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -28,7 +28,7 @@ public class ConfigureRunwayController {
             try {
                 Stage stage = (Stage) asdaTextbox.getScene().getWindow();
                 stage.close();
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/configureAirport.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/configureAirport.fxml"));
                 Parent root1 = fxmlLoader.load();
                 stage = new Stage();
                 stage.setTitle("Configure Airport");

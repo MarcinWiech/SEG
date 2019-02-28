@@ -1,4 +1,4 @@
-package classes;
+package seg.java;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -8,11 +8,11 @@ import javafx.stage.Stage;
 
 
 public class Main extends Application {
-    private controllers.AirportSelectionController airportSelectionController;
+    private seg.java.controllers.AirportSelectionController airportSelectionController;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/airportSelection.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/seg/resources/views/airportSelection.fxml"));
         primaryStage.setTitle("Select Airport");
         primaryStage.setScene(new Scene(root, 385, 151));  // v: width v1: height
         primaryStage.show();

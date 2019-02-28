@@ -1,10 +1,9 @@
-package controllers;
+package seg.java.controllers;
 
-import classes.Airport;
-import classes.Runway;
-import classes.XMLReaderDOM;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import seg.java.Airport;
+import seg.java.Runway;
+import seg.java.RedeclarationComputer;
+import seg.java.XMLReaderDOM;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
@@ -15,6 +14,7 @@ import javafx.scene.control.*;                                                  
 import javafx.scene.canvas.*;                                                   // for Canvas and stuff
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import seg.java.CanvasDrawer;
 
 public class DashboardController {
     public TextField widthTextbox;
@@ -41,16 +41,16 @@ public class DashboardController {
     @FXML private TextField thresholdNewTextbox;
 
     private XMLReaderDOM xmlReaderDOM;
-    private classes.CanvasDrawer canvasDrawer;
-    private classes.RedeclarationComputer redeclarationComputer;
+    private CanvasDrawer canvasDrawer;
+    private RedeclarationComputer redeclarationComputer;
     private Airport airport;
     private Runway runway;
 
     public void initialize() {
         /** Main objects get initialized & related preparations */
-        canvasDrawer = new classes.CanvasDrawer();
+        canvasDrawer = new CanvasDrawer();
         canvasDrawer.setCanvases(topDownCanvas, sideOnCanvas);
-        redeclarationComputer = new classes.RedeclarationComputer();
+        redeclarationComputer = new RedeclarationComputer();
 
         /** Empty views get drawn **/
 
@@ -107,7 +107,7 @@ public class DashboardController {
         try {
             Stage stage = (Stage) yTextbox.getScene().getWindow();
             stage.close();
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/airportSelection.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/airportSelection.fxml"));
             Parent root1 = fxmlLoader.load();
             stage = new Stage();
             stage.setTitle("Switch Airport");
