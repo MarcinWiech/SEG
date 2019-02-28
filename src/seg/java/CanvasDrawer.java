@@ -144,7 +144,7 @@ public class CanvasDrawer {
         }
 
         /** draw plane --the image needs to be in the assets folder **/
-        ImageView imageView = new ImageView("/assets/top-down-plane.png");
+        ImageView imageView = new ImageView("/seg/resources/images/top-down-plane.png");
         imageView.setRotate(-90);
         imageView.setPreserveRatio(true);
         imageView.setFitHeight(canvasHeight * 0.2);
@@ -178,7 +178,7 @@ public class CanvasDrawer {
         fillRect(gc, asphaltRect);
 
         /** draw plane --the image needs to be in the assets folder **/
-        ImageView imageView = new ImageView("/assets/side-view-plane.png");
+        ImageView imageView = new ImageView("/seg/resources/images/side-view-plane.png");
         imageView.setRotate(-4);
         imageView.setPreserveRatio(true);
         imageView.setFitHeight(canvasHeight * 0.1);

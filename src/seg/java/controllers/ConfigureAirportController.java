@@ -1,4 +1,4 @@
-package controllers;
+package seg.java.controllers;
 
 import seg.java.XMLReaderDOM;
 import javafx.event.ActionEvent;
@@ -35,7 +35,7 @@ public class ConfigureAirportController implements Initializable {
         try {
             Stage stage = (Stage) addAirportButton.getScene().getWindow();
             stage.close();
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/airportSelection.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/airportSelection.fxml"));
             Parent root1 = fxmlLoader.load();
             stage = new Stage();
             stage.setTitle("Airport Selection");

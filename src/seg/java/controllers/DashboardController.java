@@ -1,4 +1,4 @@
-package controllers;
+package seg.java.controllers;
 
 import seg.java.Airport;
 import seg.java.Runway;
@@ -107,7 +107,7 @@ public class DashboardController {
         try {
             Stage stage = (Stage) yTextbox.getScene().getWindow();
             stage.close();
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/airportSelection.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/airportSelection.fxml"));
             Parent root1 = fxmlLoader.load();
             stage = new Stage();
             stage.setTitle("Switch Airport");

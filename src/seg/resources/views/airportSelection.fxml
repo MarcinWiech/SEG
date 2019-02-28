@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="151.0" prefWidth="385.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AirportSelectionController">
+<AnchorPane prefHeight="151.0" prefWidth="385.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seg.java.controllers.AirportSelectionController">
    <children>
       <Label layoutX="15.0" layoutY="27.0" prefHeight="30.0" prefWidth="122.0" text="Select an airport: ">
          <font>
