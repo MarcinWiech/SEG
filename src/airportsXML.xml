@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<Airports>
+	<Airport name="Test Airport" numberunways="1">
+		<Runway>
+			<runwayName>RUNWAY TEST</runwayName>
+			<tora>1000</tora>
+			<toda>2000</toda>
+			<asda>3000</asda>
+			<lda>4000</lda>
+			<remarks>5000</remarks>
+		</Runway>
+	</Airport>
+</Airports>

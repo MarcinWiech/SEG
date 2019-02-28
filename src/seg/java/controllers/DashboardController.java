@@ -34,6 +34,7 @@ public class DashboardController {
     @FXML private TextField asdaInitialTextbox;
     @FXML private TextField ldaInitialTextbox;
     @FXML private TextField thresholdInitialTextbox;
+    @FXML private TextField actionInitialTextbox;
     @FXML private TextField toraNewTextbox;
     @FXML private TextField todaNewTextbox;
     @FXML private TextField asdaNewTextbox;
@@ -50,7 +51,7 @@ public class DashboardController {
         /** Main objects get initialized & related preparations */
         canvasDrawer = new CanvasDrawer();
         canvasDrawer.setCanvases(topDownCanvas, sideOnCanvas);
-        redeclarationComputer = new RedeclarationComputer();
+
 
         /** Empty views get drawn **/
 
@@ -67,17 +68,13 @@ public class DashboardController {
         //sideOnCanvas.heightProperty().addListener(event -> canvasDrawer.drawSideOnCanvas());
     }
 
-    public void redeclareButtonPressed(ActionEvent event) {
+    public void redeclareButtonPressed(ActionEvent event) throws RedeclarationComputer.InvalidActionException {
         //initialize();
 
         System.out.println("Canvas width = " + topDownCanvas.getWidth());
         System.out.println("Canvas height = " + topDownCanvas.getHeight());
 
-        /** Obstacle details */
-        double obstacleX = Double.parseDouble(xTextbox.getText());
-        double obstacleY = Double.parseDouble(yTextbox.getText());
-        double obstacleWidth = Double.parseDouble(heightTextbox.getText());
-        redeclarationComputer.setObstacleDetails(obstacleX, obstacleY, obstacleWidth);
+
 
         /** Recalculation of parameters */
         double toraInput = Double.parseDouble(toraInitialTextbox.getText());
@@ -85,10 +82,17 @@ public class DashboardController {
         double asdaInput = Double.parseDouble(asdaInitialTextbox.getText());
         double ldaInput = Double.parseDouble(ldaInitialTextbox.getText());
         double dispThresholdInput = Double.parseDouble(thresholdInitialTextbox.getText());
+        double actionInput = Double.parseDouble(actionInitialTextbox.getText());
 
+        redeclarationComputer = new RedeclarationComputer(toraInput,todaInput,asdaInput,ldaInput,dispThresholdInput,actionInput);
+        /** Obstacle details */
+        double obstacleX = Double.parseDouble(xTextbox.getText());
+        double obstacleY = Double.parseDouble(yTextbox.getText());
+        double obstacleHeight = Double.parseDouble(heightTextbox.getText());
+        redeclarationComputer.setObstacleDetails(obstacleX, obstacleY, obstacleHeight);
         /** This block of code will also need the obstacle's details */
-        if (redeclarationComputer.needsRecalculation() == true) {
-            redeclarationComputer.setParameters(toraInput, todaInput, asdaInput, ldaInput, dispThresholdInput);
+        if (redeclarationComputer.needsRecalculation(redeclarationComputer.getObstacleX(), redeclarationComputer.getObstacleY())) {
+            redeclarationComputer.resetParameters(toraInput, todaInput, asdaInput, ldaInput);
             redeclarationComputer.calculate();
         }
 
