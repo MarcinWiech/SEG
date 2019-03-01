@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <Airports>
-	<Airport name="Test Airport" numberunways="1">
+	<Airport name="Test Airport">
 		<Runway>
 			<runwayName>RUNWAY TEST</runwayName>
 			<tora>1000</tora>

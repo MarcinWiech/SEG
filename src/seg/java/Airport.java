@@ -4,21 +4,16 @@ import java.util.HashMap;
 
 public class Airport {
     private String name;
-    private Integer numberOfRunways;
     private HashMap<String, Runway> runwayHashMap;
 
     public Airport() {
         runwayHashMap = new HashMap<>();
-        numberOfRunways = 0;
     }
 
     /**
      * GETTERS & SETTERS
      * @return
      */
-    public void setNumberOfRunways(Integer airportRunway) {
-        this.numberOfRunways = airportRunway;
-    }
 
     public String getName() {
         return this.name;
@@ -35,5 +30,14 @@ public class Airport {
     public void addRunway(String runwayDesignator, Integer tora, Integer toda, Integer asda,Integer lda,Integer displacedThreshold) {
         Runway newRunway = new Runway(runwayDesignator,tora,toda,asda, lda, displacedThreshold );
         runwayHashMap.put(newRunway.getRunwayName(), newRunway);
+    }
+
+    /**
+     * Get the number of runways for this airport instance.
+     *
+     * @return number of runways.
+     */
+    public int getNumberOfRunways() {
+        return this.runwayHashMap.size();
     }
 }

@@ -65,7 +65,6 @@ public class XMLReaderDOM {
         if (node.getNodeType() == Node.ELEMENT_NODE) {
             Element element = (Element) node;
             airport.setName(element.getAttribute("name"));
-            airport.setNumberOfRunways(Integer.valueOf(element.getAttribute("numberunways")));
         }
 
         return airport;
