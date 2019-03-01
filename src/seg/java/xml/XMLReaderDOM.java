@@ -1,10 +1,11 @@
-package seg.java;
+package seg.java.xml;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import seg.java.Airport;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -29,18 +30,24 @@ public class XMLReaderDOM {
 
             NodeList airportNodeList = doc.getElementsByTagName("Airport");
 
-            /** LOOPS THROUGH AIRPORTS TO ADD TO ARRAYLIST **/
-            airportHashMap = new HashMap<>();
-            for (int i = 0; i < airportNodeList.getLength(); i++) {
-                Airport newAirport = setAirport(airportNodeList.item(i));
-                airportHashMap.put(newAirport.getName(), newAirport);
+            // Loop through all <Airport> and load them
+            for(int i =0; i < airportNodeList.getLength(); i++) {
+                Node airportNode = airportNodeList.item(i);
 
-                /** LOOPS THROUGH RUNWAYS TO ADD TO AIRPORT **/
-                NodeList runwayNodeList = airportNodeList.item(i).getChildNodes();
-                for (int j = 0; j < runwayNodeList.getLength(); j++) {
-                    Node childNode = runwayNodeList.item(j);
-                    if ("Runway".equals(childNode.getNodeName())) {
-                        addRunway(childNode, newAirport);
+                // Check that the node is an element.
+                if (airportNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element airportEl = (Element) airportNode;
+
+                    Airport airport = Airport.loadFromXMLElement(airportEl);
+                    airportHashMap.put(airport.getName(), airport);
+
+                    /** LOOPS THROUGH RUNWAYS TO ADD TO AIRPORT **/
+                    NodeList runwayNodeList = airportNodeList.item(i).getChildNodes();
+                    for (int j = 0; j < runwayNodeList.getLength(); j++) {
+                        Node childNode = runwayNodeList.item(j);
+                        if ("Runway".equals(childNode.getNodeName())) {
+                            addRunway(childNode, airport);
+                        }
                     }
                 }
             }
@@ -48,19 +55,6 @@ public class XMLReaderDOM {
         } catch (SAXException | ParserConfigurationException | IOException e1) {
             e1.printStackTrace();
         }
-    }
-
-    /**
-     * Creates Airport object
-     **/
-    private static Airport setAirport(Node node) {
-        Airport airport = new Airport();
-        if (node.getNodeType() == Node.ELEMENT_NODE) {
-            Element element = (Element) node;
-            airport.setName(element.getAttribute("name"));
-        }
-
-        return airport;
     }
 
     private static String getTagValue(String tag, Element element) {

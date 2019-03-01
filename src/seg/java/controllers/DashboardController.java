@@ -13,6 +13,7 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import seg.java.*;
+import seg.java.xml.XMLReaderDOM;
 
 public class DashboardController {
     public ToggleButton takeOffAwayButton;

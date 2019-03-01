@@ -1,6 +1,9 @@
 package seg.java;
 
-public class Runway {
+import org.w3c.dom.Element;
+import seg.java.xml.XMLEntityInterface;
+
+public class Runway implements XMLEntityInterface {
     private String runwayName;
     private Integer tora;
     private Integer toda;
@@ -15,6 +18,10 @@ public class Runway {
         this.asda = asda;
         this.lda = lda;
         this.displacedThreshold = displacedThreshold;
+    }
+
+    public static Runway loadFromXMLElement(Element element){
+        String runwayName = XMLEntityInterface.
     }
 
     /**

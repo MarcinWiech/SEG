@@ -8,7 +8,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import seg.java.XMLReaderDOM;
+import seg.java.xml.XMLReaderDOM;
 
 public class ConfigureRunwayController {
     public Button addRunwayButton;

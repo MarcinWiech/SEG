@@ -12,7 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import seg.java.Airport;
-import seg.java.XMLReaderDOM;
+import seg.java.xml.XMLReaderDOM;
 
 import java.net.URL;
 import java.util.ResourceBundle;

@@ -1,13 +1,36 @@
 package seg.java;
 
+import org.w3c.dom.Element;
+import seg.java.xml.XMLEntityInterface;
+
 import java.util.HashMap;
 
-public class Airport {
+public class Airport implements XMLEntityInterface {
     private String name;
     private HashMap<String, Runway> runwayHashMap;
 
-    public Airport() {
+    public Airport(String name) {
         runwayHashMap = new HashMap<>();
+        this.name = name;
+    }
+
+    /**
+     * Load an airport from its xml element
+     *
+     * @param airportElement The element containing the airport.
+     * @return The loaded airport.
+     */
+    public static Airport loadFromXMLElement(Element airportElement){
+        Airport airport = new Airport(airportElement.getAttribute("name"));
+        return airport;
+    }
+
+    /**
+     * Add a runway to the airport.
+     * @param runway The runway to add.
+     */
+    public void addRunway(Runway runway){
+        runwayHashMap.put(runway.getRunwayName(), runway);
     }
 
     /**
@@ -18,10 +41,6 @@ public class Airport {
 
     public String getName() {
         return this.name;
-    }
-
-    public void setName(String airportName) {
-        this.name = airportName;
     }
 
     public HashMap<String, Runway> getRunwayHashMap() {
