@@ -55,7 +55,7 @@ public class XMLReaderDOM {
             Element element = (Element) runwayNode;
             airport.addRunway(getTagValue("runwayName", element),Integer.valueOf(getTagValue("tora", element)),
                     Integer.valueOf(getTagValue("toda", element)), Integer.valueOf(getTagValue("asda", element)),
-                    Integer.valueOf(getTagValue("lda", element)), Integer.valueOf(getTagValue("remarks", element)));
+                    Integer.valueOf(getTagValue("lda", element)), Integer.valueOf(getTagValue("threshold", element)));
         }
     }
 

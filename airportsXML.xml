@@ -7,7 +7,7 @@
 			<toda>2000</toda>
 			<asda>3000</asda>
 			<lda>4000</lda>
-			<remarks>5000</remarks>
+			<threshold>5000</threshold>
 		</Runway>
 	</Airport>
 </Airports>
