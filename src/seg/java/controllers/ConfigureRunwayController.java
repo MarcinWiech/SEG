@@ -14,12 +14,12 @@ import javafx.stage.Stage;
 public class ConfigureRunwayController {
     public Button addRunwayButton;
     public Button backButton;
-    public TextArea remarkTextbox;
     public TextField ldaTextbox;
     public TextField asdaTextbox;
     public TextField todaTextbox;
     public TextField toraTextbox;
     public TextField runwayDesignatorTextbox;
+    public TextField thresholdTextbox;
 
     private XMLReaderDOM xmlReaderDOM;
 
@@ -47,7 +47,7 @@ public class ConfigureRunwayController {
     /** WHEN ADD BUTTON IS PRESSED **/
     public void addRunway(ActionEvent actionEvent) {
         if (runwayDesignatorTextbox.getText().isEmpty() || toraTextbox.getText().isEmpty() || todaTextbox.getText().isEmpty()
-                || asdaTextbox.getText().isEmpty() || ldaTextbox.getText().isEmpty() || remarkTextbox.getText().isEmpty()) {
+                || asdaTextbox.getText().isEmpty() || ldaTextbox.getText().isEmpty() || thresholdTextbox.getText().isEmpty()) {
 
             new Alert(Alert.AlertType.ERROR, "Please ensure all fields are filled!").showAndWait();
         } else {

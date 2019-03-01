@@ -46,7 +46,7 @@ public class ConfigureAirportController implements Initializable {
         }
     }
 
-    /** ADDS Airport TO ARRAYLIST & OPENS DASHBOARD SCREEN */
+    /** ADDS Airport TO ARRAYLIST & OPENS EITHER dashboard.fxml ***** OR should loop for amount of runways ****** FOR DAN TO DO */
     public void addAirport(ActionEvent actionEvent) {
         if (airportNameTextbox.getText().isEmpty() || runwayDroplist.getSelectionModel().isEmpty()) {
             new Alert(Alert.AlertType.ERROR, "Please ensure all fields are filled!").showAndWait();
@@ -54,7 +54,7 @@ public class ConfigureAirportController implements Initializable {
             try {
                 Stage stage = (Stage) addAirportButton.getScene().getWindow();
                 stage.close();
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("sample.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/dashboard.fxml"));
                 Parent root1 = fxmlLoader.load();
                 stage = new Stage();
                 stage.setTitle("Dashboard");
