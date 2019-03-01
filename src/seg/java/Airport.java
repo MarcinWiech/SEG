@@ -12,6 +12,7 @@ public class Airport {
 
     /**
      * GETTERS & SETTERS
+     *
      * @return
      */
 
@@ -27,8 +28,8 @@ public class Airport {
         return this.runwayHashMap;
     }
 
-    public void addRunway(String runwayDesignator, Integer tora, Integer toda, Integer asda,Integer lda,Integer displacedThreshold) {
-        Runway newRunway = new Runway(runwayDesignator,tora,toda,asda, lda, displacedThreshold );
+    public void addRunway(String runwayDesignator, Integer tora, Integer toda, Integer asda, Integer lda, Integer displacedThreshold) {
+        Runway newRunway = new Runway(runwayDesignator, tora, toda, asda, lda, displacedThreshold);
         runwayHashMap.put(newRunway.getRunwayName(), newRunway);
     }
 
