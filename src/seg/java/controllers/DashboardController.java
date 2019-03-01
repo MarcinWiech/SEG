@@ -16,11 +16,9 @@ import javafx.stage.Stage;
 
 public class DashboardController
 {
-
-//==================================================================================================================================
-//  Fields
-//==================================================================================================================================
-
+    public ToggleButton takeOffAwayButton;
+    public ToggleButton takeOffTowardButton;
+    
     @FXML private TextField widthTextbox;
     @FXML private TextField heightTextbox;
     @FXML private Pane topDownPane;
