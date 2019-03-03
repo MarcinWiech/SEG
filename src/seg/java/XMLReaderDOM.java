@@ -16,7 +16,7 @@ public class XMLReaderDOM {
     private HashMap<String, Airport> airportHashMap;
 
     public XMLReaderDOM() {
-        String filePath = "airportsXML.xml";
+        String filePath = "./src/seg/resources/views/airportsXML.xml";
         File xmlFile = new File(filePath);
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder;
