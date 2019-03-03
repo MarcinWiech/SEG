@@ -46,6 +46,8 @@ public class DashboardController
     @FXML private TextField asdaNewTextbox;
     @FXML private TextField ldaNewTextbox;
     @FXML private TextField thresholdNewTextbox;
+    @FXML private TextField actionNewTextbox;
+    @FXML private TextField actionInitialTextbox;
 
     private XMLReaderDOM xmlReaderDOM;
     private CanvasDrawer canvasDrawer;
@@ -57,11 +59,10 @@ public class DashboardController
 //  Initialize
 //==================================================================================================================================
 
-    public void initialize()
-    {
+    public void initialize() {
         //  Main objects get initialized & related preparations
             canvasDrawer = new CanvasDrawer();
-            redeclarationComputer = new RedeclarationComputer();
+
 
         //  Empty views get drawn
 
@@ -94,8 +95,7 @@ public class DashboardController
 //  Other methods
 //==================================================================================================================================
 
-    public void redeclareButtonPressed(ActionEvent event)
-    {
+    public void redeclareButtonPressed(ActionEvent event) throws RedeclarationComputer.InvalidActionException {
 
         //  Printing used to show that canvas size changes
             System.out.println("Canvas width = " + topDownCanvas.getWidth());
@@ -104,8 +104,8 @@ public class DashboardController
         //  Obstacle details
             double obstacleX = Double.parseDouble(xTextbox.getText());
             double obstacleY = Double.parseDouble(yTextbox.getText());
-            double obstacleWidth = Double.parseDouble(heightTextbox.getText());
-            redeclarationComputer.setObstacleDetails(obstacleX, obstacleY, obstacleWidth);
+            double obstacleHeight = Double.parseDouble(heightTextbox.getText());
+            redeclarationComputer.setObstacleDetails(obstacleX, obstacleY, obstacleHeight);
 
         //  Recalculation of parameters
             double toraInput = Double.parseDouble(toraInitialTextbox.getText());
@@ -113,11 +113,14 @@ public class DashboardController
             double asdaInput = Double.parseDouble(asdaInitialTextbox.getText());
             double ldaInput = Double.parseDouble(ldaInitialTextbox.getText());
             double dispThresholdInput = Double.parseDouble(thresholdInitialTextbox.getText());
+            double actionInput = Double.parseDouble(actionInitialTextbox.getText());
+            redeclarationComputer = new RedeclarationComputer(toraInput,todaInput,asdaInput,ldaInput,dispThresholdInput,actionInput);
+
 
             //  This block of code will also need the obstacle's details
-                if (redeclarationComputer.needsRecalculation() == true)
+                if (redeclarationComputer.needsRecalculation(redeclarationComputer.getObstacleX(),redeclarationComputer.getObstacleY()))
                 {
-                    redeclarationComputer.setParameters(toraInput, todaInput, asdaInput, ldaInput, dispThresholdInput);
+                    redeclarationComputer.resetParameters(toraInput, todaInput, asdaInput, ldaInput);
                     redeclarationComputer.calculate();
                 }
 
@@ -127,6 +130,7 @@ public class DashboardController
             asdaNewTextbox.setText(Double.toString(redeclarationComputer.getAsda()));
             ldaNewTextbox.setText(Double.toString(redeclarationComputer.getLda()));
             thresholdNewTextbox.setText(Double.toString(redeclarationComputer.getDispTresh()));
+            actionNewTextbox.setText(Double.toString(redeclarationComputer.getAsda()));
 
         //  Canvas drawing gets triggered here
             canvasDrawer.drawTopDownCanvas(topDownCanvas);
@@ -169,6 +173,7 @@ public class DashboardController
         asdaInitialTextbox.setText(runway.getAsda().toString());
         ldaInitialTextbox.setText(runway.getLda().toString());
         thresholdInitialTextbox.setText(runway.getDisplacedThreshold().toString());
+        actionInitialTextbox.setText(runway.getAction().toString());
     }
 
    public void addToRunwayDroplist()
