@@ -19,10 +19,8 @@ public class RedeclarationComputer {
     private double action;
 
 
-    //Constructions
-
-
-    public RedeclarationComputer(double tora, double toda, double asda, double lda, double dispTresh, double action) throws InvalidActionException {
+    /** Constructions **/
+    public RedeclarationComputer(double tora, double toda, double asda, double lda, double  dispTresh, double action) throws InvalidActionException {
         this.tora = tora;
         this.toda = toda;
         this.asda = asda;
@@ -54,9 +52,9 @@ public class RedeclarationComputer {
         return false;
     }
 
-    /* The actual recalculation happens here */
-    public void calculate() {
-        double tora;
+    /** The actual recalculation happens here */
+    public void calculate()
+    {   double tora;
         double toda;
         double asda;
         double lda;
