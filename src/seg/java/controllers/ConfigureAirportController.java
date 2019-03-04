@@ -1,6 +1,5 @@
 package seg.java.controllers;
 
-import seg.java.XMLReaderDOM;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -11,19 +10,19 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import seg.java.XMLReaderDOM;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ConfigureAirportController {
-    /** FXML variables */
     public Button backToAirportSelection;
     public Button addAirportButton;
     public TextField airportNameTextbox;
 
     private XMLReaderDOM xmlReaderDOM;
 
-    /** GOES BACK TO AirportSelectionController */
+
     public void backToAirportSelection(ActionEvent actionEvent) {
         try {
             Stage stage = (Stage) addAirportButton.getScene().getWindow();
@@ -39,7 +38,6 @@ public class ConfigureAirportController {
         }
     }
 
-    /** ADDS Airport TO ARRAYLIST & OPENS EITHER dashboard.fxml ***** OR should loop for amount of runways */
     public void addAirport(ActionEvent actionEvent) {
         if (airportNameTextbox.getText().isEmpty()) {
             new Alert(Alert.AlertType.ERROR, "Please ensure all fields are filled!").showAndWait();
@@ -59,11 +57,13 @@ public class ConfigureAirportController {
         }
     }
 
-    public void setAirportArrayList (XMLReaderDOM xmlReaderDOM) {
+    public void setAirportArrayList(XMLReaderDOM xmlReaderDOM) {
         this.xmlReaderDOM = xmlReaderDOM;
     }
 
-    /** **** TO BE DONE **** IMPORTS AIRPORTS FROM airportsXML.xml AND ADDS THEM TO ARRAY LIST */
+    /**
+     * *** TO BE DONE **** IMPORTS AIRPORTS FROM airportsXML.xml AND ADDS THEM TO ARRAY LIST
+     */
     public void importAirportsFromXML(ActionEvent actionEvent) {
     }
 }

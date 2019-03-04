@@ -1,15 +1,14 @@
 package seg.java.controllers;
 
-import seg.java.XMLReaderDOM;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import seg.java.XMLReaderDOM;
 
 public class ConfigureRunwayController {
     public Button addRunwayButton;
@@ -23,28 +22,32 @@ public class ConfigureRunwayController {
 
     private XMLReaderDOM xmlReaderDOM;
 
-    /** WHEN BACK BUTTON IS PRESSED - GOES BACK TO ConfigureAirport **/
+    /**
+     * WHEN BACK BUTTON IS PRESSED - GOES BACK TO ConfigureAirport
+     **/
     public void backToConfigureAirport(ActionEvent actionEvent) {
-            try {
-                Stage stage = (Stage) asdaTextbox.getScene().getWindow();
-                stage.close();
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/configureAirport.fxml"));
-                Parent root1 = fxmlLoader.load();
-                stage = new Stage();
-                stage.setTitle("Configure Airport");
-                stage.setScene(new Scene(root1));
-                stage.show();
+        try {
+            Stage stage = (Stage) asdaTextbox.getScene().getWindow();
+            stage.close();
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/configureAirport.fxml"));
+            Parent root1 = fxmlLoader.load();
+            stage = new Stage();
+            stage.setTitle("Configure Airport");
+            stage.setScene(new Scene(root1));
+            stage.show();
 
 
-                ConfigureRunwayController runwayController = fxmlLoader.getController();
-                runwayController.setAirportArrayList(xmlReaderDOM);
+            ConfigureRunwayController runwayController = fxmlLoader.getController();
+            runwayController.setAirportArrayList(xmlReaderDOM);
 
-            } catch (Exception e) {
-                new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong :(").showAndWait();
-            }
+        } catch (Exception e) {
+            new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong :(").showAndWait();
+        }
     }
 
-    /** WHEN ADD BUTTON IS PRESSED **/
+    /**
+     * WHEN ADD BUTTON IS PRESSED
+     **/
     public void addRunway(ActionEvent actionEvent) {
         if (runwayDesignatorTextbox.getText().isEmpty() || toraTextbox.getText().isEmpty() || todaTextbox.getText().isEmpty()
                 || asdaTextbox.getText().isEmpty() || ldaTextbox.getText().isEmpty() || thresholdTextbox.getText().isEmpty()) {
@@ -74,7 +77,9 @@ public class ConfigureRunwayController {
         this.xmlReaderDOM = xmlReaderDOM;
     }
 
-    /** TO DO - NEED TO REPEAT UNTIL NUMBER OF RUNWAYS ARE MET **/
+    /**
+     * TO DO - NEED TO REPEAT UNTIL NUMBER OF RUNWAYS ARE MET
+     **/
     public void createRunway() {
 
     }
