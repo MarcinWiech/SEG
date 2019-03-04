@@ -22,7 +22,6 @@ public class ConfigureAirportController implements Initializable {
     public Button backToAirportSelection;
     public Button addAirportButton;
     public TextField airportNameTextbox;
-    public ChoiceBox runwayDroplist;
 
     private XMLReaderDOM xmlReaderDOM;
 
@@ -31,7 +30,6 @@ public class ConfigureAirportController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        runwayDroplist.getItems().addAll("1", "2", "3", "4", "5", "6", "7", "8", "9", "10");
     }
 
     /**
@@ -56,7 +54,7 @@ public class ConfigureAirportController implements Initializable {
      * ADDS Airport TO ARRAYLIST & OPENS EITHER dashboard.fxml ***** OR should loop for amount of runways ****** FOR DAN TO DO
      */
     public void addAirport(ActionEvent actionEvent) {
-        if (airportNameTextbox.getText().isEmpty() || runwayDroplist.getSelectionModel().isEmpty()) {
+        if (airportNameTextbox.getText().isEmpty()) {
             new Alert(Alert.AlertType.ERROR, "Please ensure all fields are filled!").showAndWait();
         } else {
             try {
