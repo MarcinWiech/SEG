@@ -101,20 +101,20 @@ public class DashboardController
             System.out.println("Canvas width = " + topDownCanvas.getWidth());
             System.out.println("Canvas height = " + topDownCanvas.getHeight());
 
+        //  Recalculation of parameters
+        double toraInput = Double.parseDouble(toraInitialTextbox.getText());
+        double todaInput = Double.parseDouble(todaInitialTextbox.getText());
+        double asdaInput = Double.parseDouble(asdaInitialTextbox.getText());
+        double ldaInput = Double.parseDouble(ldaInitialTextbox.getText());
+        double dispThresholdInput = Double.parseDouble(thresholdInitialTextbox.getText());
+        double actionInput = 1.0; //Double.parseDouble(actionInitialTextbox.getText());
+        redeclarationComputer = new RedeclarationComputer(toraInput,todaInput,asdaInput,ldaInput,dispThresholdInput,actionInput);
+
         //  Obstacle details
             double obstacleX = Double.parseDouble(xTextbox.getText());
             double obstacleY = Double.parseDouble(yTextbox.getText());
             double obstacleHeight = Double.parseDouble(heightTextbox.getText());
             redeclarationComputer.setObstacleDetails(obstacleX, obstacleY, obstacleHeight);
-
-        //  Recalculation of parameters
-            double toraInput = Double.parseDouble(toraInitialTextbox.getText());
-            double todaInput = Double.parseDouble(todaInitialTextbox.getText());
-            double asdaInput = Double.parseDouble(asdaInitialTextbox.getText());
-            double ldaInput = Double.parseDouble(ldaInitialTextbox.getText());
-            double dispThresholdInput = Double.parseDouble(thresholdInitialTextbox.getText());
-            double actionInput = Double.parseDouble(actionInitialTextbox.getText());
-            redeclarationComputer = new RedeclarationComputer(toraInput,todaInput,asdaInput,ldaInput,dispThresholdInput,actionInput);
 
 
             //  This block of code will also need the obstacle's details
