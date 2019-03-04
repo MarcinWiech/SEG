@@ -1,6 +1,5 @@
 package seg.java.controllers;
 
-import seg.java.XMLReaderDOM;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -11,12 +10,15 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import seg.java.XMLReaderDOM;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ConfigureAirportController implements Initializable {
-    /** FXML variables */
+    /**
+     * FXML variables
+     */
     public Button backToAirportSelection;
     public Button addAirportButton;
     public TextField airportNameTextbox;
@@ -24,13 +26,17 @@ public class ConfigureAirportController implements Initializable {
 
     private XMLReaderDOM xmlReaderDOM;
 
-    /** ADDS NUMBER OF RUNWAYS TO DROPDOWN LIST*/
+    /**
+     * ADDS NUMBER OF RUNWAYS TO DROPDOWN LIST
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        runwayDroplist.getItems().addAll("1","2","3","4","5","6","7","8","9","10");
+        runwayDroplist.getItems().addAll("1", "2", "3", "4", "5", "6", "7", "8", "9", "10");
     }
 
-    /** GOES BACK TO AirportSelectionController */
+    /**
+     * GOES BACK TO AirportSelectionController
+     */
     public void backToAirportSelection(ActionEvent actionEvent) {
         try {
             Stage stage = (Stage) addAirportButton.getScene().getWindow();
@@ -46,7 +52,9 @@ public class ConfigureAirportController implements Initializable {
         }
     }
 
-    /** ADDS Airport TO ARRAYLIST & OPENS EITHER dashboard.fxml ***** OR should loop for amount of runways ****** FOR DAN TO DO */
+    /**
+     * ADDS Airport TO ARRAYLIST & OPENS EITHER dashboard.fxml ***** OR should loop for amount of runways ****** FOR DAN TO DO
+     */
     public void addAirport(ActionEvent actionEvent) {
         if (airportNameTextbox.getText().isEmpty() || runwayDroplist.getSelectionModel().isEmpty()) {
             new Alert(Alert.AlertType.ERROR, "Please ensure all fields are filled!").showAndWait();
@@ -67,11 +75,13 @@ public class ConfigureAirportController implements Initializable {
         }
     }
 
-    public void setAirportArrayList (XMLReaderDOM xmlReaderDOM) {
+    public void setAirportArrayList(XMLReaderDOM xmlReaderDOM) {
         this.xmlReaderDOM = xmlReaderDOM;
     }
 
-    /** **** TO BE DONE **** IMPORTS AIRPORTS FROM airportsXML.xml AND ADDS THEM TO ARRAY LIST */
+    /**
+     * *** TO BE DONE **** IMPORTS AIRPORTS FROM airportsXML.xml AND ADDS THEM TO ARRAY LIST
+     */
     public void importAirportsFromXML(ActionEvent actionEvent) {
     }
 }

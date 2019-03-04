@@ -1,13 +1,31 @@
 <?xml version="1.0"?>
 <Airports>
-	<Airport name="Test Airport" numberunways="1">
-		<Runway>
-			<runwayName>RUNWAY TEST</runwayName>
-			<tora>1000</tora>
-			<toda>2000</toda>
-			<asda>3000</asda>
-			<lda>4000</lda>
-			<threshold>5000</threshold>
-		</Runway>
-	</Airport>
+    <Airport name="Test Airport">
+        <Runway>
+            <runwayName>North</runwayName>
+            <tora>1000</tora>
+            <toda>2000</toda>
+            <asda>3000</asda>
+            <lda>4000</lda>
+            <threshold>5000</threshold>
+        </Runway>
+    </Airport>
+    <Airport name="Airport 2">
+        <Runway>
+            <runwayName>North</runwayName>
+            <tora>1001</tora>
+            <toda>2001</toda>
+            <asda>3001</asda>
+            <lda>4001</lda>
+            <threshold>5001</threshold>
+        </Runway>
+        <Runway>
+            <runwayName>South</runwayName>
+            <tora>1002</tora>
+            <toda>2002</toda>
+            <asda>3002</asda>
+            <lda>4002</lda>
+            <threshold>5002</threshold>
+        </Runway>
+    </Airport>
 </Airports>

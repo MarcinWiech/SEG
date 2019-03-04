@@ -1,6 +1,5 @@
 package seg.java.controllers;
 
-import seg.java.Airport;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -12,6 +11,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import seg.java.Airport;
 import seg.java.XMLReaderDOM;
 
 import java.net.URL;
@@ -24,14 +24,18 @@ public class AirportSelectionController implements Initializable {
 
     private XMLReaderDOM xmlReaderDOM;
 
-    /** INITIALIZE - ADDS AIRPORTS TO DROPLIST (READ IN FROM XML FILE) */
+    /**
+     * INITIALIZE - ADDS AIRPORTS TO DROPLIST (READ IN FROM XML FILE)
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         xmlReaderDOM = new XMLReaderDOM();
         addToAirportDroplist();
     }
 
-    /** WHEN CLICK ON addAirportLabel (SELECTED AIRPORT) - OPENS ConfigureRunwayController */
+    /**
+     * WHEN CLICK ON addAirportLabel (SELECTED AIRPORT) - OPENS ConfigureRunwayController
+     */
     public void openAirportConfigurationScreen(MouseEvent mouseEvent) {
         try {
             Stage stage = (Stage) addAirportLabel.getScene().getWindow();
@@ -53,7 +57,9 @@ public class AirportSelectionController implements Initializable {
         }
     }
 
-    /** OPENS Dashboard */
+    /**
+     * OPENS Dashboard
+     */
     public void openDashboard(ActionEvent actionEvent) {
         if (airportDroplist.getSelectionModel().isEmpty()) {
             new Alert(Alert.AlertType.ERROR, "Please select an airport to continue!").showAndWait();
@@ -78,19 +84,25 @@ public class AirportSelectionController implements Initializable {
         }
     }
 
-    /** HOVER OVER UNDERLINES LIKE HYPERLINK */
+    /**
+     * HOVER OVER UNDERLINES LIKE HYPERLINK
+     */
     public void underlineText(MouseEvent mouseEvent) {
         addAirportLabel.setUnderline(true);
     }
 
-    /** STOP HOVERING - STOPS UNDERLINING */
+    /**
+     * STOP HOVERING - STOPS UNDERLINING
+     */
     public void stopUnderlineText(MouseEvent mouseEvent) {
         addAirportLabel.setUnderline(false);
     }
 
-    /** ADD AIRPORTS TO THE DROPDOWN LIST */
-     public void addToAirportDroplist() {
-        for (String airportName: xmlReaderDOM.getAirportArraylist().keySet()) {
+    /**
+     * ADD AIRPORTS TO THE DROPDOWN LIST
+     */
+    public void addToAirportDroplist() {
+        for (String airportName : xmlReaderDOM.getAirportArraylist().keySet()) {
             airportDroplist.getItems().add(airportName);
         }
     }
