@@ -57,7 +57,7 @@ public class ConfigureRunwayController {
             try {
                 Stage stage = (Stage) asdaTextbox.getScene().getWindow();
                 stage.close();
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("configureRunway.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/configureRunway.fxml"));
                 Parent root1 = fxmlLoader.load();
                 stage = new Stage();
                 stage.setTitle("Configure Runway");
@@ -67,6 +67,7 @@ public class ConfigureRunwayController {
                 createRunway();
 
             } catch (Exception e) {
+                System.out.println(e.getMessage());
                 new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong :(").showAndWait();
             }
         }
