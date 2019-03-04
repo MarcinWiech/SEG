@@ -15,20 +15,13 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class ConfigureAirportController implements Initializable {
+public class ConfigureAirportController {
     /** FXML variables */
     public Button backToAirportSelection;
     public Button addAirportButton;
     public TextField airportNameTextbox;
-    public ChoiceBox runwayDroplist;
 
     private XMLReaderDOM xmlReaderDOM;
-
-    /** ADDS NUMBER OF RUNWAYS TO DROPDOWN LIST*/
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        runwayDroplist.getItems().addAll("1","2","3","4","5","6","7","8","9","10");
-    }
 
     /** GOES BACK TO AirportSelectionController */
     public void backToAirportSelection(ActionEvent actionEvent) {
@@ -46,21 +39,20 @@ public class ConfigureAirportController implements Initializable {
         }
     }
 
-    /** ADDS Airport TO ARRAYLIST & OPENS EITHER dashboard.fxml ***** OR should loop for amount of runways ****** FOR DAN TO DO */
+    /** ADDS Airport TO ARRAYLIST & OPENS EITHER dashboard.fxml ***** OR should loop for amount of runways */
     public void addAirport(ActionEvent actionEvent) {
-        if (airportNameTextbox.getText().isEmpty() || runwayDroplist.getSelectionModel().isEmpty()) {
+        if (airportNameTextbox.getText().isEmpty()) {
             new Alert(Alert.AlertType.ERROR, "Please ensure all fields are filled!").showAndWait();
         } else {
             try {
                 Stage stage = (Stage) addAirportButton.getScene().getWindow();
                 stage.close();
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/dashboard.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/configureRunway.fxml"));
                 Parent root1 = fxmlLoader.load();
                 stage = new Stage();
-                stage.setTitle("Dashboard");
+                stage.setTitle("Add Runway");
                 stage.setScene(new Scene(root1));
                 stage.show();
-
             } catch (Exception e) {
                 new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong :(").showAndWait();
             }
