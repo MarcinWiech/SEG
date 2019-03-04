@@ -15,26 +15,14 @@ import seg.java.XMLReaderDOM;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class ConfigureAirportController implements Initializable {
-    /**
-     * FXML variables
-     */
+public class ConfigureAirportController {
     public Button backToAirportSelection;
     public Button addAirportButton;
     public TextField airportNameTextbox;
 
     private XMLReaderDOM xmlReaderDOM;
 
-    /**
-     * ADDS NUMBER OF RUNWAYS TO DROPDOWN LIST
-     */
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-    }
 
-    /**
-     * GOES BACK TO AirportSelectionController
-     */
     public void backToAirportSelection(ActionEvent actionEvent) {
         try {
             Stage stage = (Stage) addAirportButton.getScene().getWindow();
@@ -50,9 +38,6 @@ public class ConfigureAirportController implements Initializable {
         }
     }
 
-    /**
-     * ADDS Airport TO ARRAYLIST & OPENS EITHER dashboard.fxml ***** OR should loop for amount of runways ****** FOR DAN TO DO
-     */
     public void addAirport(ActionEvent actionEvent) {
         if (airportNameTextbox.getText().isEmpty()) {
             new Alert(Alert.AlertType.ERROR, "Please ensure all fields are filled!").showAndWait();
@@ -60,13 +45,12 @@ public class ConfigureAirportController implements Initializable {
             try {
                 Stage stage = (Stage) addAirportButton.getScene().getWindow();
                 stage.close();
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/dashboard.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/configureRunway.fxml"));
                 Parent root1 = fxmlLoader.load();
                 stage = new Stage();
-                stage.setTitle("Dashboard");
+                stage.setTitle("Add Runway");
                 stage.setScene(new Scene(root1));
                 stage.show();
-
             } catch (Exception e) {
                 new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong :(").showAndWait();
             }
