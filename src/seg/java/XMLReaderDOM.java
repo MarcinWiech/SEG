@@ -43,6 +43,22 @@ public class XMLReaderDOM {
                         addRunway(childNode, newAirport);
                     }
                 }
+
+                //  We set the reciprocal runways
+                for (String runwayName : newAirport.getRunwayHashMap().keySet())
+                {
+                    Runway runway = newAirport.getRunwayHashMap().get(runwayName);
+                    String reciprocalName = runway.getReciprocalName();
+
+                    if(runwayName.equals("null") == false)
+                    {
+                        runway.setReciprocal(newAirport.getRunwayHashMap().get(reciprocalName));
+                    }
+                    else
+                    {
+                        runway.setReciprocal(null);
+                    }
+                }
             }
 
         } catch (SAXException | ParserConfigurationException | IOException e1) {
@@ -76,9 +92,10 @@ public class XMLReaderDOM {
     private void addRunway(Node runwayNode, Airport airport) {
         if (runwayNode.getNodeType() == Node.ELEMENT_NODE) {
             Element element = (Element) runwayNode;
-            airport.addRunway(getTagValue("runwayName", element), Integer.valueOf(getTagValue("tora", element)),
-                    Integer.valueOf(getTagValue("toda", element)), Integer.valueOf(getTagValue("asda", element)),
-                    Integer.valueOf(getTagValue("lda", element)), Integer.valueOf(getTagValue("threshold", element)));
+            airport.addRunway(getTagValue("reciprocalName", element), getTagValue("runwayName", element),
+                    Integer.valueOf(getTagValue("tora", element)), Integer.valueOf(getTagValue("toda", element)),
+                    Integer.valueOf(getTagValue("asda", element)), Integer.valueOf(getTagValue("lda", element)),
+                    Integer.valueOf(getTagValue("threshold", element)));
         }
     }
 

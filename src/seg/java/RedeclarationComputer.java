@@ -1,325 +1,384 @@
 package seg.java;
 
-public class RedeclarationComputer {
+import java.lang.Character;
 
-    private double obstacleX;
+public class RedeclarationComputer
+{
+
+//==================================================================================================================================
+//  Fields
+//==================================================================================================================================
+
+    private double obstacleXL;
+    private double obstacleXR;
     private double obstacleY;
     private double obstacleHeight;
 
+    private Runway runway;
+    private char runwayDirection;
     private double tora;
     private double toda;
     private double asda;
     private double lda;
     private double dispTresh;
-    /**
-     * We decided to have a variable action that can either be 1 or 2
-     * 1 represents the action of TAKE OFF AWAY/LANDING OVER
-     * 2 represents the action of TAKE OFF TOWARDS/LANDING TOWARDS
-     */
-    private double action;
 
+    private int calculationCase;
 
-    /** Constructions **/
-    public RedeclarationComputer(double tora, double toda, double asda, double lda, double  dispTresh, double action) throws InvalidActionException {
-        this.tora = tora;
-        this.toda = toda;
-        this.asda = asda;
-        this.lda = lda;
-        this.dispTresh = dispTresh;
-        if (action == 1 || action == 2) {
-            this.action = action;
-        } else {
-            throw new InvalidActionException("action can either be 1 or 2");
-        }
+    private String toraBD = "";
+    private String todaBD = "";
+    private String asdaBD = "";
+    private String ldaBD = "";
+
+//==================================================================================================================================
+//  Constants
+//==================================================================================================================================
+
+    private final double BLAST_PROTECTION = 300;                // 300-500 depending on the aircraft
+    private final double RESA = 240;
+    private final double STRIP_END = 60;
+    private final double SLOPE_INVERSE = 50;
+
+//==================================================================================================================================
+//  Constructors
+//==================================================================================================================================
+
+    public RedeclarationComputer()
+    {
 
     }
 
+//==================================================================================================================================
+//  Methods
+//==================================================================================================================================
 
-    /**
-     * Checks whether we need to recalculate
-     *
-     * @param obstacleX
-     * @param obstacleY
-     * @return true = we need to Recalculate, false otherwise
-     */
-    public Boolean needsRecalculation(double obstacleX, double obstacleY) {
-        if (obstacleX > -60 || obstacleX < 60) {
-            return true;
+    public Boolean needsRecalculation(double obstacleXL, double obstacleXR, double obstacleY)
+    {
+
+        if(obstacleXL < -60 || obstacleXL > tora + 60)
+        {
+            return false;
         }
-        if (obstacleY > -75 || obstacleY < -75) {
-            return true;
+
+        if(obstacleY < -75 || obstacleY > 75)
+        {
+            return false;
         }
-        return false;
+
+        return true;
     }
 
-    /** The actual recalculation happens here */
+    // The actual recalculation happens here
     public void calculate()
-    {   double tora;
-        double toda;
-        double asda;
-        double lda;
+    {
+        double localTora = 0;
+        double localToda = 0;
+        double localAsda = 0;
+        double localLda = 0;
 
-        if (this.getAction() == 1) {
-
-
-            tora = calculateTORA1(this.getTora(), 300, this.getObstacleX(), this.getDispTresh());
-            toda = calculateTODA1(this.getTora(), this.getToda());
-            asda = calculateASDA1(this.getTora(), this.getAsda());
-            lda = calculateLDA1(this.getLda(), this.getObstacleX(), 60, this.getObstacleHeight());
-
-            resetParameters(tora, toda, asda, lda);
-        } else {
-
-
-            tora = calculateTORA2(this.getObstacleX(), this.getDispTresh(), this.getObstacleHeight(), 60);
-            toda = calculateTODA2(this.getTora());
-            asda = calculateASDA2(this.getTora());
-            lda = calculateLDA2(this.getObstacleX(), 240, 60);
-
-            resetParameters(tora, toda, asda, lda);
+        calculationCase = determineCalculationCase();
+        if (calculationCase == 1)
+        {
+            calculateCase1(localTora, localToda, localAsda, localLda);
+        }
+        else if (calculationCase == 2)
+        {
+            calculateCase2(localTora, localToda, localAsda, localLda);
+        }
+        else if (calculationCase == 3)
+        {
+            calculateCase3(localTora, localToda, localAsda, localLda);
+        }
+        else
+        {
+            calculateCase4(localTora, localToda, localAsda, localLda);
         }
     }
 
     /**
-     * TAKE OFF AWAY/ LANDING OVER calculations
-     * All calculations for this have a "1" in their name for each method
+     * Determines the value of calculationCase
+     * 1 represents the action of TAKE OFF AWAY/LANDING OVER + R
+     * 2 represents the action of TAKE OFF TOWARDS/LANDING TOWARDS + R
+     * 3 represents the action of TAKE OFF AWAY/LANDING OVER + L
+     * 4 represents the action of TAKE OFF TOWARDS/LANDING TOWARDS + L
      */
-
-
-    /**
-     * TORA calculation 1
-     * BREAKDOWN : Original TORA - Blast Protection - Distance from Threshold - Displaced Threshold
-     * For Take off AWAY/ Landing OVER
-     * blastProtection is usually 300 by standard (300-500 depending on the aircraft)
-     * RESA is usually 240 and the Strip End is 60
-     *
-     * @param tora
-     * @param coeficient        (blast protection or RESA + Strip End)
-     * @param obstacleX
-     * @param displacedTreshold
-     * @return recalculated TORA
-     */
-    public double calculateTORA1(double tora, double coeficient, double obstacleX, double displacedTreshold) {
-        double rTora;
-        rTora = tora - coeficient - obstacleX - displacedTreshold;
-        return rTora;
+    private int determineCalculationCase()
+    {
+        System.out.println("Runway direction = " + runwayDirection);
+        if(obstacleXL < tora / 2)       // for this one you might want to consider the R dispTresh
+        {
+            if(runwayDirection == 'R')
+                return 2;
+            else
+                return 3;
+        }
+        else
+        {
+            if(runwayDirection == 'R')
+                return 1;
+            else
+                return 4;
+        }
     }
 
-    /**
-     * ASDA calculation 1
-     * Based on recalculated TORA and the value of the stopway
-     * BREAKDOWN : (R) TORA + STOPWAY
-     *
-     * @param tora
-     * @param asda
-     * @return recalculated ASDA
-     */
-    public double calculateASDA1(double tora, double asda) {
-        double rAsda;
-        rAsda = tora - calculateStopway(tora, asda);
-        return rAsda;
+    // TAKE OFF AWAY/LANDING OVER + R
+    private void calculateCase1(double localTora, double localToda, double localAsda, double localLda)
+    {
+        //  This one definitely must be checked later
+        localTora = tora - dispTresh - obstacleXR - BLAST_PROTECTION ;
+
+        localToda = localTora + calculateClearway();
+
+        localAsda = localTora + calculateStopway();;
+
+        localLda = lda - obstacleXR - Math.max(Math.max(SLOPE_INVERSE * obstacleHeight, RESA) + STRIP_END, BLAST_PROTECTION);
+
+        setCase1BD(localTora, localToda, localAsda, localLda);
+
+        //  We update the values after calculation
+        setParameters(localTora, localToda, localAsda, localLda);
     }
 
-    /**
-     * TODA calculation 1
-     * Based on recalculated TORA and the value of the clearway
-     * BREAKDOWN : (R) TORA + CLEARWAY
-     *
-     * @param tora
-     * @param toda
-     * @return recalculated TODA
-     */
-    public double calculateTODA1(double tora, double toda) {
-        double rToda;
-        rToda = tora - calculateClearway(tora, toda);
-        return rToda;
+    // TAKE OFF TOWARDS/LANDING TOWARDS + R
+    private void calculateCase2(double localTora, double localToda, double localAsda, double localLda)
+    {
+        localTora = obstacleXR + dispTresh - Math.max(SLOPE_INVERSE * obstacleHeight, RESA) - STRIP_END;
+
+        localToda = localTora;
+
+        localAsda = localTora;
+
+        localLda = obstacleXR - RESA - STRIP_END;
+
+        setCase2BD(localTora, localToda, localAsda, localLda);
+
+        //  We update the values after calculation
+        setParameters(localTora, localToda, localAsda, localLda);
     }
 
-    /**
-     * LDA calculation 1
-     * Based on original lda, the distance between the object and the threshold, strip end and Slope calculation
-     * BREAKDOWN: Original LDA - Slope Calculation - Distance from Threshold - Strip End
-     *
-     * @param lda
-     * @param obstacleX
-     * @param stripEnd       usually 60
-     * @param obstacleHeight used for the slope calculation (h * 50)
-     * @return recalculated LDA
-     */
-    public double calculateLDA1(double lda, double obstacleX, double stripEnd, double obstacleHeight) {
+    // TAKE OFF AWAY/LANDING OVER + L
+    private void calculateCase3(double localTora, double localToda, double localAsda, double localLda)
+    {
+        //  This one definitely must be checked later
+        localTora = tora - dispTresh - obstacleXL - BLAST_PROTECTION;
 
-        double rLDA;
-        rLDA = lda - obstacleX - stripEnd - obstacleHeight * 50;
-        return rLDA;
+        localToda = localTora + calculateClearway();
+
+        localAsda = localTora + calculateStopway();
+
+        localLda = lda - obstacleXL - Math.max(Math.max(SLOPE_INVERSE * obstacleHeight, RESA) + STRIP_END, BLAST_PROTECTION);
+
+        setCase3BD(localTora, localToda, localAsda, localLda);
+
+        //  We update the values after calculation
+        setParameters(localTora, localToda, localAsda, localLda);
     }
 
-    /**
-     * TAKE OFF TOWARDS/LANDING TOWARDS
-     * All calculations for this have a "2" in the name
-     * The Distance from threshold - obstacleX - usually has to be large
-     * The threshold must be in the opposide side of the runway
-     */
+    // TAKE OFF TOWARDS/LANDING TOWARDS + L
+    private void calculateCase4(double localTora, double localToda, double localAsda, double localLda)
+    {
+        localTora = dispTresh + obstacleXL - Math.max(SLOPE_INVERSE * obstacleHeight, RESA) - STRIP_END;
 
+        localToda = localTora;
 
-    /**
-     * TORA calculation 2
-     * BREAKDOWN : Distance from Threshold + Displaced Threshold - Slope Calculation - Strip End
-     * Slope Calculation = object height * 50
-     * Strip End is usually 60
-     *
-     * @param obstacleX         -usually has to be large (the threshold is in the opposide side of the runway)
-     * @param displacedTreshold if there is one
-     * @param obstacleHeight
-     * @param stripEnd
-     * @return recalculated TORA
-     */
-    public double calculateTORA2(double obstacleX, double displacedTreshold, double obstacleHeight, double stripEnd) {
-        double rTora;
-        rTora = obstacleX - displacedTreshold - obstacleHeight * 50 - displacedTreshold;
-        return rTora;
+        localAsda = localTora;
+
+        localLda = obstacleXL - RESA - STRIP_END;
+
+        setCase4BD(localTora, localToda, localAsda, localLda);
+
+        //  We update the values after calculation
+        setParameters(localTora, localToda, localAsda, localLda);
     }
 
-    /**
-     * ASDA calculation 2
-     * Based on recalculated TORA
-     * BREAKDOWN : (R) TORA
-     *
-     * @param tora
-     * @return recalculated ASDA
-     */
-    public double calculateASDA2(double tora) {
-        return tora;
+    public double calculateStopway()
+    {
+        return asda - tora;
     }
 
-    /**
-     * TODA calculation 2
-     * Based on recalculated TORA
-     * BREAKDOWN : (R) TORA
-     *
-     * @param tora
-     * @return recalculated TODA
-     */
-    public double calculateTODA2(double tora) {
-        return tora;
+    public double calculateClearway()
+    {
+        return toda - tora;
     }
 
-    /**
-     * LDA calculation 2
-     * Based on original lda, the distance between the object and the threshold, strip end and Slope calculation
-     * BREAKDOWN: Distance from Threshold - RESA - Strip End
-     *
-     * @param obstacleX = Distance from Threshold
-     * @param resa      (usually 240)
-     * @param stripEnd  (usually 60)
-     * @return recalculated LDA
-     */
-    public double calculateLDA2(double obstacleX, double resa, double stripEnd) {
+//==================================================================================================================================
+//  Setters
+//==================================================================================================================================
 
-        double rLDA;
-        rLDA = obstacleX - resa - stripEnd;
-        return rLDA;
+    //  Sets the runway for which we calculate
+    public void setRunway(Runway runway)
+    {
+        this.runway = runway;
+        this.runwayDirection = Character.toUpperCase(runway.getRunwayName().charAt(2));
+        this.tora = runway.getTora();
+        this.toda = runway.getToda();
+        this.asda = runway.getAsda();
+        this.lda = runway.getLda();
+        this.dispTresh = runway.getDisplacedThreshold();
     }
 
-
-    /**
-     * Setter for obstacle
-     * Allows to locate the obstacle based on the input given
-     *
-     * @param obstacleX
-     * @param obstacleY
-     * @param obstacleHeight
-     */
-    public void setObstacleDetails(double obstacleX, double obstacleY, double obstacleHeight) {
-        this.obstacleX = obstacleX;
+    public void setObstacleDetails(double obstacleXL, double obstacleXR, double obstacleY, double obstacleHeight)
+    {
+        this.obstacleXL = obstacleXL;
+        this.obstacleXR = obstacleXR;
         this.obstacleY = obstacleY;
         this.obstacleHeight = obstacleHeight;
     }
 
-    /**
-     * Allows to change or update the parameters without having to reinitialise the runway
-     *
-     * @param tora
-     * @param toda
-     * @param asda
-     * @param lda
-     */
-    public void resetParameters(double tora, double toda, double asda, double lda) {
+    public void setParameters(double tora, double toda, double asda, double lda)
+    {
         this.tora = tora;
         this.toda = toda;
         this.asda = asda;
         this.lda = lda;
     }
 
+    private void setCase1BD(double localTora, double localToda, double localAsda, double localLda)
+    {
+        toraBD = " = Original TORA - Displaced Treshold - Distance from Treshold - Blast Protection\n = " +
+                Double.toString(tora) + " - " + Double.toString(dispTresh) + " - " +
+                Double.toString(obstacleXR) + " - " + Double.toString(BLAST_PROTECTION) + "\n" +
+                " = " + Double.toString(localTora);
 
-    /**
-     * Calculate the Stopway strip
-     * We set the stopway to be by default 0 until stated otherwise
-     *
-     * @param tora
-     * @param asda
-     * @return stopway size
-     */
-    public double calculateStopway(double tora, double asda) {
-        double stopway = 0;
-        stopway = asda - tora;
-        return stopway;
+        todaBD = " = (R) TORA + Clearway\n = " + Double.toString(localTora) + " + " + Double.toString(calculateClearway()) +
+                "\n = " + Double.toString(localToda);
+
+        asdaBD = " = (R) TORA + Stopway\n = " + Double.toString(localTora) + " + " + Double.toString(calculateStopway()) +
+                "\n = " + Double.toString(localAsda);
+
+        ldaBD = " = Original LDA - Distance from Treshold - max(max(Slope Calculation, RESA) + Strip End, Blast Protection)\n = " +
+                Double.toString(lda) + " - " + Double.toString(obstacleXR) + " - " +
+                Double.toString(Math.max(Math.max(SLOPE_INVERSE * obstacleHeight, RESA) + STRIP_END, BLAST_PROTECTION))
+                + "\n = " + Double.toString(localLda);
     }
 
-    /**
-     * Calculate the Clearway strip
-     * We set the clearway to be 0 until stated otherwise
-     *
-     * @param tora
-     * @param toda
-     * @return clearway size
-     */
-    public double calculateClearway(double tora, double toda) {
-        double clearway = 0;
-        clearway = toda - tora;
-        return clearway;
+    private void setCase2BD(double localTora, double localToda, double localAsda, double localLda)
+    {
+        toraBD = " = Displaced Treshold + Distance from Treshhold - max(Slope Calculation, RESA) - Strip End\n = " +
+                Double.toString(dispTresh) + " + " + Double.toString(obstacleXR) + " - " +
+                Double.toString(Math.max(SLOPE_INVERSE * obstacleHeight, RESA)) + " - " + Double.toString(STRIP_END) + "\n" +
+                " = " + Double.toString(localTora);
+
+        todaBD = " = (R) TORA\n = " + Double.toString(localTora);
+
+        asdaBD = " = (R) TORA\n = " + Double.toString(localTora);
+
+        ldaBD = " = Distance from Treshold - RESA - Strip End\n = " +
+                Double.toString(obstacleXR) + " - " + Double.toString(RESA) + " - " +
+                Double.toString(STRIP_END) + "\n = " + Double.toString(localLda);
     }
 
+    private void setCase3BD(double localTora, double localToda, double localAsda, double localLda)
+    {
+        toraBD = " = Original TORA - Displaced Treshold - Distance from Treshold - Blast Protection\n = " +
+                Double.toString(tora) + " - " + Double.toString(dispTresh) + " - " +
+                Double.toString(obstacleXL) + " - " + Double.toString(BLAST_PROTECTION) + "\n" +
+                " = " + Double.toString(localTora);
 
-    //Getters
+        todaBD = " = (R) TORA + Clearway\n = " + Double.toString(localTora) + " + " + Double.toString(calculateClearway()) +
+                "\n = " + Double.toString(localToda);
 
-    public double getTora() {
+        asdaBD = " = (R) TORA + Stopway\n = " + Double.toString(localTora) + " + " + Double.toString(calculateStopway()) +
+                "\n = " + Double.toString(localAsda);
+
+        ldaBD = " = Original LDA - Distance from Treshold - max (max(Slope Calculation, RESA) + Strip End, Blast Protection)\n = " +
+                Double.toString(lda) + " - " + Double.toString(obstacleXL) + " - " +
+                Double.toString(Math.max(Math.max(SLOPE_INVERSE * obstacleHeight, RESA) + STRIP_END, BLAST_PROTECTION)) + "\n = " +
+                Double.toString(localLda);
+    }
+
+    private void setCase4BD(double localTora, double localToda, double localAsda, double localLda)
+    {
+        toraBD = " = Displaced Treshold + Distance from Treshold - Max(Slope calculation, RESA) - Strip End\n = " +
+                Double.toString(dispTresh) + " + " + Double.toString(obstacleXL) + " - " +
+                Double.toString(Math.max(SLOPE_INVERSE * obstacleHeight, RESA)) + " - " + STRIP_END + "\n"
+                + " = " + Double.toString(localTora);
+
+        todaBD = " = (R) TORA\n = " + Double.toString(localTora);
+
+        asdaBD = " = (R) TORA\n = " + Double.toString(localTora);
+
+        ldaBD = " = Distance from Treshold - RESA - Strip End\n = " +
+                Double.toString(obstacleXL) + " - " + Double.toString(RESA) + " - " + Double.toString(STRIP_END) + "\n = " +
+                Double.toString(localLda);
+    }
+
+//==================================================================================================================================
+//  Getters
+//==================================================================================================================================
+
+    public double getTora()
+    {
         return tora;
     }
 
-    public double getToda() {
+    public double getToda()
+    {
         return toda;
     }
 
-    public double getAsda() {
+    public double getAsda()
+    {
         return asda;
     }
 
-    public double getLda() {
+    public double getLda()
+    {
         return lda;
     }
 
-    public double getDispTresh() {
+    public double getDispTresh()
+    {
         return dispTresh;
     }
 
-    public double getObstacleX() {
-        return obstacleX;
+    public double getObstacleXL()
+    {
+        return obstacleXL;
     }
 
-    public double getObstacleY() {
+    public double getObstacleXR()
+    {
+        return obstacleXR;
+    }
+
+    public double getObstacleY()
+    {
         return obstacleY;
     }
 
-    public double getObstacleHeight() {
+    public double getObstacleHeight()
+    {
         return obstacleHeight;
     }
 
-    public double getAction() {
-        return action;
+    public String getToraBD()
+    {
+        return toraBD;
     }
 
-    public class InvalidActionException extends Throwable {
-        public InvalidActionException(String s) {
+    public String getTodaBD()
+    {
+        return todaBD;
+    }
+
+    public String getAsdaBD()
+    {
+        return asdaBD;
+    }
+
+    public String getLdaBD()
+    {
+        return ldaBD;
+    }
+
+//==================================================================================================================================
+//  Exceptions
+//==================================================================================================================================
+
+    public class InvalidActionException extends Throwable
+    {
+        public InvalidActionException(String s)
+        {
             System.out.println(s);
         }
     }

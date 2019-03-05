@@ -1,8 +1,8 @@
 package seg.java;
 
 import javafx.scene.SnapshotParameters;
+import javafx.scene.canvas.*;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -10,7 +10,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 
 
-public class CanvasDrawer {
+public class CanvasDrawer
+{
 
 //==================================================================================================================================
 //  Fields
@@ -28,7 +29,8 @@ public class CanvasDrawer {
 //  Constructors
 //==================================================================================================================================
 
-    public CanvasDrawer() {
+    public CanvasDrawer()
+    {
 
     }
 
@@ -36,7 +38,8 @@ public class CanvasDrawer {
 //  Drawing methods
 //==================================================================================================================================
 
-    public void drawTopDownCanvas(Canvas canvas) {
+    public void drawTopDownCanvas(Canvas canvas)
+    {
 
         adjustDrawingSettings(canvas);
 
@@ -124,7 +127,8 @@ public class CanvasDrawer {
 
         gc.setFill(Color.WHITE);
 
-        while (y + 4 < 0.72 * canvasHeight) {
+        while (y + 4 < 0.72 * canvasHeight)
+        {
             Rectangle whiteRect = new Rectangle(stripStartLeftX, y, stripWidth, stripHeight);
             fillRect(whiteRect); // left one gets drawn
 
@@ -146,7 +150,8 @@ public class CanvasDrawer {
         // gc.scale(2,2); // can be used for zoom later on
     }
 
-    public void drawSideOnCanvas(Canvas canvas) {
+    public void drawSideOnCanvas(Canvas canvas)
+    {
 
         adjustDrawingSettings(canvas);
 
@@ -177,49 +182,29 @@ public class CanvasDrawer {
         Image image1 = imageView.snapshot(parameters, null);
         gc.drawImage(image1, canvasWidth * 0.7 + xOffset, canvasHeight * 0.2 + yOffset);
 
-        //  These lines are just tests for arrow drawing - they will be deleted
-
-        drawHorizontalArrow(0.2, 0.10, 0.25, true, false, "This is just a test", Color.BLACK);
-
-        drawHorizontalArrow(0.2, 0.18, 0.25, false, true, "This is just a test", Color.RED);
-
-        drawHorizontalArrow(0.2, 0.26, 0.25, true, true, "This is just a test", Color.YELLOW);
-
-        drawHorizontalArrow(0.2, 0.34, 0.25, false, true, "This is just a testssssssss", Color.BLACK);
-
-        drawHorizontalArrow(0.2, 0.42, 0.25, true, false, "This test", Color.BLACK);
-
-        drawHorizontalArrow(0.2, 0.50, 0.25, false, false, "Th", Color.WHITE);
-
-        drawHorizontalArrow(0.2, 0.90, 0.25, false, false, "Th", Color.WHITE);
-
-        drawVerticalArrow(0.2, 0.54, 0.25, true, true, "This is", Color.BLACK);
-
-        drawVerticalArrow(0.35, 0.54, 0.25, true, false, "Th", Color.PURPLE);
-
-        drawVerticalArrow(0.5, 0.54, 0.25, false, true, "This is just a test", Color.BLACK);
-
-        drawVerticalArrow(0.65, 0.54, 0.25, false, false, "This", Color.PINK);
-
     }
 
 //==================================================================================================================================
 //  Helper methods
 //==================================================================================================================================
 
-    private void adjustDrawingSettings(Canvas canvas) {
+    private void adjustDrawingSettings(Canvas canvas)
+    {
         gc = canvas.getGraphicsContext2D();
 
         //  Clears canvas for next paint session
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
         //  Determines how to set the the canvasWidth and canvasHeight
-        if (canvas.getHeight() < canvas.getWidth() / widthToHeightRatio) {
+        if(canvas.getHeight() < canvas.getWidth() / widthToHeightRatio)
+        {
             canvasHeight = canvas.getHeight();
             canvasWidth = widthToHeightRatio * canvasHeight;
             xOffset = (canvas.getWidth() - canvasWidth) / 2;
             yOffset = 0;
-        } else {
+        }
+        else
+        {
             canvasWidth = canvas.getWidth();
             canvasHeight = canvasWidth / widthToHeightRatio;
             xOffset = 0;
@@ -228,83 +213,8 @@ public class CanvasDrawer {
 
     }
 
-    private void fillRect(Rectangle rect) {
+    private void fillRect(Rectangle rect)
+    {
         gc.fillRect(rect.getX() + xOffset, rect.getY() + yOffset, rect.getWidth(), rect.getHeight());
-    }
-
-    private void drawHorizontalArrow(double x, double y, double length, boolean leftArrowTipOn, boolean rightArrowTipOn, String string, Color color) {
-        //  Color and font get set
-        gc.setFill(color);
-        gc.setFont(Font.font("Arial", canvasWidth * 0.015));
-
-        //  Text gets drawn
-        gc.fillText(string, (x + length / 2 - 0.0033 * string.length()) * canvasWidth + xOffset, (y - 0.01) * canvasHeight + yOffset);
-
-        //  Left arrow tip gets drawn
-        if (leftArrowTipOn == true) {
-            gc.fillPolygon(new double[]{
-                    x * canvasWidth + xOffset,
-                    (x + 0.015) * canvasWidth + xOffset,
-                    (x + 0.015) * canvasWidth + xOffset,}, new double[]{
-                    y * canvasHeight + yOffset,
-                    (y - 0.015) * canvasHeight + yOffset,
-                    (y + 0.015) * canvasHeight + yOffset,}, 3);
-
-            x += 0.008;
-            length -= 0.008;
-        }
-
-        //  Right arrow tip gets drawn
-        if (rightArrowTipOn == true) {
-            gc.fillPolygon(new double[]{
-                    (x + length) * canvasWidth + xOffset,
-                    (x + length - 0.015) * canvasWidth + xOffset,
-                    (x + length - 0.015) * canvasWidth + xOffset,}, new double[]{
-                    y * canvasHeight + yOffset,
-                    (y - 0.015) * canvasHeight + yOffset,
-                    (y + 0.015) * canvasHeight + yOffset,}, 3);
-            length -= 0.008;
-        }
-
-        //  Text gets drawn
-        gc.fillRect(x * canvasWidth + xOffset, (y - 0.0025) * canvasHeight + yOffset, length * canvasWidth, 0.005 * canvasHeight);
-    }
-
-    private void drawVerticalArrow(double x, double y, double length, boolean upperArrowTipOn, boolean lowerArrowTipOn, String string, Color color) {
-        //  Color and font get set
-        gc.setFill(color);
-        gc.setFont(Font.font("Arial", canvasWidth * 0.015));
-
-        //  Text gets drawn
-        gc.fillText(string, (x + 0.005) * canvasWidth + xOffset, (y + 0.14) * canvasHeight + yOffset);
-
-        //  Upper arrow tip gets drawn
-        if (upperArrowTipOn == true) {
-            gc.fillPolygon(new double[]{
-                    x * canvasWidth + xOffset,
-                    (x - 0.006) * canvasWidth + xOffset,
-                    (x + 0.006) * canvasWidth + xOffset,}, new double[]{
-                    y * canvasHeight + yOffset,
-                    (y + 0.035) * canvasHeight + yOffset,
-                    (y + 0.035) * canvasHeight + yOffset,}, 3);
-
-            y += 0.008;
-            length -= 0.008;
-        }
-
-        //  Lower arrow tip gets drawn
-        if (lowerArrowTipOn == true) {
-            gc.fillPolygon(new double[]{
-                    x * canvasWidth + xOffset,
-                    (x - 0.006) * canvasWidth + xOffset,
-                    (x + 0.006) * canvasWidth + xOffset,}, new double[]{
-                    (y + length) * canvasHeight + yOffset,
-                    (y + length - 0.035) * canvasHeight + yOffset,
-                    (y + length - 0.035) * canvasHeight + yOffset,}, 3);
-            length -= 0.008;
-        }
-
-        //  Arrow body gets drawn
-        gc.fillRect((x - 0.0009) * canvasWidth + xOffset, y * canvasHeight + yOffset, 0.002 * canvasWidth, length * canvasHeight);
     }
 }
