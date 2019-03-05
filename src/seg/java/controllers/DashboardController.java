@@ -96,6 +96,20 @@ public class DashboardController
         sideOnCanvasCopy.heightProperty().bind(sideOnPaneCopy.heightProperty());
         sideOnCanvasCopy.widthProperty().addListener(event -> canvasDrawer.drawSideOnCanvas(sideOnCanvasCopy));
         sideOnCanvasCopy.heightProperty().addListener(event -> canvasDrawer.drawSideOnCanvas(sideOnCanvasCopy));
+
+        // Prevent user from changing textFields
+        toraInitialTextbox.setEditable(false);
+        todaInitialTextbox.setEditable(false);
+        asdaInitialTextbox.setEditable(false);
+        ldaInitialTextbox.setEditable(false);
+        toraBDTextArea.setEditable(false);
+        todaBDTextArea.setEditable(false);
+        asdaBDTextArea.setEditable(false);
+        ldaBDTextArea.setEditable(false);
+        toraNewTextbox.setEditable(false);
+        todaNewTextbox.setEditable(false);
+        asdaNewTextbox.setEditable(false);
+        ldaNewTextbox.setEditable(false);
     }
 
 //==================================================================================================================================
