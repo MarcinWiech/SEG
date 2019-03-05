@@ -57,6 +57,8 @@ public class ConfigureRunwayController {
             try {
                 Stage stage = (Stage) asdaTextbox.getScene().getWindow();
                 stage.close();
+
+
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/configureRunway.fxml"));
                 Parent root1 = fxmlLoader.load();
                 stage = new Stage();
@@ -64,7 +66,7 @@ public class ConfigureRunwayController {
                 stage.setScene(new Scene(root1));
                 stage.show();
 
-                createRunway();
+
 
             } catch (Exception e) {
                 System.out.println(e.getMessage());
@@ -73,14 +75,11 @@ public class ConfigureRunwayController {
         }
     }
 
-    public void setAirportArrayList(XMLReaderDOM xmlReaderDOM) {
-        this.xmlReaderDOM = xmlReaderDOM;
+    private void createRunway(){
+
     }
 
-    /**
-     * TO DO - NEED TO REPEAT UNTIL NUMBER OF RUNWAYS ARE MET
-     **/
-    public void createRunway() {
-
+    public void setAirportArrayList(XMLReaderDOM xmlReaderDOM) {
+        this.xmlReaderDOM = xmlReaderDOM;
     }
 }
