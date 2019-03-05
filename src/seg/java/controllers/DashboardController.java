@@ -1,95 +1,79 @@
 package seg.java.controllers;
 
+import seg.java.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.control.*;                                                  // for Button and stuff
+import javafx.scene.canvas.*;                                                   // for Canvas and stuff
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import seg.java.*;
 
-public class DashboardController {
+public class DashboardController
+{
     public ToggleButton takeOffAwayButton;
     public ToggleButton takeOffTowardButton;
 
-    @FXML
-    private TextField widthTextbox;
-    @FXML
-    private TextField heightTextbox;
-    @FXML
-    private Pane topDownPane;
-    @FXML
-    private Pane sideOnPane;
-    @FXML
-    private Pane topDownPaneCopy;
-    @FXML
-    private Pane sideOnPaneCopy;
+    @FXML private TextField heightTextbox;
+    @FXML private Pane topDownPane;
+    @FXML private Pane sideOnPane;
+    @FXML private Pane topDownPaneCopy;
+    @FXML private Pane sideOnPaneCopy;
 
-    @FXML
-    private ChoiceBox runwayDroplist;
+    @FXML private ChoiceBox runwayDroplist;
 
-    @FXML
-    private Canvas topDownCanvas;
-    @FXML
-    private Canvas sideOnCanvas;
-    @FXML
-    private Canvas topDownCanvasCopy;
-    @FXML
-    private Canvas sideOnCanvasCopy;
+    @FXML private Canvas topDownCanvas;
+    @FXML private Canvas sideOnCanvas;
+    @FXML private Canvas topDownCanvasCopy;
+    @FXML private Canvas sideOnCanvasCopy;
 
-    @FXML
-    private TextField xTextbox;
-    @FXML
-    private TextField yTextbox;
+    @FXML private TextField xLTextbox;
+    @FXML private TextField xRTextbox;
+    @FXML private TextField yTextbox;
 
-    @FXML
-    private TextField toraInitialTextbox;
-    @FXML
-    private TextField todaInitialTextbox;
-    @FXML
-    private TextField asdaInitialTextbox;
-    @FXML
-    private TextField ldaInitialTextbox;
-    @FXML
-    private TextField thresholdInitialTextbox;
-    @FXML
-    private TextField toraNewTextbox;
-    @FXML
-    private TextField todaNewTextbox;
-    @FXML
-    private TextField asdaNewTextbox;
-    @FXML
-    private TextField ldaNewTextbox;
-    @FXML
-    private TextField thresholdNewTextbox;
-    @FXML
-    private TextField actionNewTextbox;
-    @FXML
-    private TextField actionInitialTextbox;
+    @FXML private TextField toraInitialTextbox;
+    @FXML private TextField todaInitialTextbox;
+    @FXML private TextField asdaInitialTextbox;
+    @FXML private TextField ldaInitialTextbox;
+    @FXML private TextField thresholdInitialTextbox;
+    @FXML private TextField toraNewTextbox;
+    @FXML private TextField todaNewTextbox;
+    @FXML private TextField asdaNewTextbox;
+    @FXML private TextField ldaNewTextbox;
+
+    @FXML private TextArea toraBDTextArea;
+    @FXML private TextArea todaBDTextArea;
+    @FXML private TextArea asdaBDTextArea;
+    @FXML private TextArea ldaBDTextArea;
 
     private XMLReaderDOM xmlReaderDOM;
     private CanvasDrawer canvasDrawer;
     private RedeclarationComputer redeclarationComputer;
-    private Airport airport;
-    private Runway runway;
+    private Airport currentAirport;
+    private Runway currentRunway;
+
+    private double obstacleXL = 0;
+    private double obstacleXR = 0;
+    private double obstacleY = 0;
+    private double obstacleHeight = 0;
+    private double toraInput;
+    private double todaInput;
+    private double asdaInput;
+    private double ldaInput;
+    private double dispThresholdInput;
 
 //==================================================================================================================================
 //  Initialize
 //==================================================================================================================================
 
-    public void initialize() {
+    public void initialize()
+    {
         //  Main objects get initialized & related preparations
         canvasDrawer = new CanvasDrawer();
-
-
-        //  Empty views get drawn
-
+        redeclarationComputer = new RedeclarationComputer();
 
         //  REALLY IMPORTANT: canvases get resizable by binding them to their parents
         topDownCanvas.widthProperty().bind(topDownPane.widthProperty());
@@ -112,58 +96,118 @@ public class DashboardController {
         sideOnCanvasCopy.heightProperty().bind(sideOnPaneCopy.heightProperty());
         sideOnCanvasCopy.widthProperty().addListener(event -> canvasDrawer.drawSideOnCanvas(sideOnCanvasCopy));
         sideOnCanvasCopy.heightProperty().addListener(event -> canvasDrawer.drawSideOnCanvas(sideOnCanvasCopy));
-
     }
 
 //==================================================================================================================================
 //  Other methods
 //==================================================================================================================================
 
-    public void redeclareButtonPressed(ActionEvent event) throws RedeclarationComputer.InvalidActionException {
+    public void redeclareButtonPressed(ActionEvent event) throws RedeclarationComputer.InvalidActionException
+    {
+        //  Obstacle details
+        double obstacleX = 0;
+        double obstacleY = 0;
+        double obstacleHeight = 0;
 
-        //  Printing used to show that canvas size changes
-        System.out.println("Canvas width = " + topDownCanvas.getWidth());
-        System.out.println("Canvas height = " + topDownCanvas.getHeight());
+        //  Obstacle details get read
+        try
+        {
+            obstacleHeight = Double.parseDouble(heightTextbox.getText());
+        }
+        catch (Exception e)
+        {
+            new Alert(Alert.AlertType.ERROR, "Please enter a valid value for: obstacle height!").showAndWait();
+            return;
+        }
+
+        try
+        {
+            obstacleXL = Double.parseDouble(xLTextbox.getText());
+        }
+        catch (Exception e)
+        {
+            new Alert(Alert.AlertType.ERROR, "Please enter a valid value for: obstacle XL position!").showAndWait();
+            return;
+        }
+
+        try
+        {
+            obstacleXR = Double.parseDouble(xRTextbox.getText());
+        }
+        catch (Exception e)
+        {
+            new Alert(Alert.AlertType.ERROR, "Please enter a valid value for: obstacle XR position!").showAndWait();
+            return;
+        }
+
+        try
+        {
+            obstacleY = Double.parseDouble(yTextbox.getText());
+        }
+        catch (Exception e)
+        {
+            new Alert(Alert.AlertType.ERROR, "Please enter a valid value for: obstacle Y position!").showAndWait();
+            return;
+        }
+
+        //  Obtacle details get passed to redeclarationComputer
+        redeclarationComputer.setObstacleDetails(obstacleXL, obstacleXR, obstacleY, obstacleHeight);
 
         //  Recalculation of parameters
-        double toraInput = Double.parseDouble(toraInitialTextbox.getText());
-        double todaInput = Double.parseDouble(todaInitialTextbox.getText());
-        double asdaInput = Double.parseDouble(asdaInitialTextbox.getText());
-        double ldaInput = Double.parseDouble(ldaInitialTextbox.getText());
-        double dispThresholdInput = Double.parseDouble(thresholdInitialTextbox.getText());
-        double actionInput = 1.0; //Double.parseDouble(actionInitialTextbox.getText());
-        redeclarationComputer = new RedeclarationComputer(toraInput, todaInput, asdaInput, ldaInput, dispThresholdInput, actionInput);
+        try
+        {
+            toraInput = Double.parseDouble(toraInitialTextbox.getText());
+            todaInput = Double.parseDouble(todaInitialTextbox.getText());
+            asdaInput = Double.parseDouble(asdaInitialTextbox.getText());
+            ldaInput = Double.parseDouble(ldaInitialTextbox.getText());
+            dispThresholdInput = Double.parseDouble(thresholdInitialTextbox.getText());
+            redeclarationComputer.setRunway(currentRunway);
 
-        //  Obstacle details
-        double obstacleX = Double.parseDouble(xTextbox.getText());
-        double obstacleY = Double.parseDouble(yTextbox.getText());
-        double obstacleHeight = Double.parseDouble(heightTextbox.getText());
-        redeclarationComputer.setObstacleDetails(obstacleX, obstacleY, obstacleHeight);
-
-
-        //  This block of code will also need the obstacle's details
-        if (redeclarationComputer.needsRecalculation(redeclarationComputer.getObstacleX(), redeclarationComputer.getObstacleY())) {
-            redeclarationComputer.resetParameters(toraInput, todaInput, asdaInput, ldaInput);
-            redeclarationComputer.calculate();
+            System.out.println("Almost there");
+            // We check to see whether we need to recalculate
+            if (redeclarationComputer.needsRecalculation(redeclarationComputer.getObstacleXL(), redeclarationComputer.getObstacleXR(), redeclarationComputer.getObstacleY()))
+                redeclare();
         }
+        catch (Exception e)
+        {
+            new Alert(Alert.AlertType.ERROR, "Please select a runway!").showAndWait();
+            e.printStackTrace();
+            return;
+        }
+
+    }
+
+    private void redeclare()
+    {
+        //  We set the parameters and then calculate
+        redeclarationComputer.calculate();
+
+        System.out.println("We got here");
 
         //  These will probably be removed as they are text boxes
         toraNewTextbox.setText(Double.toString(redeclarationComputer.getTora()));
         todaNewTextbox.setText(Double.toString(redeclarationComputer.getToda()));
         asdaNewTextbox.setText(Double.toString(redeclarationComputer.getAsda()));
         ldaNewTextbox.setText(Double.toString(redeclarationComputer.getLda()));
-        thresholdNewTextbox.setText(Double.toString(redeclarationComputer.getDispTresh()));
-        actionNewTextbox.setText(Double.toString(redeclarationComputer.getAsda()));
 
         //  Canvas drawing gets triggered here
         canvasDrawer.drawTopDownCanvas(topDownCanvas);
         canvasDrawer.drawSideOnCanvas(sideOnCanvas);
         canvasDrawer.drawTopDownCanvas(topDownCanvasCopy);
         canvasDrawer.drawSideOnCanvas(sideOnCanvasCopy);
+
+        //  Update the calculations breakdown
+        toraBDTextArea.setText(redeclarationComputer.getToraBD());
+        todaBDTextArea.setText(redeclarationComputer.getTodaBD());
+        asdaBDTextArea.setText(redeclarationComputer.getAsdaBD());
+        ldaBDTextArea.setText(redeclarationComputer.getLdaBD());
+
     }
 
-    public void switchAirport(ActionEvent actionEvent) {
-        try {
+    public void switchAirport(ActionEvent actionEvent)
+    {
+        try
+        {
             Stage stage = (Stage) yTextbox.getScene().getWindow();
             stage.close();
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/airportSelection.fxml"));
@@ -172,30 +216,35 @@ public class DashboardController {
             stage.setTitle("Switch Airport");
             stage.setScene(new Scene(root1));
             stage.show();
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             System.out.println(e);
             new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong :(").showAndWait();
         }
     }
 
-    public void setValues(XMLReaderDOM xmlReaderDOM, Airport airport) {
-        this.xmlReaderDOM = xmlReaderDOM;
-        this.airport = airport;
+    public void setValues(XMLReaderDOM xmlReaderDOM, Airport airport)
+    {
+        xmlReaderDOM = xmlReaderDOM;
+        currentAirport = airport;
         addToRunwayDroplist();
     }
 
-    public void selectRunway(ActionEvent actionEvent) {
-        runway = airport.getRunwayHashMap().get(runwayDroplist.getValue().toString());
-        toraInitialTextbox.setText(runway.getTora().toString());
-        todaInitialTextbox.setText(runway.getToda().toString());
-        asdaInitialTextbox.setText(runway.getAsda().toString());
-        ldaInitialTextbox.setText(runway.getLda().toString());
-        thresholdInitialTextbox.setText(runway.getDisplacedThreshold().toString());
-        actionInitialTextbox.setText(runway.getAction().toString());
+    public void selectRunway(ActionEvent actionEvent)
+    {
+        currentRunway = currentAirport.getRunwayHashMap().get(runwayDroplist.getValue().toString());
+        toraInitialTextbox.setText(currentRunway.getTora().toString());
+        todaInitialTextbox.setText(currentRunway.getToda().toString());
+        asdaInitialTextbox.setText(currentRunway.getAsda().toString());
+        ldaInitialTextbox.setText(currentRunway.getLda().toString());
+        thresholdInitialTextbox.setText(currentRunway.getDisplacedThreshold().toString());
     }
 
-    public void addToRunwayDroplist() {
-        for (String runwayName : airport.getRunwayHashMap().keySet()) {
+    public void addToRunwayDroplist()
+    {
+        for (String runwayName: currentAirport.getRunwayHashMap().keySet())
+        {
             runwayDroplist.getItems().add(runwayName);
         }
     }

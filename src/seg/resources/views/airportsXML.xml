@@ -1,31 +1,50 @@
 <?xml version="1.0"?>
 <Airports>
-    <Airport name="Test Airport">
+    <Airport name="Heathrow">
         <Runway>
-            <runwayName>North</runwayName>
-            <tora>1000</tora>
-            <toda>2000</toda>
-            <asda>3000</asda>
-            <lda>4000</lda>
-            <threshold>5000</threshold>
-        </Runway>
-    </Airport>
-    <Airport name="Airport 2">
-        <Runway>
-            <runwayName>North</runwayName>
-            <tora>1001</tora>
-            <toda>2001</toda>
-            <asda>3001</asda>
-            <lda>4001</lda>
-            <threshold>5001</threshold>
+            <runwayName>09R</runwayName>
+            <reciprocalName>27L</reciprocalName>
+            <tora>3660</tora>
+            <toda>3660</toda>
+            <asda>3660</asda>
+            <lda>3353</lda>
+            <threshold>307</threshold>
         </Runway>
         <Runway>
-            <runwayName>South</runwayName>
-            <tora>1002</tora>
-            <toda>2002</toda>
-            <asda>3002</asda>
-            <lda>4002</lda>
-            <threshold>5002</threshold>
+            <runwayName>27L</runwayName>
+            <reciprocalName>09R</reciprocalName>
+            <tora>3660</tora>
+            <toda>3660</toda>
+            <asda>3660</asda>
+            <lda>3660</lda>
+            <threshold>0</threshold>
+        </Runway>
+        <Runway>
+            <runwayName>09L</runwayName>
+            <reciprocalName>27R</reciprocalName>
+            <tora>3902</tora>
+            <toda>3902</toda>
+            <asda>3902</asda>
+            <lda>3596</lda>
+            <threshold>306</threshold>
+        </Runway>
+        <Runway>
+            <runwayName>27R</runwayName>
+            <reciprocalName>09L</reciprocalName>
+            <tora>3884</tora>
+            <toda>3962</toda>
+            <asda>3884</asda>
+            <lda>3884</lda>
+            <threshold>0</threshold>
+        </Runway>
+        <Runway>
+            <runwayName>18C</runwayName>
+            <reciprocalName>null</reciprocalName>
+            <tora>3884</tora>
+            <toda>3962</toda>
+            <asda>3884</asda>
+            <lda>3884</lda>
+            <threshold>0</threshold>
         </Runway>
     </Airport>
 </Airports>
