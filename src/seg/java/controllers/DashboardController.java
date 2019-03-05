@@ -164,7 +164,7 @@ public class DashboardController
             return;
         }
 
-        //  Obtacle details get passed to redeclarationComputer
+        //  Obstacle details get passed to redeclarationComputer
         redeclarationComputer.setObstacleDetails(obstacleXL, obstacleXR, obstacleY, obstacleHeight);
 
         //  Recalculation of parameters
@@ -179,8 +179,14 @@ public class DashboardController
 
             System.out.println("Almost there");
             // We check to see whether we need to recalculate
-            if (redeclarationComputer.needsRecalculation(redeclarationComputer.getObstacleXL(), redeclarationComputer.getObstacleXR(), redeclarationComputer.getObstacleY()))
+            if (redeclarationComputer.needsRecalculation(redeclarationComputer.getObstacleXL(), redeclarationComputer.getObstacleXR(), redeclarationComputer.getObstacleY())){
+
                 redeclare();
+                drawAppropriateObstacle(currentRunway.getRunwayName());
+            }
+
+//            canvasDrawer.drawObstacleSideOn(sideOnCanvasCopy);
+//            canvasDrawer.drawObstacleSideOn(sideOnCanvas);
         }
         catch (Exception e)
         {
@@ -196,8 +202,6 @@ public class DashboardController
         //  We set the parameters and then calculate
         redeclarationComputer.calculate();
 
-        System.out.println("We got here");
-
         //  These will probably be removed as they are text boxes
         toraNewTextbox.setText(Double.toString(redeclarationComputer.getTora()));
         todaNewTextbox.setText(Double.toString(redeclarationComputer.getToda()));
@@ -205,6 +209,11 @@ public class DashboardController
         ldaNewTextbox.setText(Double.toString(redeclarationComputer.getLda()));
 
         //  Canvas drawing gets triggered here
+//        canvasDrawer.setDrawSideOnObstacle(true);
+//        canvasDrawer.drawTopDownObstacle(true, redeclarationComputer.getObstacleXR()/toraInput, redeclarationComputer.getObstacleY()/60);
+        drawAppropriateObstacle(currentRunway.getRunwayName());
+
+
         canvasDrawer.drawTopDownCanvas(topDownCanvas);
         canvasDrawer.drawSideOnCanvas(sideOnCanvas);
         canvasDrawer.drawTopDownCanvas(topDownCanvasCopy);
@@ -261,6 +270,27 @@ public class DashboardController
         {
             runwayDroplist.getItems().add(runwayName);
         }
+    }
+
+    private void drawAppropriateObstacle(String runwayName){
+        if(runwayName.charAt(2) == 'R')
+        {
+            canvasDrawer.drawTopDownObstacle(true, redeclarationComputer.getObstacleXR()/toraInput, redeclarationComputer.getObstacleY()/60);
+
+        }
+        else if (runwayName.charAt(2) == 'L')
+        {
+
+            canvasDrawer.drawTopDownObstacle(true, redeclarationComputer.getObstacleXL()/toraInput, redeclarationComputer.getObstacleY()/60);
+
+        }
+        else
+        {
+            System.out.println("else"); //prints else when cannot guess what type of runway it is
+            canvasDrawer.drawTopDownObstacle(true, redeclarationComputer.getObstacleXR()/toraInput, redeclarationComputer.getObstacleY()/60);
+
+        }
+        canvasDrawer.setDrawSideOnObstacle(true);
     }
 }
 

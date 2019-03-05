@@ -103,7 +103,7 @@ public class RedeclarationComputer
      */
     private int determineCalculationCase()
     {
-        System.out.println("Runway direction = " + runwayDirection);
+//        System.out.println("Runway direction = " + runwayDirection);
         if(obstacleXL < tora / 2)       // for this one you might want to consider the R dispTresh
         {
             if(runwayDirection == 'R')

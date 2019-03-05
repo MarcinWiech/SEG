@@ -25,6 +25,14 @@ public class CanvasDrawer
     private double xOffset;
     private double yOffset;
 
+    //for displaying obstacles dynamically
+    private boolean drawSideOnObstacle = false;
+    private boolean drawTopDownObstacle = false;
+    private double xRelativePosition;
+    private double yRelativePosition;
+
+
+
 //==================================================================================================================================
 //  Constructors
 //==================================================================================================================================
@@ -137,15 +145,20 @@ public class CanvasDrawer
             y += stripHeight * 3;
         }
 
-        //  Draws the plane - the image needs to be in the assets folder
-        ImageView imageView = new ImageView("/seg/resources/images/top-down-plane.png");
-        imageView.setRotate(-90);
-        imageView.setPreserveRatio(true);
-        imageView.setFitHeight(canvasHeight * 0.2);
-        SnapshotParameters parameters = new SnapshotParameters();
-        parameters.setFill(Color.TRANSPARENT);
-        Image image1 = imageView.snapshot(parameters, null);
-        gc.drawImage(image1, canvasWidth * 0.7 + xOffset, canvasHeight * 0.14 + yOffset);
+//        //  Draws the plane - the image needs to be in the assets folder
+//        ImageView imageView = new ImageView("/seg/resources/images/top-down-plane.png");
+//        imageView.setRotate(-90);
+//        imageView.setPreserveRatio(true);
+//        imageView.setFitHeight(canvasHeight * 0.2);
+//        SnapshotParameters parameters = new SnapshotParameters();
+//        parameters.setFill(Color.TRANSPARENT);
+//        Image image1 = imageView.snapshot(parameters, null);
+//        gc.drawImage(image1, canvasWidth * 0.7 + xOffset, canvasHeight * 0.14 + yOffset);
+
+        if(drawTopDownObstacle)
+        {
+            drawObstacleTopDown(canvas);
+        }
 
         // gc.scale(2,2); // can be used for zoom later on
     }
@@ -162,7 +175,8 @@ public class CanvasDrawer
         Rectangle grassRect = new Rectangle(0.02 * canvasWidth, 0.55 * canvasHeight, 0.96 * canvasWidth, 0.43 * canvasHeight);
 
         //  Asphalt layer gets set
-        Rectangle asphaltRect = new Rectangle(0.02 * canvasWidth, 0.55 * canvasHeight, 0.96 * canvasWidth, 0.03 * canvasHeight);
+        Rectangle asphaltRect = new Rectangle(0.1 * canvasWidth, 0.55 * canvasHeight, 0.80 * canvasWidth, 0.03 * canvasHeight);
+//        Rectangle asphaltRect = new Rectangle(0.02 * canvasWidth, 0.55 * canvasHeight, 0.96 * canvasWidth, 0.03 * canvasHeight);
 
         //  Layers are drawn - from the bottom up
         gc.setFill(Color.SKYBLUE);
@@ -172,16 +186,41 @@ public class CanvasDrawer
         gc.setFill(Color.GRAY);
         fillRect(asphaltRect);
 
+        if(drawSideOnObstacle)
+        {
+            drawObstacleSideOn(canvas);
+        }
+
+    }
+
+    private void drawObstacleSideOn(Canvas canvas)
+    {
         //  Draws the plane - the image needs to be in the assets folder
+        gc = canvas.getGraphicsContext2D();
         ImageView imageView = new ImageView("/seg/resources/images/side-view-plane.png");
-        imageView.setRotate(-4);
+        //imageView.setRotate(-4);
         imageView.setPreserveRatio(true);
         imageView.setFitHeight(canvasHeight * 0.1);
         SnapshotParameters parameters = new SnapshotParameters();
         parameters.setFill(Color.TRANSPARENT);
         Image image1 = imageView.snapshot(parameters, null);
-        gc.drawImage(image1, canvasWidth * 0.7 + xOffset, canvasHeight * 0.2 + yOffset);
+        gc.drawImage(image1, canvasWidth*(0.90 - xRelativePosition*(0.8))+ xOffset, canvasHeight * 0.46 + yOffset);
+    }
 
+    private void drawObstacleTopDown(Canvas canvas)
+    {
+        //  Draws the plane - the image needs to be in the assets folder
+        gc = canvas.getGraphicsContext2D();
+        ImageView imageView = new ImageView("/seg/resources/images/top-down-plane.png");
+        imageView.setRotate(-90);
+        imageView.setPreserveRatio(true);
+        imageView.setFitHeight(canvasHeight * 0.2);
+        SnapshotParameters parameters = new SnapshotParameters();
+        parameters.setFill(Color.TRANSPARENT);
+        Image image1 = imageView.snapshot(parameters, null);
+        //asphalt strip points (0.1,0.27)(0.86,0.46) i had to add 0.155 and *2.3 most probably because of the image properties
+
+        gc.drawImage(image1, canvasWidth*(0.90 - xRelativePosition*(0.8))+ xOffset, canvasHeight*((0.46-0.27)/2+ 0.155 - ((0.46-0.27)*yRelativePosition)*2.3) + yOffset);
     }
 
 //==================================================================================================================================
@@ -216,5 +255,19 @@ public class CanvasDrawer
     private void fillRect(Rectangle rect)
     {
         gc.fillRect(rect.getX() + xOffset, rect.getY() + yOffset, rect.getWidth(), rect.getHeight());
+    }
+
+    public boolean isDrawSideOnObstacle() {
+        return drawSideOnObstacle;
+    }
+
+    public void setDrawSideOnObstacle(boolean drawSideOnObstacle) {
+        this.drawSideOnObstacle = drawSideOnObstacle;
+    }
+
+    public void drawTopDownObstacle(boolean drawTopDownObstacle, double xRelativePosition, double yRelativePosition) {
+        this.drawTopDownObstacle = drawTopDownObstacle;
+        this.xRelativePosition = xRelativePosition;
+        this.yRelativePosition = yRelativePosition;
     }
 }
