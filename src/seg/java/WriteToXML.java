@@ -10,111 +10,125 @@ import javax.xml.transform.dom.*;
 import jdk.internal.org.xml.sax.SAXException;
 import org.w3c.dom.*;
 import javax.xml.parsers.*;
+import javax.xml.xpath.*;
 
 public class WriteToXML {
 
-        public void addAirport(String airportName) throws Exception {
+    String filepath;
+    DocumentBuilderFactory docFactory;
+    DocumentBuilder docBuilder;
+    Document doc;
+    Node root;
 
-//            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-//            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-//            Document document = documentBuilder.parse("seg/resources/views/airportsXML.xml");
-//            Element root = document.getDocumentElement();
-//
-//            Collection<Server> servers = new ArrayList<Server>();
-//            servers.add(new Server());
-//
-//            for (Server server : servers) {
-//                // server elements
-//                Element newServer = document.createElement("server");
-//
-//                Element name = document.createElement("name");
-//                name.appendChild(document.createTextNode(server.getName()));
-//                newServer.appendChild(name);
-//
-//                Element port = document.createElement("port");
-//                port.appendChild(document.createTextNode(Integer.toString(server.getPort())));
-//                newServer.appendChild(port);
-//
-//                root.appendChild(newServer);
-//            }
-//
-//            DOMSource source = new DOMSource(document);
-//
-//            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-//            Transformer transformer = transformerFactory.newTransformer();
-//            StreamResult result = new StreamResult("server.xml");
-//            transformer.transform(source, result);
-//
-//            Document doc = docBuilder.parse(is);
-//            Node root=doc.getFirstChild();
-//            Element newserver=doc.createElement("new_server");
-//            root.appendChild(newserver);
+    public WriteToXML() {
 
-
-            try {
-                String filepath = "D:\\Soton II\\COMP2211 Software Eng Group Project\\SEG\\src\\seg\\resources\\views\\airportsXML.xml";
-                DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-                DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-                Document doc = docBuilder.parse(filepath);
-
-                // Get the root element
-                Node airports = doc.getFirstChild();
-
-                // Get the staff element , it may not working if tag has spaces, or
-                // whatever weird characters in front...it's better to use
-                // getElementsByTagName() to get it directly.
-                // Node staff = company.getFirstChild();
-
-                // Get the staff element by tag name directly
-                Node staff = doc.getElementsByTagName("airport").item(0);
-
-                System.out.println(staff.getNodeName());
-
-//                // update staff attribute
-//                NamedNodeMap attr = staff.getAttributes();
-//                Node nodeAttr = attr.getNamedItem("id");
-//                nodeAttr.setTextContent("2");
-//
-//                // append a new node to staff
-//                Element age = doc.createElement("age");
-//                age.appendChild(doc.createTextNode("28"));
-//                staff.appendChild(age);
-//
-//                // loop the staff child node
-//                NodeList list = staff.getChildNodes();
-//
-//                for (int i = 0; i < list.getLength(); i++) {
-//
-//                    Node node = list.item(i);
-//
-//                    // get the salary element, and update the value
-//                    if ("salary".equals(node.getNodeName())) {
-//                        node.setTextContent("2000000");
-//                    }
-//
-//                    //remove firstname
-//                    if ("firstname".equals(node.getNodeName())) {
-//                        staff.removeChild(node);
-//                    }
-//
-//                }
-
-                // write the content into xml file
-                TransformerFactory transformerFactory = TransformerFactory.newInstance();
-                Transformer transformer = transformerFactory.newTransformer();
-                DOMSource source = new DOMSource(doc);
-                StreamResult result = new StreamResult(new File(filepath));
-                transformer.transform(source, result);
-
-                System.out.println("Done");
-
-            } catch (ParserConfigurationException pce) {
-                pce.printStackTrace();
-            } catch (TransformerException tfe) {
-                tfe.printStackTrace();
-            } catch (IOException ioe) {
-                ioe.printStackTrace();
-            }
+        filepath = "./src/seg/resources/views/airportsXML.xml";
+        docFactory = DocumentBuilderFactory.newInstance();
+        try {
+            docBuilder = docFactory.newDocumentBuilder();
+            doc = docBuilder.parse(filepath);
+            root=doc.getFirstChild();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (org.xml.sax.SAXException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-}
+    }
 
+    public void addAirport(String airportName) throws Exception {
+
+
+
+        Node firstAirport = doc.getElementsByTagName("Airport").item(1);
+        System.out.println(firstAirport.getAttributes().getNamedItem("name"));
+
+
+        Element newAirport = doc.createElement("Airport");
+        newAirport.setAttribute("name", airportName);
+        Element newElement = doc.createElement("edition");
+        newAirport.appendChild(newElement);
+        root.appendChild(newAirport);
+
+        addRunwayToAirport("Airport 2", "RUNWAY NAME");
+
+
+        //                NodeList nl = doc.getElementsByTagName("*");
+        //                for (int i = 0; i < nl.getLength(); i++)
+        //                {
+        //                    System.out.println("name is : "+nl.item(i).getNodeName());
+        //                }
+        //
+
+        // write the content into xml file
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+        DOMSource source = new DOMSource(doc);
+        StreamResult result = new StreamResult(new File(filepath));
+        transformer.transform(source, result);
+    }
+
+    public void addRunwayToAirport(String airportName, String runwayName){
+
+        /*
+         <Runway>
+            <runwayName>North</runwayName>
+            <tora>1001</tora>
+            <toda>2001</toda>
+            <asda>3001</asda>
+            <lda>4001</lda>
+            <threshold>5001</threshold>
+        </Runway>
+         */
+
+        XPathFactory xPathfactory = XPathFactory.newInstance();
+        XPath xpath = xPathfactory.newXPath();
+        XPathExpression expr = null;
+        NodeList nl;
+        Node nodeAriport;
+        try {
+            ///Airports/Airport[@name='Airport 2']
+            expr = xpath.compile("/Airports/Airport[@name='" + airportName + "']");
+            nl = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
+
+            System.out.println(nl.item(0).getAttributes().getNamedItem("name"));
+            nodeAriport = nl.item(0);
+
+            Element runway = doc.createElement("Runway");
+            Element runwayNameElement = doc.createElement("runwayName");
+            runwayNameElement.setNodeValue(runwayName);
+
+            nodeAriport.appendChild(runway);
+            root.appendChild(nodeAriport);
+
+        } catch (XPathExpressionException e) {
+            e.printStackTrace();
+        }
+
+
+        /*
+         <Airport name="Airport 2">
+        <Runway>
+            <runwayName>North</runwayName>
+            <tora>1001</tora>
+            <toda>2001</toda>
+            <asda>3001</asda>
+            <lda>4001</lda>
+            <threshold>5001</threshold>
+        </Runway>
+        <Runway>
+            <runwayName>South</runwayName>
+            <tora>1002</tora>
+            <toda>2002</toda>
+            <asda>3002</asda>
+            <lda>4002</lda>
+            <threshold>5002</threshold>
+        </Runway>
+    </Airport>
+         */
+
+    }
+}

@@ -11,6 +11,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import seg.java.Airport;
+import seg.java.WriteToXML;
 import seg.java.XMLReaderDOM;
 import seg.java.xml.Airports;
 
@@ -72,12 +73,13 @@ public class ConfigureAirportController {
     }
 
     //added 05.03
-    private void addAirport(){
+    private void addAirport() throws Exception {
 //        seg.java.xml.Airport airport = new seg.java.xml.Airport(airportNameTextbox.getText());
 //        //airport.setName(airportNameTextbox.getText());
 //        Airports airports = new Airports();
 //        airports.addAirport(airport);
-
+        WriteToXML writeToXML = new WriteToXML();
+        writeToXML.addAirport(airportNameTextbox.getText());
         System.out.println(xmlReaderDOM.getAirportArraylist().size());
     }
 }

@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Airports>
     <Airport name="Test Airport">
         <Runway>
@@ -10,7 +10,7 @@
             <threshold>5000</threshold>
         </Runway>
     </Airport>
-    <Airport name="Airport 2">
+<Airport name="Airport 2">
         <Runway>
             <runwayName>North</runwayName>
             <tora>1001</tora>
@@ -27,5 +27,6 @@
             <lda>4002</lda>
             <threshold>5002</threshold>
         </Runway>
-    </Airport>
+    <Runway/>
+</Airport>
 </Airports>
