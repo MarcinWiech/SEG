@@ -200,11 +200,11 @@ public class CanvasDrawer
         ImageView imageView = new ImageView("/seg/resources/images/side-view-plane.png");
         //imageView.setRotate(-4);
         imageView.setPreserveRatio(true);
-        imageView.setFitHeight(canvasHeight * 0.1);
+        imageView.setFitHeight(canvasHeight * 0.06);
         SnapshotParameters parameters = new SnapshotParameters();
         parameters.setFill(Color.TRANSPARENT);
         Image image1 = imageView.snapshot(parameters, null);
-        gc.drawImage(image1, canvasWidth*(0.90 - xRelativePosition*(0.8))+ xOffset, canvasHeight * 0.46 + yOffset);
+        gc.drawImage(image1, canvasWidth*(0.90 - xRelativePosition*(0.8))+ xOffset, canvasHeight * 0.50 + yOffset);
     }
 
     private void drawObstacleTopDown(Canvas canvas)
