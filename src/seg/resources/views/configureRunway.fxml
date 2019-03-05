@@ -27,6 +27,6 @@
         <Button fx:id="backButton" layoutX="14.0" layoutY="253.0" mnemonicParsing="false" onAction="#backToConfigureAirport" text="Back" />
         <Button fx:id="addRunwayButton" layoutX="168.0" layoutY="253.0" mnemonicParsing="false" onAction="#addRunway" text="Add Another" />
         <TextField fx:id="thresholdTextbox" layoutX="148.0" layoutY="213.0" prefHeight="25.0" prefWidth="65.0" />
-      <Button fx:id="finishedButton" layoutX="259.0" layoutY="253.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="66.0" text="Finished" />
+      <Button fx:id="finishedButton" layoutX="259.0" layoutY="253.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="66.0" onAction="#onFinish" text="Finished" />
     </children>
 </AnchorPane>

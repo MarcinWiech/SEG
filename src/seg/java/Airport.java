@@ -12,6 +12,12 @@ public class Airport {
         numberOfRunways = 0;
     }
 
+    public Airport(String name){
+        runwayHashMap = new HashMap<>();
+        numberOfRunways = 0;
+        this.name = name;
+    }
+
     /**
      * GETTERS & SETTERS
      *

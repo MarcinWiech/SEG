@@ -8,6 +8,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import seg.java.Airport;
 import seg.java.XMLReaderDOM;
 
 public class ConfigureRunwayController {
@@ -21,6 +22,7 @@ public class ConfigureRunwayController {
     public TextField thresholdTextbox;
 
     private XMLReaderDOM xmlReaderDOM;
+    private Airport airport;
 
     /**
      * WHEN BACK BUTTON IS PRESSED - GOES BACK TO ConfigureAirport
@@ -54,32 +56,41 @@ public class ConfigureRunwayController {
 
             new Alert(Alert.AlertType.ERROR, "Please ensure all fields are filled!").showAndWait();
         } else {
-            try {
-                Stage stage = (Stage) asdaTextbox.getScene().getWindow();
-                stage.close();
-
-
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/configureRunway.fxml"));
-                Parent root1 = fxmlLoader.load();
-                stage = new Stage();
-                stage.setTitle("Configure Runway");
-                stage.setScene(new Scene(root1));
-                stage.show();
-
-
-
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-                new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong :(").showAndWait();
-            }
+            airport.addRunway("null", runwayDesignatorTextbox.getText(), Integer.parseInt(toraTextbox.getText()), Integer.parseInt(todaTextbox.getText()), Integer.parseInt(asdaTextbox.getText()), Integer.parseInt(ldaTextbox.getText()), Integer.parseInt(thresholdTextbox.getText()));
+            runwayDesignatorTextbox.clear();
+            toraTextbox.clear();
+            todaTextbox.clear();
+            asdaTextbox.clear();
+            ldaTextbox.clear();
+            thresholdTextbox.clear();
         }
     }
 
-    private void createRunway(){
+    public void onFinish(ActionEvent actionEvent){
+        addRunway(actionEvent);
+        try {
+            Stage stage = (Stage) asdaTextbox.getScene().getWindow();
+            stage.close();
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/dashboard.fxml"));
+            Parent root1 = fxmlLoader.load();
+            stage = new Stage();
+            stage.setTitle("Dashboard");
+            stage.setScene(new Scene(root1));
+            stage.show();
 
+            DashboardController dashboardController = fxmlLoader.getController();
+            dashboardController.setValues(xmlReaderDOM, this.airport);
+        } catch (Exception e) {
+            System.out.println(e);
+            new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong :(").showAndWait();
+        }
     }
 
     public void setAirportArrayList(XMLReaderDOM xmlReaderDOM) {
         this.xmlReaderDOM = xmlReaderDOM;
+    }
+
+    public void setAirport(Airport airport) {
+        this.airport = airport;
     }
 }
