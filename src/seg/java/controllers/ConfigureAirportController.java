@@ -10,7 +10,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import seg.java.Airport;
 import seg.java.XMLReaderDOM;
+import seg.java.xml.Airports;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -44,6 +46,7 @@ public class ConfigureAirportController {
         } else {
             try {
                 Stage stage = (Stage) addAirportButton.getScene().getWindow();
+                addAirport();
                 stage.close();
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/configureRunway.fxml"));
                 Parent root1 = fxmlLoader.load();
@@ -52,6 +55,7 @@ public class ConfigureAirportController {
                 stage.setScene(new Scene(root1));
                 stage.show();
             } catch (Exception e) {
+                e.printStackTrace();
                 new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong :(").showAndWait();
             }
         }
@@ -65,5 +69,15 @@ public class ConfigureAirportController {
      * *** TO BE DONE **** IMPORTS AIRPORTS FROM airportsXML.xml AND ADDS THEM TO ARRAY LIST
      */
     public void importAirportsFromXML(ActionEvent actionEvent) {
+    }
+
+    //added 05.03
+    private void addAirport(){
+//        seg.java.xml.Airport airport = new seg.java.xml.Airport(airportNameTextbox.getText());
+//        //airport.setName(airportNameTextbox.getText());
+//        Airports airports = new Airports();
+//        airports.addAirport(airport);
+
+        System.out.println(xmlReaderDOM.getAirportArraylist().size());
     }
 }

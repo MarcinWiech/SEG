@@ -30,10 +30,8 @@ public class DashboardController {
     private Pane topDownPaneCopy;
     @FXML
     private Pane sideOnPaneCopy;
-
     @FXML
     private ChoiceBox runwayDroplist;
-
     @FXML
     private Canvas topDownCanvas;
     @FXML
@@ -42,12 +40,10 @@ public class DashboardController {
     private Canvas topDownCanvasCopy;
     @FXML
     private Canvas sideOnCanvasCopy;
-
     @FXML
     private TextField xTextbox;
     @FXML
     private TextField yTextbox;
-
     @FXML
     private TextField toraInitialTextbox;
     @FXML
@@ -126,40 +122,43 @@ public class DashboardController {
         System.out.println("Canvas height = " + topDownCanvas.getHeight());
 
         //  Recalculation of parameters
-        double toraInput = Double.parseDouble(toraInitialTextbox.getText());
-        double todaInput = Double.parseDouble(todaInitialTextbox.getText());
-        double asdaInput = Double.parseDouble(asdaInitialTextbox.getText());
-        double ldaInput = Double.parseDouble(ldaInitialTextbox.getText());
-        double dispThresholdInput = Double.parseDouble(thresholdInitialTextbox.getText());
-        double actionInput = 1.0; //Double.parseDouble(actionInitialTextbox.getText());
-        redeclarationComputer = new RedeclarationComputer(toraInput, todaInput, asdaInput, ldaInput, dispThresholdInput, actionInput);
-
-        //  Obstacle details
+//        double toraInput = Double.parseDouble(toraInitialTextbox.getText());
+//        double todaInput = Double.parseDouble(todaInitialTextbox.getText());
+//        double asdaInput = Double.parseDouble(asdaInitialTextbox.getText());
+//        double ldaInput = Double.parseDouble(ldaInitialTextbox.getText());
+//        double dispThresholdInput = Double.parseDouble(thresholdInitialTextbox.getText());
+//        double actionInput = 1.0; //Double.parseDouble(actionInitialTextbox.getText());
+//        redeclarationComputer = new RedeclarationComputer(toraInput, todaInput, asdaInput, ldaInput, dispThresholdInput, actionInput);
+//
+//        //  Obstacle details
         double obstacleX = Double.parseDouble(xTextbox.getText());
         double obstacleY = Double.parseDouble(yTextbox.getText());
-        double obstacleHeight = Double.parseDouble(heightTextbox.getText());
-        redeclarationComputer.setObstacleDetails(obstacleX, obstacleY, obstacleHeight);
+//        double obstacleHeight = Double.parseDouble(heightTextbox.getText());
+//        redeclarationComputer.setObstacleDetails(obstacleX, obstacleY, obstacleHeight);
+//
+//
+//        //  This block of code will also need the obstacle's details
+//        if (redeclarationComputer.needsRecalculation(redeclarationComputer.getObstacleX(), redeclarationComputer.getObstacleY())) {
+//            redeclarationComputer.resetParameters(toraInput, todaInput, asdaInput, ldaInput);
+//            redeclarationComputer.calculate();
+//        }
+//
+//        //  These will probably be removed as they are text boxes
+//        toraNewTextbox.setText(Double.toString(redeclarationComputer.getTora()));
+//        todaNewTextbox.setText(Double.toString(redeclarationComputer.getToda()));
+//        asdaNewTextbox.setText(Double.toString(redeclarationComputer.getAsda()));
+//        ldaNewTextbox.setText(Double.toString(redeclarationComputer.getLda()));
+//        thresholdNewTextbox.setText(Double.toString(redeclarationComputer.getDispTresh()));
+//        actionNewTextbox.setText(Double.toString(redeclarationComputer.getAsda()));
+//
+//        //  Canvas drawing gets triggered here
+//        canvasDrawer.drawTopDownCanvas(topDownCanvas);
+//        canvasDrawer.drawSideOnCanvas(sideOnCanvas);
+//        canvasDrawer.drawTopDownCanvas(topDownCanvasCopy);
+//        canvasDrawer.drawSideOnCanvas(sideOnCanvasCopy);
 
-
-        //  This block of code will also need the obstacle's details
-        if (redeclarationComputer.needsRecalculation(redeclarationComputer.getObstacleX(), redeclarationComputer.getObstacleY())) {
-            redeclarationComputer.resetParameters(toraInput, todaInput, asdaInput, ldaInput);
-            redeclarationComputer.calculate();
-        }
-
-        //  These will probably be removed as they are text boxes
-        toraNewTextbox.setText(Double.toString(redeclarationComputer.getTora()));
-        todaNewTextbox.setText(Double.toString(redeclarationComputer.getToda()));
-        asdaNewTextbox.setText(Double.toString(redeclarationComputer.getAsda()));
-        ldaNewTextbox.setText(Double.toString(redeclarationComputer.getLda()));
-        thresholdNewTextbox.setText(Double.toString(redeclarationComputer.getDispTresh()));
-        actionNewTextbox.setText(Double.toString(redeclarationComputer.getAsda()));
-
-        //  Canvas drawing gets triggered here
-        canvasDrawer.drawTopDownCanvas(topDownCanvas);
-        canvasDrawer.drawSideOnCanvas(sideOnCanvas);
-        canvasDrawer.drawTopDownCanvas(topDownCanvasCopy);
-        canvasDrawer.drawSideOnCanvas(sideOnCanvasCopy);
+        canvasDrawer.drawObstacleSideOn(sideOnCanvas, 0.9);
+        canvasDrawer.drawObstacleSideOn(topDownCanvas, 1.2);
     }
 
     public void switchAirport(ActionEvent actionEvent) {

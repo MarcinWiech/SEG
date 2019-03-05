@@ -98,4 +98,10 @@ public class Airport {
         this.name = value;
     }
 
+    public Airport(String name) {
+        this.name = name;
+    }
+
+    public Airport() {
+    }
 }

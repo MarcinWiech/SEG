@@ -68,4 +68,8 @@ public class Airports {
         return this.airport;
     }
 
+//    public void addAirport(Airport airport){
+//        this.airport.add(airport);
+//    }
+
 }

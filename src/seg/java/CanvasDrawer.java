@@ -167,16 +167,6 @@ public class CanvasDrawer {
         gc.setFill(Color.GRAY);
         fillRect(asphaltRect);
 
-        //  Draws the plane - the image needs to be in the assets folder
-        ImageView imageView = new ImageView("/seg/resources/images/side-view-plane.png");
-        imageView.setRotate(-4);
-        imageView.setPreserveRatio(true);
-        imageView.setFitHeight(canvasHeight * 0.1);
-        SnapshotParameters parameters = new SnapshotParameters();
-        parameters.setFill(Color.TRANSPARENT);
-        Image image1 = imageView.snapshot(parameters, null);
-        gc.drawImage(image1, canvasWidth * 0.7 + xOffset, canvasHeight * 0.2 + yOffset);
-
         //  These lines are just tests for arrow drawing - they will be deleted
 
         drawHorizontalArrow(0.2, 0.10, 0.25, true, false, "This is just a test", Color.BLACK);
@@ -306,5 +296,20 @@ public class CanvasDrawer {
 
         //  Arrow body gets drawn
         gc.fillRect((x - 0.0009) * canvasWidth + xOffset, y * canvasHeight + yOffset, 0.002 * canvasWidth, length * canvasHeight);
+    }
+
+    public void drawObstacleSideOn(Canvas canvas, double position){
+
+
+        //  Draws the plane - the image needs to be in the resources folder
+        ImageView imageView = new ImageView("/seg/resources/images/side-view-plane.png");
+        imageView.setRotate(-4);
+        imageView.setPreserveRatio(true);
+        imageView.setFitHeight(canvasHeight * 0.1);
+        SnapshotParameters parameters = new SnapshotParameters();
+        parameters.setFill(Color.TRANSPARENT);
+        Image image1 = imageView.snapshot(parameters, null);
+        gc.drawImage(image1, canvasWidth * 0.7 * position+ xOffset, canvasHeight * 0.2 + yOffset);
+        System.out.println("drawObstacle");
     }
 }

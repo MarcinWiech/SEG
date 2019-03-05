@@ -81,6 +81,12 @@ public class ConfigureRunwayController {
      * TO DO - NEED TO REPEAT UNTIL NUMBER OF RUNWAYS ARE MET
      **/
     public void createRunway() {
-
+        String runwayDesignator = runwayDesignatorTextbox.getText();
+        String tora = toraTextbox.getText();
+        String toda = todaTextbox.getText();
+        String asda = asdaTextbox.getText();
+        String lda = ldaTextbox.getText();
+        String threshold = thresholdTextbox.getText();
+        System.out.println(tora);
     }
 }
