@@ -177,7 +177,6 @@ public class DashboardController
             dispThresholdInput = Double.parseDouble(thresholdInitialTextbox.getText());
             redeclarationComputer.setRunway(currentRunway);
 
-            System.out.println("Almost there");
             // We check to see whether we need to recalculate
             if (redeclarationComputer.needsRecalculation(redeclarationComputer.getObstacleXL(), redeclarationComputer.getObstacleXR(), redeclarationComputer.getObstacleY())){
 
