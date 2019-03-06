@@ -110,6 +110,9 @@ public class DashboardController
         todaNewTextbox.setEditable(false);
         asdaNewTextbox.setEditable(false);
         ldaNewTextbox.setEditable(false);
+        thresholdInitialTextbox.setEditable(false);
+
+
     }
 
 //==================================================================================================================================
