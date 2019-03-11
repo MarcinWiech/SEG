@@ -8,7 +8,6 @@ import javafx.stage.Stage;
 
 
 public class Main extends Application {
-    private seg.java.controllers.AirportSelectionController airportSelectionController;
 
     public static void main(String[] args) {
         launch(args);
