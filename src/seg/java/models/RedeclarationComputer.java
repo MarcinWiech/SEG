@@ -1,4 +1,6 @@
-package seg.java;
+package seg.java.models;
+
+import seg.java.models.Runway;
 
 import java.lang.Character;
 

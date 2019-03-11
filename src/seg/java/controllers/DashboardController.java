@@ -11,6 +11,9 @@ import javafx.scene.control.*;                                                  
 import javafx.scene.canvas.*;                                                   // for Canvas and stuff
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import seg.java.models.Airport;
+import seg.java.models.RedeclarationComputer;
+import seg.java.models.Runway;
 
 public class DashboardController
 {

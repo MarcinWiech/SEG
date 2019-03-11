@@ -11,7 +11,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import seg.java.Airport;
+import seg.java.models.Airport;
 import seg.java.XMLReaderDOM;
 
 import java.net.URL;
