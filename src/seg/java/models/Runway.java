@@ -1,6 +1,4 @@
-package seg.java;
-
-import javax.naming.NamingException;
+package seg.java.models;
 
 public class Runway
 {

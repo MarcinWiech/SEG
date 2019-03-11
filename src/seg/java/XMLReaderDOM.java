@@ -5,6 +5,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import seg.java.models.Airport;
+import seg.java.models.Runway;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -17,7 +19,9 @@ public class XMLReaderDOM {
     private HashMap<String, Airport> airportHashMap;
 
     public XMLReaderDOM() {
-        String filePath = "./src/seg/resources/views/airportsXML.xml";
+       // String filePath = new File("airportsXML.xml").getAbsolutePath();
+       // System.out.println(filePath);
+        String filePath = "src/airportsXML.xml";
         File xmlFile = new File(filePath);
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder;
