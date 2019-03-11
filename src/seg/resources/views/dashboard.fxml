@@ -8,6 +8,7 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -21,7 +22,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="655.0" prefWidth="1196.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seg.java.controllers.DashboardController">
+<AnchorPane prefHeight="655.0" prefWidth="1196.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seg.java.controllers.DashboardController">
     <children>
         <MenuBar prefHeight="655.0" prefWidth="1196.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <menus>
@@ -38,119 +39,129 @@
                         <MenuItem mnemonicParsing="false" text="Add runway" />
                     </items>
                 </Menu>
+            <Menu mnemonicParsing="false" text="Help">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Action 1" />
+              </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="About">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Action 1" />
+              </items>
+            </Menu>
             </menus>
         </MenuBar>
-        <SplitPane dividerPositions="0.19286510590858416" layoutY="23.0" prefHeight="632.0" prefWidth="1196.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="23.0">
+        <SplitPane dividerPositions="0.15577889447236182" layoutY="23.0" prefHeight="632.0" prefWidth="1196.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="23.0">
             <items>
-                <AnchorPane maxWidth="170.0" minHeight="0.0" minWidth="170.0" prefHeight="160.0" prefWidth="170.0">
+            <ScrollPane maxWidth="180.0" prefHeight="630.0" prefWidth="157.0">
+              <content>
+                <AnchorPane maxWidth="175.0" minHeight="0.0" minWidth="0.0" prefHeight="545.0" prefWidth="180.0">
                     <children>
-                        <AnchorPane layoutY="-6.0" maxWidth="175.0" minHeight="0.0" minWidth="175.0" prefHeight="663.0" prefWidth="175.0">
-                            <children>
-                                <Label layoutX="9.0" layoutY="68.0" text="Initial values">
-                                    <font>
-                                        <Font name="System Bold" size="14.0" />
-                                    </font>
-                                </Label>
-                                <TextField fx:id="todaNewTextbox" layoutX="80.0" layoutY="286.0" prefHeight="23.0" prefWidth="84.0">
-                                    <font>
-                                        <Font size="10.0" />
-                                    </font>
-                                </TextField>
-                                <TextField fx:id="asdaNewTextbox" layoutX="80.0" layoutY="312.0" prefHeight="1.0" prefWidth="84.0">
-                                    <font>
-                                        <Font size="10.0" />
-                                    </font>
-                                </TextField>
-                                <TextField fx:id="ldaNewTextbox" layoutX="80.0" layoutY="338.0" prefHeight="1.0" prefWidth="84.0">
-                                    <font>
-                                        <Font size="10.0" />
-                                    </font>
-                                </TextField>
-                                <TextField fx:id="toraNewTextbox" layoutX="80.0" layoutY="260.0" prefHeight="2.0" prefWidth="84.0">
-                                    <font>
-                                        <Font size="10.0" />
-                                    </font>
-                                </TextField>
-                                <Label layoutX="7.0" layoutY="237.0" text="New values">
-                                    <font>
-                                        <Font name="System Bold" size="14.0" />
-                                    </font>
-                                </Label>
-                                <TextField fx:id="toraInitialTextbox" layoutX="81.0" layoutY="93.0" prefHeight="23.0" prefWidth="84.0">
-                                    <font>
-                                        <Font size="10.0" />
-                                    </font>
-                                </TextField>
-                                <TextField fx:id="asdaInitialTextbox" layoutX="81.0" layoutY="145.0" prefHeight="0.0" prefWidth="84.0">
-                                    <font>
-                                        <Font size="10.0" />
-                                    </font>
-                                </TextField>
-                                <Label layoutX="34.0" layoutY="263.0" prefHeight="21.0" prefWidth="48.0" text="TORA:" />
-                                <Label layoutX="32.0" layoutY="289.0" prefHeight="17.0" prefWidth="43.0" text="TODA:" />
-                                <Label layoutX="33.0" layoutY="315.0" text="ASDA:" />
-                                <Label layoutX="40.0" layoutY="341.0" text="LDA:" />
-                                <TextField fx:id="todaInitialTextbox" layoutX="81.0" layoutY="119.0" prefHeight="5.0" prefWidth="84.0">
-                                    <font>
-                                        <Font size="10.0" />
-                                    </font>
-                                </TextField>
-                                <TextField fx:id="ldaInitialTextbox" layoutX="81.0" layoutY="171.0" prefHeight="0.0" prefWidth="84.0">
-                                    <font>
-                                        <Font size="10.0" />
-                                    </font>
-                                </TextField>
-                                <TextField fx:id="thresholdInitialTextbox" layoutX="81.0" layoutY="198.0" prefHeight="0.0" prefWidth="84.0">
-                                    <font>
-                                        <Font size="10.0" />
-                                    </font>
-                                </TextField>
-                                <Label layoutX="33.0" layoutY="96.0" prefHeight="21.0" prefWidth="48.0" text="TORA:" />
-                                <Label layoutX="32.0" layoutY="122.0" prefHeight="17.0" prefWidth="43.0" text="TODA:" />
-                                <Label layoutX="33.0" layoutY="148.0" text="ASDA:" />
-                                <Label layoutX="40.0" layoutY="174.0" text="LDA:" />
-                                <Label layoutX="10.0" layoutY="191.0" prefHeight="36.0" prefWidth="75.0" text="Threshold:" textAlignment="RIGHT" wrapText="true" />
-                                <Button fx:id="redeclareButton" layoutX="6.0" layoutY="501.0" mnemonicParsing="false" onAction="#redeclareButtonPressed" prefHeight="25.0" prefWidth="158.0" text="Redeclare" />
-                                <Label layoutX="8.0" layoutY="468.0" prefHeight="21.0" prefWidth="75.0" text="Y Position:" />
-                                <Label layoutX="1.0" layoutY="417.0" prefHeight="21.0" prefWidth="83.0" text="XL Position:" />
-                                <Label layoutX="27.0" layoutY="393.0" text="Height:" />
-                                <Label layoutX="7.0" layoutY="367.0" text="Obstacle">
-                                    <font>
-                                        <Font name="System Bold" size="14.0" />
-                                    </font>
-                                </Label>
-                                <Line endX="79.99996948242188" layoutX="96.0" layoutY="230.0" startX="-100.0" />
-                                <ChoiceBox fx:id="runwayDroplist" layoutX="10.0" layoutY="35.0" onAction="#selectRunway" prefHeight="25.0" prefWidth="154.0" />
-                                <Label layoutX="10.0" layoutY="8.0" text="RUNWAY:">
-                                    <font>
-                                        <Font name="System Bold" size="14.0" />
-                                    </font>
-                                </Label>
-                                <TextField fx:id="heightTextbox" layoutX="80.0" layoutY="390.0" prefHeight="23.0" prefWidth="84.0">
-                                    <font>
-                                        <Font size="10.0" />
-                                    </font>
-                                </TextField>
-                                <TextField layoutX="80.0" layoutY="416.0" prefHeight="1.0" prefWidth="84.0" fx:id="xLTextbox">
-                                    <font>
-                                        <Font size="10.0" />
-                                    </font>
-                                </TextField>
-                                <TextField layoutX="80.0" layoutY="442.0" prefHeight="23.0" prefWidth="84.0" fx:id="xRTextbox">
-                                    <font>
-                                        <Font size="10.0" />
-                                    </font>
-                                </TextField>
-                                <Label layoutX="1.0" layoutY="442.0" prefHeight="21.0" prefWidth="83.0" text="XR Position:" />
-                                <TextField fx:id="yTextbox" layoutX="80.0" layoutY="468.0" prefHeight="23.0" prefWidth="84.0">
-                                    <font>
-                                        <Font size="10.0" />
-                                    </font>
-                                </TextField>
-                            </children>
-                        </AnchorPane>
+                        <Label layoutX="15.0" layoutY="68.0" text="Initial values">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </Label>
+                        <TextField fx:id="todaNewTextbox" layoutX="86.0" layoutY="286.0" prefHeight="23.0" prefWidth="84.0">
+                            <font>
+                                <Font size="10.0" />
+                            </font>
+                        </TextField>
+                        <TextField fx:id="asdaNewTextbox" layoutX="86.0" layoutY="312.0" prefHeight="1.0" prefWidth="84.0">
+                            <font>
+                                <Font size="10.0" />
+                            </font>
+                        </TextField>
+                        <TextField fx:id="ldaNewTextbox" layoutX="86.0" layoutY="338.0" prefHeight="1.0" prefWidth="84.0">
+                            <font>
+                                <Font size="10.0" />
+                            </font>
+                        </TextField>
+                        <TextField fx:id="toraNewTextbox" layoutX="86.0" layoutY="260.0" prefHeight="2.0" prefWidth="84.0">
+                            <font>
+                                <Font size="10.0" />
+                            </font>
+                        </TextField>
+                        <Label layoutX="10.0" layoutY="237.0" text="New values">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </Label>
+                        <TextField fx:id="toraInitialTextbox" layoutX="87.0" layoutY="93.0" prefHeight="23.0" prefWidth="84.0">
+                            <font>
+                                <Font size="10.0" />
+                            </font>
+                        </TextField>
+                        <TextField fx:id="asdaInitialTextbox" layoutX="87.0" layoutY="145.0" prefHeight="0.0" prefWidth="84.0">
+                            <font>
+                                <Font size="10.0" />
+                            </font>
+                        </TextField>
+                        <Label layoutX="40.0" layoutY="263.0" prefHeight="21.0" prefWidth="48.0" text="TORA:" />
+                        <Label layoutX="38.0" layoutY="289.0" prefHeight="17.0" prefWidth="43.0" text="TODA:" />
+                        <Label layoutX="39.0" layoutY="315.0" text="ASDA:" />
+                        <Label layoutX="46.0" layoutY="341.0" text="LDA:" />
+                        <TextField fx:id="todaInitialTextbox" layoutX="87.0" layoutY="119.0" prefHeight="5.0" prefWidth="84.0">
+                            <font>
+                                <Font size="10.0" />
+                            </font>
+                        </TextField>
+                        <TextField fx:id="ldaInitialTextbox" layoutX="87.0" layoutY="171.0" prefHeight="0.0" prefWidth="84.0">
+                            <font>
+                                <Font size="10.0" />
+                            </font>
+                        </TextField>
+                        <TextField fx:id="thresholdInitialTextbox" layoutX="87.0" layoutY="198.0" prefHeight="0.0" prefWidth="84.0">
+                            <font>
+                                <Font size="10.0" />
+                            </font>
+                        </TextField>
+                        <Label layoutX="39.0" layoutY="96.0" prefHeight="21.0" prefWidth="48.0" text="TORA:" />
+                        <Label layoutX="38.0" layoutY="122.0" prefHeight="17.0" prefWidth="43.0" text="TODA:" />
+                        <Label layoutX="39.0" layoutY="148.0" text="ASDA:" />
+                        <Label layoutX="46.0" layoutY="174.0" text="LDA:" />
+                        <Label layoutX="16.0" layoutY="191.0" prefHeight="36.0" prefWidth="75.0" text="Threshold:" textAlignment="RIGHT" wrapText="true" />
+                        <Button fx:id="redeclareButton" layoutX="12.0" layoutY="501.0" mnemonicParsing="false" onAction="#redeclareButtonPressed" prefHeight="25.0" prefWidth="158.0" text="Redeclare" />
+                        <Label layoutX="14.0" layoutY="468.0" prefHeight="21.0" prefWidth="75.0" text="Y Position:" />
+                        <Label layoutX="7.0" layoutY="417.0" prefHeight="21.0" prefWidth="83.0" text="XL Position:" />
+                        <Label layoutX="33.0" layoutY="393.0" text="Height:" />
+                        <Label layoutX="12.0" layoutY="367.0" text="Obstacle">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </Label>
+                        <Line endX="85.0" layoutX="98.0" layoutY="230.0" startX="-100.0" />
+                        <ChoiceBox fx:id="runwayDroplist" layoutX="16.0" layoutY="35.0" onAction="#selectRunway" prefHeight="25.0" prefWidth="154.0" />
+                        <Label layoutX="16.0" layoutY="8.0" text="RUNWAY:">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </Label>
+                        <TextField fx:id="heightTextbox" layoutX="86.0" layoutY="390.0" prefHeight="23.0" prefWidth="84.0">
+                            <font>
+                                <Font size="10.0" />
+                            </font>
+                        </TextField>
+                        <TextField layoutX="86.0" layoutY="416.0" prefHeight="1.0" prefWidth="84.0" fx:id="xLTextbox">
+                            <font>
+                                <Font size="10.0" />
+                            </font>
+                        </TextField>
+                        <TextField layoutX="86.0" layoutY="442.0" prefHeight="23.0" prefWidth="84.0" fx:id="xRTextbox">
+                            <font>
+                                <Font size="10.0" />
+                            </font>
+                        </TextField>
+                        <Label layoutX="7.0" layoutY="442.0" prefHeight="21.0" prefWidth="83.0" text="XR Position:" />
+                        <TextField fx:id="yTextbox" layoutX="86.0" layoutY="468.0" prefHeight="23.0" prefWidth="84.0">
+                            <font>
+                                <Font size="10.0" />
+                            </font>
+                        </TextField>
                     </children>
                 </AnchorPane>
+              </content>
+            </ScrollPane>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                     <children>
                         <TabPane layoutX="-8.0" layoutY="-7.0" prefHeight="663.0" prefWidth="1029.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
