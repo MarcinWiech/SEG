@@ -17,9 +17,6 @@ import seg.java.models.Runway;
 
 public class DashboardController
 {
-    public ToggleButton takeOffAwayButton;
-    public ToggleButton takeOffTowardButton;
-
     @FXML private TextField heightTextbox;
     @FXML private Pane topDownPane;
     @FXML private Pane sideOnPane;
@@ -55,6 +52,7 @@ public class DashboardController
     private XMLReaderDOM xmlReaderDOM;
     private CanvasDrawer canvasDrawer;
     private RedeclarationComputer redeclarationComputer;
+    private RedeclarationComputer reciprocalComputer;
     private Airport currentAirport;
     private Runway currentRunway;
 
@@ -68,15 +66,19 @@ public class DashboardController
     private double ldaInput;
     private double dispThresholdInput;
 
-//==================================================================================================================================
+/*==================================================================================================================================
 //  Initialize
-//==================================================================================================================================
+//================================================================================================================================*/
 
     public void initialize()
     {
         //  Main objects get initialized & related preparations
-        canvasDrawer = new CanvasDrawer();
         redeclarationComputer = new RedeclarationComputer();
+        reciprocalComputer = new RedeclarationComputer();
+        redeclarationComputer.setReciprocalComputer(reciprocalComputer);
+        reciprocalComputer.setReciprocalComputer(redeclarationComputer);
+        canvasDrawer = new CanvasDrawer(redeclarationComputer);
+
 
         //  REALLY IMPORTANT: canvases get resizable by binding them to their parents
         topDownCanvas.widthProperty().bind(topDownPane.widthProperty());
@@ -114,13 +116,11 @@ public class DashboardController
         asdaNewTextbox.setEditable(false);
         ldaNewTextbox.setEditable(false);
         thresholdInitialTextbox.setEditable(false);
-
-
     }
 
-//==================================================================================================================================
+/*==================================================================================================================================
 //  Other methods
-//==================================================================================================================================
+//================================================================================================================================*/
 
     public void redeclareButtonPressed(ActionEvent event) throws RedeclarationComputer.InvalidActionException
     {
@@ -170,9 +170,6 @@ public class DashboardController
             return;
         }
 
-        //  Obstacle details get passed to redeclarationComputer
-        redeclarationComputer.setObstacleDetails(obstacleXL, obstacleXR, obstacleY, obstacleHeight);
-
         //  Recalculation of parameters
         try
         {
@@ -183,15 +180,15 @@ public class DashboardController
             dispThresholdInput = Double.parseDouble(thresholdInitialTextbox.getText());
             redeclarationComputer.setRunway(currentRunway);
 
-            // We check to see whether we need to recalculate
-            if (redeclarationComputer.needsRecalculation(redeclarationComputer.getObstacleXL(), redeclarationComputer.getObstacleXR(), redeclarationComputer.getObstacleY())){
+            //  Obstacle details get passed to redeclarationComputer
+            redeclarationComputer.setObstacleDetails(obstacleXL, obstacleXR, obstacleY, obstacleHeight);
 
+            // We check to see whether we need to recalculate
+            if (redeclarationComputer.needsRecalculation(redeclarationComputer.getObstacleXL(), redeclarationComputer.getObstacleXR(), redeclarationComputer.getObstacleY()))
+            {
                 redeclare();
-                drawAppropriateObstacle(currentRunway.getRunwayName());
             }
 
-//            canvasDrawer.drawObstacleSideOn(sideOnCanvasCopy);
-//            canvasDrawer.drawObstacleSideOn(sideOnCanvas);
         }
         catch (Exception e)
         {
@@ -207,18 +204,14 @@ public class DashboardController
         //  We set the parameters and then calculate
         redeclarationComputer.calculate();
 
-        //  These will probably be removed as they are text boxes
+        //  New values are displayed
         toraNewTextbox.setText(Double.toString(redeclarationComputer.getTora()));
         todaNewTextbox.setText(Double.toString(redeclarationComputer.getToda()));
         asdaNewTextbox.setText(Double.toString(redeclarationComputer.getAsda()));
         ldaNewTextbox.setText(Double.toString(redeclarationComputer.getLda()));
 
         //  Canvas drawing gets triggered here
-//        canvasDrawer.setDrawSideOnObstacle(true);
-//        canvasDrawer.drawTopDownObstacle(true, redeclarationComputer.getObstacleXR()/toraInput, redeclarationComputer.getObstacleY()/60);
-        drawAppropriateObstacle(currentRunway.getRunwayName());
-
-
+        canvasDrawer.setRunway(currentRunway);
         canvasDrawer.drawTopDownCanvas(topDownCanvas);
         canvasDrawer.drawSideOnCanvas(sideOnCanvas);
         canvasDrawer.drawTopDownCanvas(topDownCanvasCopy);
@@ -230,6 +223,56 @@ public class DashboardController
         asdaBDTextArea.setText(redeclarationComputer.getAsdaBD());
         ldaBDTextArea.setText(redeclarationComputer.getLdaBD());
 
+    }
+
+    public void switchButtonPressed()
+    {
+        //  Check special cases
+        if(currentRunway == null)
+        {
+            new Alert(Alert.AlertType.ERROR, "Please select a runway!").showAndWait();
+            return;
+        }
+        if(currentRunway.getReciprocalRunway() == null)
+        {
+            new Alert(Alert.AlertType.ERROR, "No reciprocal runway exists!").showAndWait();
+            return;
+        }
+        if(toraNewTextbox.getText().equals(""))
+        {
+            runwayDroplist.setValue(currentRunway.getReciprocalRunway().getRunwayName());
+            return;
+        }
+
+        currentRunway = currentRunway.getReciprocalRunway();
+
+        //  Update the dropdown menu as well
+        runwayDroplist.setValue(currentRunway.getRunwayName());
+
+        //  Switch computers
+        RedeclarationComputer aux = redeclarationComputer;
+        redeclarationComputer = reciprocalComputer;
+        reciprocalComputer = aux;
+
+        //  New values are displayed
+        toraNewTextbox.setText(Double.toString(redeclarationComputer.getTora()));
+        todaNewTextbox.setText(Double.toString(redeclarationComputer.getToda()));
+        asdaNewTextbox.setText(Double.toString(redeclarationComputer.getAsda()));
+        ldaNewTextbox.setText(Double.toString(redeclarationComputer.getLda()));
+
+        //  Canvas drawing gets triggered here
+        canvasDrawer.setRedeclarationComputer(redeclarationComputer);
+        canvasDrawer.setRunway(currentRunway);
+        canvasDrawer.drawTopDownCanvas(topDownCanvas);
+        canvasDrawer.drawSideOnCanvas(sideOnCanvas);
+        canvasDrawer.drawTopDownCanvas(topDownCanvasCopy);
+        canvasDrawer.drawSideOnCanvas(sideOnCanvasCopy);
+
+        //  Update the calculations breakdown
+        toraBDTextArea.setText(redeclarationComputer.getToraBD());
+        todaBDTextArea.setText(redeclarationComputer.getTodaBD());
+        asdaBDTextArea.setText(redeclarationComputer.getAsdaBD());
+        ldaBDTextArea.setText(redeclarationComputer.getLdaBD());
     }
 
     public void switchAirport(ActionEvent actionEvent)
@@ -277,25 +320,5 @@ public class DashboardController
         }
     }
 
-    private void drawAppropriateObstacle(String runwayName){
-        if(runwayName.charAt(2) == 'R')
-        {
-            canvasDrawer.drawTopDownObstacle(true, redeclarationComputer.getObstacleXR()/toraInput, redeclarationComputer.getObstacleY()/60);
-
-        }
-        else if (runwayName.charAt(2) == 'L')
-        {
-
-            canvasDrawer.drawTopDownObstacle(true, redeclarationComputer.getObstacleXL()/toraInput, redeclarationComputer.getObstacleY()/60);
-
-        }
-        else
-        {
-            System.out.println("else"); //prints else when cannot guess what type of runway it is
-            canvasDrawer.drawTopDownObstacle(true, redeclarationComputer.getObstacleXR()/toraInput, redeclarationComputer.getObstacleY()/60);
-
-        }
-        canvasDrawer.setDrawSideOnObstacle(true);
-    }
 }
 
