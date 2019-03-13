@@ -56,7 +56,7 @@ public class ConfigureRunwayController {
 
             new Alert(Alert.AlertType.ERROR, "Please ensure all fields are filled!").showAndWait();
         } else {
-            airport.addRunway("null", runwayDesignatorTextbox.getText(), Integer.parseInt(toraTextbox.getText()), Integer.parseInt(todaTextbox.getText()), Integer.parseInt(asdaTextbox.getText()), Integer.parseInt(ldaTextbox.getText()), Integer.parseInt(thresholdTextbox.getText()));
+            airport.addRunway("null", runwayDesignatorTextbox.getText(), Double.parseDouble(toraTextbox.getText()), Double.parseDouble(todaTextbox.getText()), Double.parseDouble(asdaTextbox.getText()), Double.parseDouble(ldaTextbox.getText()), Double.parseDouble(thresholdTextbox.getText()));
             runwayDesignatorTextbox.clear();
             toraTextbox.clear();
             todaTextbox.clear();

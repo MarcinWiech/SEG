@@ -1,20 +1,22 @@
 package seg.java.models;
 
+import javax.naming.NamingException;
+
 public class Runway
 {
     private Runway reciprocalRunway;
     private String reciprocalName;
     private String runwayName;
-    private Integer tora;
-    private Integer toda;
-    private Integer asda;
-    private Integer lda;
-    private Integer displacedThreshold;
+    private Double tora;
+    private Double toda;
+    private Double asda;
+    private Double lda;
+    private Double displacedThreshold;
 
-    public Runway (String reciprocalName, String runwayName,Integer tora, Integer toda, Integer asda, Integer lda, Integer displacedThreshold )
+    public Runway (String runwayName, String reciprocalName, Double tora, Double toda, Double asda, Double lda, Double displacedThreshold )
     {
-        this.reciprocalName = reciprocalName;
         this.runwayName = runwayName;
+        this.reciprocalName = reciprocalName;
         this.tora = tora;
         this.toda = toda;
         this.asda = asda;
@@ -25,6 +27,14 @@ public class Runway
     public void setReciprocal(Runway reciprocalRunway)
     {
         this.reciprocalRunway = reciprocalRunway;
+    }
+
+    public void setParameters(Double tora, Double toda, Double asda, Double lda)
+    {
+        this.tora = tora;
+        this.toda = toda;
+        this.asda = asda;
+        this.lda = lda;
     }
 
     public Runway getReciprocalRunway()
@@ -42,28 +52,29 @@ public class Runway
         return runwayName;
     }
 
-    public Integer getTora()
+    public Double getTora()
     {
         return tora;
     }
 
-    public Integer getToda()
+    public Double getToda()
     {
         return toda;
     }
 
-    public Integer getAsda()
+    public Double getAsda()
     {
         return asda;
     }
 
-    public Integer getLda()
+    public Double getLda()
     {
         return lda;
     }
 
-    public Integer getDisplacedThreshold()
+    public Double getDisplacedThreshold()
     {
         return displacedThreshold;
     }
 }
+
