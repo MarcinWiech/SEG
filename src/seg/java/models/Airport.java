@@ -39,8 +39,8 @@ public class Airport {
         return this.runwayHashMap;
     }
 
-    public void addRunway(String reciprocalName, String runwayDesignator, Integer tora, Integer toda, Integer asda,Integer lda,Integer displacedThreshold) {
-        Runway newRunway = new Runway(reciprocalName, runwayDesignator, tora, toda, asda, lda, displacedThreshold );
+    public void addRunway(String runwayDesignator, String reciprocalName, Double tora, Double toda, Double asda, Double lda, Double displacedThreshold) {
+        Runway newRunway = new Runway(runwayDesignator, reciprocalName, tora, toda, asda, lda, displacedThreshold );
         runwayHashMap.put(newRunway.getRunwayName(), newRunway);
     }
 }
