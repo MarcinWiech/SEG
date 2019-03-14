@@ -1,5 +1,12 @@
 package seg.java.controllers;
 
+import javafx.scene.image.Image ;
+import javafx.geometry.Pos;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
+import javafx.util.Duration;
 import seg.java.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,6 +21,9 @@ import javafx.stage.Stage;
 import seg.java.models.Airport;
 import seg.java.models.RedeclarationComputer;
 import seg.java.models.Runway;
+import org.controlsfx.control.Notifications;
+
+import java.awt.*;
 
 public class DashboardController
 {
@@ -66,6 +76,9 @@ public class DashboardController
     private double ldaInput;
     private double dispThresholdInput;
 
+    private Image greentickIcon;
+    private Image switchIcon;
+
 /*==================================================================================================================================
 //  Initialize
 //================================================================================================================================*/
@@ -116,6 +129,9 @@ public class DashboardController
         asdaNewTextbox.setEditable(false);
         ldaNewTextbox.setEditable(false);
         thresholdInitialTextbox.setEditable(false);
+
+        greentickIcon = new Image("/seg/resources/images/greentick.png");
+        switchIcon = new Image("/seg/resources/images/switch.png");
     }
 
 /*==================================================================================================================================
@@ -197,6 +213,7 @@ public class DashboardController
             return;
         }
 
+        makeNotification("Runway Redeclared" , "The runway has now been redeclared.", greentickIcon );
     }
 
     private void redeclare()
@@ -273,6 +290,8 @@ public class DashboardController
         todaBDTextArea.setText(redeclarationComputer.getTodaBD());
         asdaBDTextArea.setText(redeclarationComputer.getAsdaBD());
         ldaBDTextArea.setText(redeclarationComputer.getLdaBD());
+
+        makeNotification("Switched runway", "The reciprocal runway is now being viewed", switchIcon);
     }
 
     public void switchAirport(ActionEvent actionEvent)
@@ -281,7 +300,7 @@ public class DashboardController
         {
             Stage stage = (Stage) yTextbox.getScene().getWindow();
             stage.close();
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/airportSelection.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/airportSelection.fxml"));
             Parent root1 = fxmlLoader.load();
             stage = new Stage();
             stage.setTitle("Switch Airport");
@@ -320,5 +339,15 @@ public class DashboardController
         }
     }
 
+    public void makeNotification(String title, String text, Image icon) {
+        Notifications notificationBuilder = Notifications.create()
+                .title(title)
+                .text(text)
+                .graphic(new ImageView(icon))
+                .hideAfter(Duration.seconds(5))
+                .position(Pos.BOTTOM_RIGHT);
+        notificationBuilder.darkStyle();
+        notificationBuilder.show();
+    }
 }
 
