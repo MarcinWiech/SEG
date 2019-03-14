@@ -123,35 +123,21 @@ public class RedeclarationComputer {
     private int determineCalculationCase()
     {
         System.out.println("Runway direction = " + runwayDirection);
-        if(obstacleXL < tora / 2)       // for this one you might want to consider the R dispTresh
+
+        if(runwayDirection == 'R')       // for this one you might want to consider the R dispTresh
         {
-            if(runwayDirection == 'R')
-                calculationCase = 2;
-            else
-                calculationCase = 3;
-        }
-        else
-        {
-            if(runwayDirection == 'R')
+            if(obstacleXR < tora / 2)
                 calculationCase = 1;
+            else
+                calculationCase = 2;
+        }
+        else {
+            if (obstacleXL < tora / 2)
+                calculationCase = 3;
             else
                 calculationCase = 4;
         }
-
-//        if(runwayDirection == 'R')       // for this one you might want to consider the R dispTresh
-//        {
-//            if(obstacleXR < tora / 2)
-//                calculationCase = 2;
-//            else
-//                calculationCase = 1;
-//        }
-//        else
-//        {
-//            if(obstacleXL < tora / 2)
-//                calculationCase = 3;
-//            else
-//                calculationCase = 4;
-//        }
+        System.out.println("Calculation case = " + calculationCase);
 
         return calculationCase;
     }
