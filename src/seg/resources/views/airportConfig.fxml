@@ -5,17 +5,18 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="452.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+
+<AnchorPane prefHeight="452.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seg.java.controllers.AirportConfigurationController">
    <children>
       <TableView layoutX="14.0" layoutY="60.0" prefHeight="377.0" prefWidth="462.0">
-        <columns>
-          <TableColumn editable="false" prefWidth="94.0" text="Designator" />
-          <TableColumn editable="false" prefWidth="56.0" text="TORA" />
+         <columns>
+            <TableColumn editable="false" prefWidth="94.0" text="Designator" />
+            <TableColumn editable="false" prefWidth="56.0" text="TORA" />
             <TableColumn editable="false" prefWidth="78.0" text="ASDA" />
             <TableColumn editable="false" prefWidth="65.0" text="LDA" />
             <TableColumn editable="false" prefWidth="87.0" text="Threshold" />
             <TableColumn editable="false" prefWidth="59.0" text="TODA" />
-        </columns>
+         </columns>
       </TableView>
       <Button layoutX="495.0" layoutY="226.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="91.0" text="Edit" />
       <Button layoutX="495.0" layoutY="262.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="91.0" text="Delete" />
@@ -46,5 +47,6 @@
       </Text>
       <Button layoutX="491.0" layoutY="86.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="91.0" text="Edit Name" />
       <Button layoutX="491.0" layoutY="123.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="91.0" text="Delete" />
+      <AnchorPane layoutX="59.0" layoutY="-228.0" prefHeight="200.0" prefWidth="200.0" />
    </children>
-</Pane>
+</AnchorPane>
