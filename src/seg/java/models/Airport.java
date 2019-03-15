@@ -12,7 +12,7 @@ public class Airport {
         numberOfRunways = 0;
     }
 
-    public Airport(String name){
+    public Airport(String name) {
         runwayHashMap = new HashMap<>();
         numberOfRunways = 0;
         this.name = name;
@@ -40,7 +40,7 @@ public class Airport {
     }
 
     public void addRunway(String runwayDesignator, String reciprocalName, Double tora, Double toda, Double asda, Double lda, Double displacedThreshold) {
-        Runway newRunway = new Runway(runwayDesignator, reciprocalName, tora, toda, asda, lda, displacedThreshold );
+        Runway newRunway = new Runway(runwayDesignator, reciprocalName, tora, toda, asda, lda, displacedThreshold);
         runwayHashMap.put(newRunway.getRunwayName(), newRunway);
     }
 }

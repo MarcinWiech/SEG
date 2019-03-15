@@ -1,44 +1,41 @@
 package seg.java;
 
-import javafx.geometry.Bounds;
 import javafx.scene.SnapshotParameters;
-import javafx.scene.canvas.*;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.transform.*;
+import javafx.scene.transform.Affine;
+import javafx.scene.transform.Rotate;
+import javafx.scene.transform.Translate;
 import seg.java.models.RedeclarationComputer;
 import seg.java.models.Runway;
 
-public class CanvasDrawer
-{
+public class CanvasDrawer {
 
 /*==================================================================================================================================
 //  Fields
 //================================================================================================================================*/
 
+    double imageX, imageY;
     private GraphicsContext gc;
     private Runway runway;
     private RedeclarationComputer redeclarationComputer;
-
     private double widthToHeightRatio = 2.3;
     private double canvasWidth;
     private double canvasHeight;
     private double xOffset;
     private double yOffset;
 
-    double imageX, imageY;
-
 /*==================================================================================================================================
 //  Constructors
 //================================================================================================================================*/
 
-    public CanvasDrawer(RedeclarationComputer redeclarationComputer)
-    {
+    public CanvasDrawer(RedeclarationComputer redeclarationComputer) {
         this.redeclarationComputer = redeclarationComputer;
     }
 
@@ -46,8 +43,7 @@ public class CanvasDrawer
 //  Drawing methods
 //================================================================================================================================*/
 
-    public void drawTopDownCanvas(Canvas canvas)
-    {
+    public void drawTopDownCanvas(Canvas canvas) {
         adjustDrawingSettings(canvas);
 
         //  Grass area gets set
@@ -113,10 +109,8 @@ public class CanvasDrawer
         double centerlineX = 0.23 * canvasWidth;
         double centerlineY = 0.5 * canvasHeight - 0.5 * stripHeight;
         gc.setFill(Color.WHITE);
-        while (centerlineX < canvasWidth * 0.73)
-        {
-            if (centerlineX > 0.8 * canvasWidth)
-            {
+        while (centerlineX < canvasWidth * 0.73) {
+            if (centerlineX > 0.8 * canvasWidth) {
                 stripWidth = 0.82 - centerlineX;
                 Rectangle whiteRect = new Rectangle(centerlineX, centerlineY, stripWidth, stripHeight);
                 fillRect(whiteRect);
@@ -136,8 +130,7 @@ public class CanvasDrawer
 
         gc.setFill(Color.WHITE);
 
-        while (y + 4 < 0.6 * canvasHeight)
-        {
+        while (y + 4 < 0.6 * canvasHeight) {
             Rectangle whiteRect = new Rectangle(stripStartLeftX, y, stripWidth, stripHeight);
             fillRect(whiteRect); // left one gets drawn
 
@@ -148,12 +141,9 @@ public class CanvasDrawer
 
         // Runway designator gets drawn here
         String text;
-        if(runway != null)
-        {
+        if (runway != null) {
             text = runway.getRunwayName();
-        }
-        else
-        {
+        } else {
             text = "N/A";
         }
         gc.setFill(Color.WHITE);
@@ -174,8 +164,7 @@ public class CanvasDrawer
         gc.fillText(text, 0.4 * canvasWidth + xOffset, 0.3 * canvasHeight + yOffset);
 
         // Details get drawn here
-        if(runway != null)
-        {
+        if (runway != null) {
             drawTopDownRunwayDirection(canvas);
             // Really important that the image gets drawn before details do
             drawTopDownObstacle(canvas);
@@ -187,8 +176,7 @@ public class CanvasDrawer
         // gc.scale(2,2); // can be used for zoom later on
     }
 
-    public void drawSideOnCanvas(Canvas canvas)
-    {
+    public void drawSideOnCanvas(Canvas canvas) {
 
         adjustDrawingSettings(canvas);
 
@@ -210,8 +198,7 @@ public class CanvasDrawer
         gc.setFill(Color.GRAY);
         fillRect(asphaltRect);
 
-        if(runway != null)
-        {
+        if (runway != null) {
             drawSideOnRunwayDirection(canvas);
             // Really important that the image gets drawn before details do
             drawSideOnObstacle(canvas);
@@ -221,16 +208,14 @@ public class CanvasDrawer
         }
     }
 
-    private void drawTopDownObstacle(Canvas canvas)
-    {
+    private void drawTopDownObstacle(Canvas canvas) {
         //  Draws the plane - the image needs to be in the assets folder
         gc = canvas.getGraphicsContext2D();
         ImageView imageView = new ImageView("/seg/resources/images/top-down-plane.png");
         imageView.setRotate(-90);
         imageView.setPreserveRatio(true);
         imageView.setFitHeight(canvasHeight * 0.2);
-        if(redeclarationComputer.getCalculationCase() == 1 || redeclarationComputer.getCalculationCase() == 3)
-        {
+        if (redeclarationComputer.getCalculationCase() == 1 || redeclarationComputer.getCalculationCase() == 3) {
             Translate flipTranslation = new Translate(0, imageView.getImage().getHeight());
             Rotate flipRotation = new Rotate(180, Rotate.X_AXIS);
             imageView.getTransforms().addAll(flipTranslation, flipRotation);
@@ -243,30 +228,25 @@ public class CanvasDrawer
         Double tora = runway.getTora();
         Double dispTresh = runway.getDisplacedThreshold();
 
-        if(redeclarationComputer.getCalculationCase() == 1 || redeclarationComputer.getCalculationCase() == 3)
-        {
+        if (redeclarationComputer.getCalculationCase() == 1 || redeclarationComputer.getCalculationCase() == 3) {
             imageX = canvasWidth * (0.9 - 0.8 * ((dispTresh + x) / tora)) + xOffset;
-            imageY = canvasHeight * 0.5 - 0.5 * image1.getHeight() - canvasHeight * 0.1 * ((redeclarationComputer.getObstacleY()/30)) + yOffset;
+            imageY = canvasHeight * 0.5 - 0.5 * image1.getHeight() - canvasHeight * 0.1 * ((redeclarationComputer.getObstacleY() / 30)) + yOffset;
             gc.drawImage(image1, imageX, imageY);
-        }
-        else
-        {
+        } else {
             imageX = canvasWidth * (0.9 - 0.8 * ((dispTresh + x) / tora)) + xOffset - image1.getWidth();
-            imageY = canvasHeight * 0.5 - 0.5 * image1.getHeight() + canvasHeight * 0.1 * ((redeclarationComputer.getObstacleY()/30)) + yOffset;
+            imageY = canvasHeight * 0.5 - 0.5 * image1.getHeight() + canvasHeight * 0.1 * ((redeclarationComputer.getObstacleY() / 30)) + yOffset;
             gc.drawImage(image1, imageX, imageY);
         }
 
     }
 
-    private void drawSideOnObstacle(Canvas canvas)
-    {
+    private void drawSideOnObstacle(Canvas canvas) {
         //  Draws the plane - the image needs to be in the assets folder
         gc = canvas.getGraphicsContext2D();
         ImageView imageView = new ImageView("/seg/resources/images/side-view-plane.png");
         imageView.setPreserveRatio(true);
         imageView.setFitHeight(canvasHeight * 0.006 * redeclarationComputer.getObstacleHeight());
-        if(redeclarationComputer.getCalculationCase() == 1 || redeclarationComputer.getCalculationCase() == 3)
-        {
+        if (redeclarationComputer.getCalculationCase() == 1 || redeclarationComputer.getCalculationCase() == 3) {
             Translate flipTranslation = new Translate(0, imageView.getImage().getHeight());
             Rotate flipRotation = new Rotate(180, Rotate.Y_AXIS);
             imageView.getTransforms().addAll(flipTranslation, flipRotation);
@@ -279,30 +259,23 @@ public class CanvasDrawer
         Double tora = runway.getTora();
         Double dispTresh = runway.getDisplacedThreshold();
 
-        if(redeclarationComputer.getCalculationCase() == 1 || redeclarationComputer.getCalculationCase() == 3)
-        {
+        if (redeclarationComputer.getCalculationCase() == 1 || redeclarationComputer.getCalculationCase() == 3) {
             imageX = canvasWidth * (0.9 - 0.8 * ((dispTresh + x) / tora)) + xOffset;
             imageY = canvasHeight * 0.55 - 0.9 * image1.getHeight() + yOffset;
             gc.drawImage(image1, imageX, imageY);
-        }
-        else
-        {
+        } else {
             imageX = canvasWidth * (0.9 - 0.8 * ((dispTresh + x) / tora)) + xOffset - image1.getWidth();
             imageY = canvasHeight * 0.55 - 0.9 * image1.getHeight() + yOffset;
             gc.drawImage(image1, imageX, imageY);
         }
     }
 
-    private void drawHorizontalArrow(double x, double y, double length, boolean leftArrowTipOn, boolean rightArrowTipOn, String text, Color color)
-    {
+    private void drawHorizontalArrow(double x, double y, double length, boolean leftArrowTipOn, boolean rightArrowTipOn, String text, Color color) {
         double textOffset = 0;
 
-        if(leftArrowTipOn == true && rightArrowTipOn == false)
-        {
+        if (leftArrowTipOn == true && rightArrowTipOn == false) {
             textOffset += 0.006;
-        }
-        else if(leftArrowTipOn == false && rightArrowTipOn == true)
-        {
+        } else if (leftArrowTipOn == false && rightArrowTipOn == true) {
             textOffset -= 0.006;
         }
 
@@ -315,15 +288,14 @@ public class CanvasDrawer
         double textWidth = textObject.getBoundsInLocal().getWidth();
 
         //  Text gets drawn
-        gc.fillText(text, (x + textOffset + length / 2 ) * canvasWidth - 0.5 * textWidth + xOffset, (y - 0.01) * canvasHeight + yOffset);
+        gc.fillText(text, (x + textOffset + length / 2) * canvasWidth - 0.5 * textWidth + xOffset, (y - 0.01) * canvasHeight + yOffset);
 
         //  Left arrow tip gets drawn
-        if(leftArrowTipOn == true)
-        {
+        if (leftArrowTipOn == true) {
             gc.fillPolygon(new double[]{
                     x * canvasWidth + xOffset,
                     (x + 0.015) * canvasWidth + xOffset,
-                    (x + 0.015)* canvasWidth + xOffset,}, new double[]{
+                    (x + 0.015) * canvasWidth + xOffset,}, new double[]{
                     y * canvasHeight + yOffset,
                     (y - 0.015) * canvasHeight + yOffset,
                     (y + 0.015) * canvasHeight + yOffset,}, 3);
@@ -333,12 +305,11 @@ public class CanvasDrawer
         }
 
         //  Right arrow tip gets drawn
-        if(rightArrowTipOn == true)
-        {
+        if (rightArrowTipOn == true) {
             gc.fillPolygon(new double[]{
                     (x + length) * canvasWidth + xOffset,
                     (x + length - 0.015) * canvasWidth + xOffset,
-                    (x + length - 0.015)* canvasWidth + xOffset,}, new double[]{
+                    (x + length - 0.015) * canvasWidth + xOffset,}, new double[]{
                     y * canvasHeight + yOffset,
                     (y - 0.015) * canvasHeight + yOffset,
                     (y + 0.015) * canvasHeight + yOffset,}, 3);
@@ -349,8 +320,7 @@ public class CanvasDrawer
         gc.fillRect(x * canvasWidth + xOffset, (y - 0.0025) * canvasHeight + yOffset, length * canvasWidth, 0.005 * canvasHeight);
     }
 
-    private void drawVerticalArrow(double x, double y, double length, boolean upperArrowTipOn, boolean lowerArrowTipOn, String text, Color color)
-    {
+    private void drawVerticalArrow(double x, double y, double length, boolean upperArrowTipOn, boolean lowerArrowTipOn, String text, Color color) {
         //  Color and font get set
         gc.setFill(color);
         gc.setFont(Font.font("Arial", canvasWidth * 0.015));
@@ -359,12 +329,11 @@ public class CanvasDrawer
         gc.fillText(text, (x + 0.005) * canvasWidth + xOffset, (y + 0.14) * canvasHeight + yOffset);
 
         //  Upper arrow tip gets drawn
-        if(upperArrowTipOn == true)
-        {
+        if (upperArrowTipOn == true) {
             gc.fillPolygon(new double[]{
                     x * canvasWidth + xOffset,
                     (x - 0.006) * canvasWidth + xOffset,
-                    (x + 0.006)* canvasWidth + xOffset,}, new double[]{
+                    (x + 0.006) * canvasWidth + xOffset,}, new double[]{
                     y * canvasHeight + yOffset,
                     (y + 0.035) * canvasHeight + yOffset,
                     (y + 0.035) * canvasHeight + yOffset,}, 3);
@@ -373,12 +342,11 @@ public class CanvasDrawer
         }
 
         //  Lower arrow tip gets drawn
-        if(lowerArrowTipOn == true)
-        {
+        if (lowerArrowTipOn == true) {
             gc.fillPolygon(new double[]{
                     x * canvasWidth + xOffset,
                     (x - 0.006) * canvasWidth + xOffset,
-                    (x + 0.006)* canvasWidth + xOffset,}, new double[]{
+                    (x + 0.006) * canvasWidth + xOffset,}, new double[]{
                     (y + length) * canvasHeight + yOffset,
                     (y + length - 0.035) * canvasHeight + yOffset,
                     (y + length - 0.035) * canvasHeight + yOffset,}, 3);
@@ -389,24 +357,20 @@ public class CanvasDrawer
         gc.fillRect((x - 0.0009) * canvasWidth + xOffset, y * canvasHeight + yOffset, 0.002 * canvasWidth, length * canvasHeight);
     }
 
-    private void drawTopDownRunwayDirection(Canvas canvas)
-    {
+    private void drawTopDownRunwayDirection(Canvas canvas) {
         Rectangle backgroundRect = new Rectangle(0.025 * canvasWidth, 0.03 * canvasHeight, 0.342 * canvasWidth, 0.13 * canvasHeight);
-        gc.setFill(Color.rgb(0,0,0,0.5));
+        gc.setFill(Color.rgb(0, 0, 0, 0.5));
         fillRect(backgroundRect);
 
         drawHorizontalArrow(0.03, 0.08, 0.33, true, false, runway.getRunwayName() + " - Landing and Take-off in this direction", Color.WHITE);
-        if(redeclarationComputer.getCalculationCase() == 2 || redeclarationComputer.getCalculationCase() == 4)
-        {
+        if (redeclarationComputer.getCalculationCase() == 2 || redeclarationComputer.getCalculationCase() == 4) {
             drawHorizontalArrow(0.03, 0.13, 0.33, true, false, "Take Off Towards, Landing Towards", Color.WHITE);
-        }
-        else
-        {
+        } else {
             drawHorizontalArrow(0.03, 0.13, 0.3, true, false, "Take Off Away, Landing Over", Color.WHITE);
         }
 
         backgroundRect = new Rectangle(0.77 * canvasWidth, 0.03 * canvasHeight, 0.205 * canvasWidth, 0.21 * canvasHeight);
-        gc.setFill(Color.rgb(0,0,0,0.5));
+        gc.setFill(Color.rgb(0, 0, 0, 0.5));
         fillRect(backgroundRect);
 
         gc.setFill((Color.WHITE));
@@ -418,24 +382,20 @@ public class CanvasDrawer
         gc.fillText("60 = Strip End", 0.785 * canvasWidth + xOffset, 0.22 * canvasHeight + yOffset);
     }
 
-    private void drawSideOnRunwayDirection(Canvas canvas)
-    {
+    private void drawSideOnRunwayDirection(Canvas canvas) {
         Rectangle backgroundRect = new Rectangle(0.025 * canvasWidth, 0.03 * canvasHeight, 0.342 * canvasWidth, 0.13 * canvasHeight);
-        gc.setFill(Color.rgb(0,0,0,0.5));
+        gc.setFill(Color.rgb(0, 0, 0, 0.5));
         fillRect(backgroundRect);
 
         drawHorizontalArrow(0.03, 0.08, 0.33, true, false, runway.getRunwayName() + " - Landing and Take-off in this direction", Color.WHITE);
-        if(redeclarationComputer.getCalculationCase() == 2 || redeclarationComputer.getCalculationCase() == 4)
-        {
+        if (redeclarationComputer.getCalculationCase() == 2 || redeclarationComputer.getCalculationCase() == 4) {
             drawHorizontalArrow(0.03, 0.13, 0.33, true, false, "Take Off Towards, Landing Towards", Color.WHITE);
-        }
-        else
-        {
+        } else {
             drawHorizontalArrow(0.03, 0.13, 0.3, true, false, "Take Off Away, Landing Over", Color.WHITE);
         }
 
         backgroundRect = new Rectangle(0.77 * canvasWidth, 0.03 * canvasHeight, 0.205 * canvasWidth, 0.21 * canvasHeight);
-        gc.setFill(Color.rgb(0,0,0,0.5));
+        gc.setFill(Color.rgb(0, 0, 0, 0.5));
         fillRect(backgroundRect);
 
         gc.setFill((Color.WHITE));
@@ -447,8 +407,7 @@ public class CanvasDrawer
         gc.fillText("60 = Strip End", 0.785 * canvasWidth + xOffset, 0.22 * canvasHeight + yOffset);
     }
 
-    private void drawTopDownDetails(Canvas canvas)
-    {
+    private void drawTopDownDetails(Canvas canvas) {
         // Rectangle asphaltRect = new Rectangle(0.1 * canvasWidth, 0.55 * canvasHeight, 0.80 * canvasWidth, 0.03 * canvasHeight);
         Double initialTora = runway.getTora();
         Double dispTresh = runway.getDisplacedThreshold();
@@ -470,15 +429,13 @@ public class CanvasDrawer
         Double resaMinTX = 0.0, resaMinTLength = 0.0;
 
         // Arrow coordinates get computed
-        if(redeclarationComputer.getCalculationCase() == 2 || redeclarationComputer.getCalculationCase() == 4)
-        {
+        if (redeclarationComputer.getCalculationCase() == 2 || redeclarationComputer.getCalculationCase() == 4) {
             ldaX = 0.1 + 0.8 * (1 - (lda + dispTresh) / initialTora);
             ldaLength = 0.8 * (lda / initialTora);
 
-            if(dispTresh != 0)
-            {
+            if (dispTresh != 0) {
                 dispTreshX = 0.1 + 0.8 * (1 - dispTresh / initialTora);
-                dispTreshLength =  0.8 * (dispTresh / initialTora);
+                dispTreshLength = 0.8 * (dispTresh / initialTora);
             }
 
             stripEndLX = ldaX - 0.8 * (60 / initialTora);
@@ -501,9 +458,7 @@ public class CanvasDrawer
 
             todaX = 0.1 + 0.8 * (1 - toda / initialTora);
             todaLength = 0.8 * (toda / initialTora);
-        }
-        else
-        {
+        } else {
             ldaX = 0.1;
             ldaLength = 0.8 * (lda / initialTora);
 
@@ -540,16 +495,14 @@ public class CanvasDrawer
         fillRect(stopwayRect);
 
         // Reciprocal clearway and stopway get drawn
-        if(runway.getReciprocalRunway() != null)
-        {
+        if (runway.getReciprocalRunway() != null) {
             RedeclarationComputer recipComp = redeclarationComputer.getReciprocalComputer();
             clearway = recipComp.getToda() - recipComp.getTora();
             stopway = recipComp.getAsda() - recipComp.getTora();
             Double recipTora = recipComp.getTora();
             Double recipInitTora = runway.getReciprocalRunway().getTora();
 
-            if(redeclarationComputer.getCalculationCase() == 1 || redeclarationComputer.getCalculationCase() == 3)
-            {
+            if (redeclarationComputer.getCalculationCase() == 1 || redeclarationComputer.getCalculationCase() == 3) {
                 // Reciprocal clearway gets drawn
                 clearwayRect = new Rectangle((0.1 + 0.8 * (recipTora / recipInitTora)) * canvasWidth, 0.35 * canvasHeight, 0.8 * (clearway / recipInitTora) * canvasWidth, 0.3 * canvasHeight);
                 gc.setFill(Color.rgb(159, 181, 0, 0.6));
@@ -559,9 +512,7 @@ public class CanvasDrawer
                 stopwayRect = new Rectangle((0.1 + 0.8 * (recipTora / recipInitTora)) * canvasWidth, 0.4 * canvasHeight, 0.8 * (stopway / recipInitTora) * canvasWidth, 0.2 * canvasHeight);
                 gc.setFill(Color.rgb(188, 91, 92, 0.6));
                 fillRect(stopwayRect);
-            }
-            else
-            {
+            } else {
                 // Reciprocal clearway gets drawn
                 clearwayRect = new Rectangle(0.9 * canvasWidth, 0.35 * canvasHeight, 0.8 * (clearway / recipInitTora) * canvasWidth, 0.3 * canvasHeight);
                 gc.setFill(Color.rgb(159, 181, 0, 0.6));
@@ -585,8 +536,7 @@ public class CanvasDrawer
         fillRect(lineRect);
 
         // DispTresh vertical lines
-        if((redeclarationComputer.getCalculationCase() == 2 || redeclarationComputer.getCalculationCase() == 4) && dispTresh != 0)
-        {
+        if ((redeclarationComputer.getCalculationCase() == 2 || redeclarationComputer.getCalculationCase() == 4) && dispTresh != 0) {
             lineRect = new Rectangle(dispTreshX * canvasWidth, 0.58 * canvasHeight, vertPercent * canvasWidth, (0.65 - 0.58) * canvasHeight);
             fillRect(lineRect);
             lineRect = new Rectangle((dispTreshX + dispTreshLength) * canvasWidth, 0.58 * canvasHeight, vertPercent * canvasWidth, (0.65 - 0.58) * canvasHeight);
@@ -637,7 +587,7 @@ public class CanvasDrawer
 
         // Arrows get drawn here
         drawHorizontalArrow(ldaX, 0.65, ldaLength, true, true, "LDA = " + lda, Color.WHITE);
-        if((redeclarationComputer.getCalculationCase() == 2 || redeclarationComputer.getCalculationCase() == 4) && dispTresh != 0)
+        if ((redeclarationComputer.getCalculationCase() == 2 || redeclarationComputer.getCalculationCase() == 4) && dispTresh != 0)
             drawHorizontalArrow(dispTreshX, 0.65, dispTreshLength, true, true, "DT", Color.YELLOW);
         drawHorizontalArrow(stripEndLX, 0.65, stripEndLLength, false, false, "60", Color.YELLOW);
         drawHorizontalArrow(resaMinLX, 0.65, resaMinLLength, true, true, "RL", Color.YELLOW);
@@ -649,8 +599,7 @@ public class CanvasDrawer
 
     }
 
-    private void drawSideOnDetails(Canvas canvas)
-    {
+    private void drawSideOnDetails(Canvas canvas) {
         // Rectangle asphaltRect = new Rectangle(0.1 * canvasWidth, 0.55 * canvasHeight, 0.80 * canvasWidth, 0.03 * canvasHeight);
         Double initialTora = runway.getTora();
         Double dispTresh = runway.getDisplacedThreshold();
@@ -672,15 +621,13 @@ public class CanvasDrawer
         Double resaMinTX = 0.0, resaMinTLength = 0.0;
 
         // Arrow coordinates get computed
-        if(redeclarationComputer.getCalculationCase() == 2 || redeclarationComputer.getCalculationCase() == 4)
-        {
+        if (redeclarationComputer.getCalculationCase() == 2 || redeclarationComputer.getCalculationCase() == 4) {
             ldaX = 0.1 + 0.8 * (1 - (lda + dispTresh) / initialTora);
             ldaLength = 0.8 * (lda / initialTora);
 
-            if(dispTresh != 0)
-            {
+            if (dispTresh != 0) {
                 dispTreshX = 0.1 + 0.8 * (1 - dispTresh / initialTora);
-                dispTreshLength =  0.8 * (dispTresh / initialTora);
+                dispTreshLength = 0.8 * (dispTresh / initialTora);
             }
 
             stripEndLX = ldaX - 0.8 * (60 / initialTora);
@@ -703,9 +650,7 @@ public class CanvasDrawer
 
             todaX = 0.1 + 0.8 * (1 - toda / initialTora);
             todaLength = 0.8 * (toda / initialTora);
-        }
-        else
-        {
+        } else {
             ldaX = 0.1;
             ldaLength = 0.8 * (lda / initialTora);
 
@@ -742,16 +687,14 @@ public class CanvasDrawer
         fillRect(stopwayRect);
 
         // Reciprocal clearway and stopway get drawn
-        if(runway.getReciprocalRunway() != null)
-        {
+        if (runway.getReciprocalRunway() != null) {
             RedeclarationComputer recipComp = redeclarationComputer.getReciprocalComputer();
             clearway = recipComp.getToda() - recipComp.getTora();
             stopway = recipComp.getAsda() - recipComp.getTora();
             Double recipTora = recipComp.getTora();
             Double recipInitTora = runway.getReciprocalRunway().getTora();
 
-            if(redeclarationComputer.getCalculationCase() == 1 || redeclarationComputer.getCalculationCase() == 3)
-            {
+            if (redeclarationComputer.getCalculationCase() == 1 || redeclarationComputer.getCalculationCase() == 3) {
                 // Reciprocal clearway gets drawn
                 clearwayRect = new Rectangle((0.1 + 0.8 * (recipTora / recipInitTora)) * canvasWidth, 0.55 * canvasHeight, 0.8 * (clearway / recipInitTora) * canvasWidth, 0.05 * canvasHeight);
                 gc.setFill(Color.rgb(159, 181, 0, 0.6));
@@ -761,9 +704,7 @@ public class CanvasDrawer
                 stopwayRect = new Rectangle((0.1 + 0.8 * (recipTora / recipInitTora)) * canvasWidth, 0.55 * canvasHeight, 0.8 * (stopway / recipInitTora) * canvasWidth, 0.03 * canvasHeight);
                 gc.setFill(Color.rgb(188, 91, 92, 0.6));
                 fillRect(stopwayRect);
-            }
-            else
-            {
+            } else {
                 // Reciprocal clearway gets drawn
                 clearwayRect = new Rectangle(0.9 * canvasWidth, 0.55 * canvasHeight, 0.8 * (clearway / recipInitTora) * canvasWidth, 0.05 * canvasHeight);
                 gc.setFill(Color.rgb(159, 181, 0, 0.6));
@@ -787,8 +728,7 @@ public class CanvasDrawer
         fillRect(lineRect);
 
         // DispTresh vertical lines
-        if((redeclarationComputer.getCalculationCase() == 2 || redeclarationComputer.getCalculationCase() == 4) && dispTresh != 0)
-        {
+        if ((redeclarationComputer.getCalculationCase() == 2 || redeclarationComputer.getCalculationCase() == 4) && dispTresh != 0) {
             lineRect = new Rectangle(dispTreshX * canvasWidth, 0.58 * canvasHeight, vertPercent * canvasWidth, (0.65 - 0.58) * canvasHeight);
             fillRect(lineRect);
             lineRect = new Rectangle((dispTreshX + dispTreshLength) * canvasWidth, 0.58 * canvasHeight, vertPercent * canvasWidth, (0.65 - 0.58) * canvasHeight);
@@ -839,7 +779,7 @@ public class CanvasDrawer
 
         // Arrows get drawn here
         drawHorizontalArrow(ldaX, 0.65, ldaLength, true, true, "LDA = " + lda, Color.WHITE);
-        if((redeclarationComputer.getCalculationCase() == 2 || redeclarationComputer.getCalculationCase() == 4) && dispTresh != 0)
+        if ((redeclarationComputer.getCalculationCase() == 2 || redeclarationComputer.getCalculationCase() == 4) && dispTresh != 0)
             drawHorizontalArrow(dispTreshX, 0.65, dispTreshLength, true, true, "DT", Color.BLACK);
         drawHorizontalArrow(stripEndLX, 0.65, stripEndLLength, false, false, "60", Color.BLACK);
         drawHorizontalArrow(resaMinLX, 0.65, resaMinLLength, true, true, "RL", Color.BLACK);
@@ -852,8 +792,7 @@ public class CanvasDrawer
         // Slopes get drawn here
         gc.setStroke((Color.BLACK));
         gc.setFill(Color.BLACK);
-        if(redeclarationComputer.getCalculationCase() == 1 || redeclarationComputer.getCalculationCase() == 3)
-        {
+        if (redeclarationComputer.getCalculationCase() == 1 || redeclarationComputer.getCalculationCase() == 3) {
             gc.setLineWidth(0.005 * canvasHeight);
             gc.strokeLine(resaMinLX * canvasWidth + xOffset, 0.55 * canvasHeight + yOffset, (resaMinLX + resaMinLLength) * canvasWidth + xOffset, 1.005 * imageY);
             gc.strokeLine(resaMinTX * canvasWidth + xOffset, 0.55 * canvasHeight + yOffset, (resaMinTX + resaMinTLength) * canvasWidth + xOffset, 1.005 * imageY);
@@ -863,9 +802,7 @@ public class CanvasDrawer
             Font font = Font.font("Arial", canvasWidth * 0.015);
             gc.setFont(font);
             gc.fillText("H", (resaMinTX + resaMinTLength - 0.014) * canvasWidth + xOffset, 0.55 * canvasHeight - 0.5 * redeclarationComputer.getObstacleHeight() + yOffset);
-        }
-        else
-        {
+        } else {
             gc.setLineWidth(0.005 * canvasHeight);
             gc.strokeLine((resaMinLX + resaMinLLength) * canvasWidth + xOffset, 0.55 * canvasHeight + yOffset, resaMinLX * canvasWidth + xOffset, 1.005 * imageY);
             gc.strokeLine((resaMinTX + resaMinTLength) * canvasWidth + xOffset, 0.55 * canvasHeight + yOffset, resaMinTX * canvasWidth + xOffset, 1.005 * imageY);
@@ -883,23 +820,19 @@ public class CanvasDrawer
 //  Helper methods
 //================================================================================================================================*/
 
-    private void adjustDrawingSettings(Canvas canvas)
-    {
+    private void adjustDrawingSettings(Canvas canvas) {
         gc = canvas.getGraphicsContext2D();
 
         //  Clears canvas for next paint session
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
         //  Determines how to set the the canvasWidth and canvasHeight
-        if(canvas.getHeight() < canvas.getWidth() / widthToHeightRatio)
-        {
+        if (canvas.getHeight() < canvas.getWidth() / widthToHeightRatio) {
             canvasHeight = canvas.getHeight();
             canvasWidth = widthToHeightRatio * canvasHeight;
             xOffset = (canvas.getWidth() - canvasWidth) / 2;
             yOffset = 0;
-        }
-        else
-        {
+        } else {
             canvasWidth = canvas.getWidth();
             canvasHeight = canvasWidth / widthToHeightRatio;
             xOffset = 0;
@@ -908,8 +841,7 @@ public class CanvasDrawer
 
     }
 
-    private void fillRect(Rectangle rect)
-    {
+    private void fillRect(Rectangle rect) {
         gc.fillRect(rect.getX() + xOffset, rect.getY() + yOffset, rect.getWidth(), rect.getHeight());
     }
 
@@ -917,13 +849,11 @@ public class CanvasDrawer
 //  Setters
 //================================================================================================================================*/
 
-    public void setRunway(Runway runway)
-    {
+    public void setRunway(Runway runway) {
         this.runway = runway;
     }
 
-    public void setRedeclarationComputer(RedeclarationComputer redeclarationComputer)
-    {
+    public void setRedeclarationComputer(RedeclarationComputer redeclarationComputer) {
         this.redeclarationComputer = redeclarationComputer;
     }
 }

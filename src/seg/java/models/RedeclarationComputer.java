@@ -6,13 +6,15 @@ public class RedeclarationComputer {
 //  Fields
 //================================================================================================================================*/
 
+    private final Double BLAST_PROTECTION = 300.0;                // 300-500 depending on the aircraft
+    private final Double RESA = 240.0;
+    private final Double STRIP_END = 60.0;
+    private final Double SLOPE_INVERSE = 50.0;
     private RedeclarationComputer reciprocalComputer;
-
     private Double obstacleXL;
     private Double obstacleXR;
     private Double obstacleY;
     private Double obstacleHeight;
-
     private Runway runway;
     private char runwayDirection;
     private Double tora;
@@ -20,29 +22,21 @@ public class RedeclarationComputer {
     private Double asda;
     private Double lda;
     private Double dispTresh;
-
     private int calculationCase;
 
+/*==================================================================================================================================
+//  Constants
+//================================================================================================================================*/
     private String toraBD = "";
     private String todaBD = "";
     private String asdaBD = "";
     private String ldaBD = "";
 
 /*==================================================================================================================================
-//  Constants
-//================================================================================================================================*/
-
-    private final Double BLAST_PROTECTION = 300.0;                // 300-500 depending on the aircraft
-    private final Double RESA = 240.0;
-    private final Double STRIP_END = 60.0;
-    private final Double SLOPE_INVERSE = 50.0;
-
-/*==================================================================================================================================
 //  Constructors
 //================================================================================================================================*/
 
-    public RedeclarationComputer()
-    {
+    public RedeclarationComputer() {
 
     }
 
@@ -50,36 +44,30 @@ public class RedeclarationComputer {
 //  Methods
 //================================================================================================================================*/
 
-    public Boolean needsRecalculation(Double obstacleXL, Double obstacleXR, Double obstacleY)
-    {
+    public Boolean needsRecalculation(Double obstacleXL, Double obstacleXR, Double obstacleY) {
         // We mirror the process for the reciprocal computer
-        if(runway.getReciprocalRunway() != null && reciprocalComputer.needsRecalculationAsRecip(obstacleXL, obstacleXR, obstacleY))
+        if (runway.getReciprocalRunway() != null && reciprocalComputer.needsRecalculationAsRecip(obstacleXL, obstacleXR, obstacleY))
             reciprocalComputer.calculate();
 
 
         // And then we carry on with the current computer
-        if(obstacleXL < -60 || obstacleXL > tora + 60)
-        {
+        if (obstacleXL < -60 || obstacleXL > tora + 60) {
             return false;
         }
 
-        if(obstacleY < -75 || obstacleY > 75)
-        {
+        if (obstacleY < -75 || obstacleY > 75) {
             return false;
         }
 
         return true;
     }
 
-    public Boolean needsRecalculationAsRecip(Double obstacleXL, Double obstacleXR, Double obstacleY)
-    {
-        if(obstacleXL < -60 || obstacleXL > tora + 60)
-        {
+    public Boolean needsRecalculationAsRecip(Double obstacleXL, Double obstacleXR, Double obstacleY) {
+        if (obstacleXL < -60 || obstacleXL > tora + 60) {
             return false;
         }
 
-        if(obstacleY < -75 || obstacleY > 75)
-        {
+        if (obstacleY < -75 || obstacleY > 75) {
             return false;
         }
 
@@ -87,28 +75,20 @@ public class RedeclarationComputer {
     }
 
     // The actual recalculation happens here
-    public void calculate()
-    {
+    public void calculate() {
         Double localTora = 0.0;
         Double localToda = 0.0;
         Double localAsda = 0.0;
         Double localLda = 0.0;
 
         calculationCase = determineCalculationCase();
-        if (calculationCase == 1)
-        {
+        if (calculationCase == 1) {
             calculateCase1(localTora, localToda, localAsda, localLda);
-        }
-        else if (calculationCase == 2)
-        {
+        } else if (calculationCase == 2) {
             calculateCase2(localTora, localToda, localAsda, localLda);
-        }
-        else if (calculationCase == 3)
-        {
+        } else if (calculationCase == 3) {
             calculateCase3(localTora, localToda, localAsda, localLda);
-        }
-        else
-        {
+        } else {
             calculateCase4(localTora, localToda, localAsda, localLda);
         }
     }
@@ -120,18 +100,16 @@ public class RedeclarationComputer {
      * 3 represents the action of TAKE OFF AWAY/LANDING OVER + L
      * 4 represents the action of TAKE OFF TOWARDS/LANDING TOWARDS + L
      */
-    private int determineCalculationCase()
-    {
+    private int determineCalculationCase() {
         System.out.println("Runway direction = " + runwayDirection);
 
-        if(runwayDirection == 'R')       // for this one you might want to consider the R dispTresh
+        if (runwayDirection == 'R')       // for this one you might want to consider the R dispTresh
         {
-            if(obstacleXR < tora / 2)
+            if (obstacleXR < tora / 2)
                 calculationCase = 1;
             else
                 calculationCase = 2;
-        }
-        else {
+        } else {
             if (obstacleXL < tora / 2)
                 calculationCase = 3;
             else
@@ -143,14 +121,14 @@ public class RedeclarationComputer {
     }
 
     // TAKE OFF AWAY/LANDING OVER + R
-    private void calculateCase1(Double localTora, Double localToda, Double localAsda, Double localLda)
-    {
+    private void calculateCase1(Double localTora, Double localToda, Double localAsda, Double localLda) {
         //  This one definitely must be checked later
-        localTora = tora - dispTresh - obstacleXR - BLAST_PROTECTION ;
+        localTora = tora - dispTresh - obstacleXR - BLAST_PROTECTION;
 
         localToda = localTora + calculateClearway();
 
-        localAsda = localTora + calculateStopway();;
+        localAsda = localTora + calculateStopway();
+        ;
 
         localLda = lda - obstacleXR - Math.max(Math.max(SLOPE_INVERSE * obstacleHeight, RESA) + STRIP_END, BLAST_PROTECTION);
 
@@ -161,8 +139,7 @@ public class RedeclarationComputer {
     }
 
     // TAKE OFF TOWARDS/LANDING TOWARDS + R
-    private void calculateCase2(Double localTora, Double localToda, Double localAsda, Double localLda)
-    {
+    private void calculateCase2(Double localTora, Double localToda, Double localAsda, Double localLda) {
         localTora = obstacleXR + dispTresh - Math.max(SLOPE_INVERSE * obstacleHeight, RESA) - STRIP_END;
 
         localToda = localTora;
@@ -178,8 +155,7 @@ public class RedeclarationComputer {
     }
 
     // TAKE OFF AWAY/LANDING OVER + L
-    private void calculateCase3(Double localTora, Double localToda, Double localAsda, Double localLda)
-    {
+    private void calculateCase3(Double localTora, Double localToda, Double localAsda, Double localLda) {
         //  This one definitely must be checked later
         localTora = tora - dispTresh - obstacleXL - BLAST_PROTECTION;
 
@@ -196,8 +172,7 @@ public class RedeclarationComputer {
     }
 
     // TAKE OFF TOWARDS/LANDING TOWARDS + L
-    private void calculateCase4(Double localTora, Double localToda, Double localAsda, Double localLda)
-    {
+    private void calculateCase4(Double localTora, Double localToda, Double localAsda, Double localLda) {
         localTora = dispTresh + obstacleXL - Math.max(SLOPE_INVERSE * obstacleHeight, RESA) - STRIP_END;
 
         localToda = localTora;
@@ -212,13 +187,11 @@ public class RedeclarationComputer {
         setParameters(localTora, localToda, localAsda, localLda);
     }
 
-    public double calculateStopway()
-    {
+    public double calculateStopway() {
         return asda - tora;
     }
 
-    public double calculateClearway()
-    {
+    public double calculateClearway() {
         return toda - tora;
     }
 
@@ -226,14 +199,8 @@ public class RedeclarationComputer {
 //  Setters
 //================================================================================================================================*/
 
-    public void setReciprocalComputer(RedeclarationComputer reciprocalComputer)
-    {
-        this.reciprocalComputer = reciprocalComputer;
-    }
-
     //  Sets the runway for which we calculate
-    public void setRunway(Runway runway)
-    {
+    public void setRunway(Runway runway) {
         this.runway = runway;
         this.runwayDirection = Character.toUpperCase(runway.getRunwayName().charAt(2));
         this.tora = runway.getTora();
@@ -242,13 +209,12 @@ public class RedeclarationComputer {
         this.lda = runway.getLda();
         this.dispTresh = runway.getDisplacedThreshold();
 
-        if(runway.getReciprocalRunway() != null)
+        if (runway.getReciprocalRunway() != null)
             reciprocalComputer.setRunwayAsRecip(runway.getReciprocalRunway());
     }
 
     //  Sets the runway for the reciprocal computer
-    public void setRunwayAsRecip(Runway runway)
-    {
+    public void setRunwayAsRecip(Runway runway) {
         this.runway = runway;
         this.runwayDirection = Character.toUpperCase(runway.getRunwayName().charAt(2));
         this.tora = runway.getTora();
@@ -258,35 +224,31 @@ public class RedeclarationComputer {
         this.dispTresh = runway.getDisplacedThreshold();
     }
 
-    public void setObstacleDetails(Double obstacleXL, Double obstacleXR, Double obstacleY, Double obstacleHeight)
-    {
+    public void setObstacleDetails(Double obstacleXL, Double obstacleXR, Double obstacleY, Double obstacleHeight) {
         this.obstacleXL = obstacleXL;
         this.obstacleXR = obstacleXR;
         this.obstacleY = obstacleY;
         this.obstacleHeight = obstacleHeight;
 
-        if(runway.getReciprocalRunway() != null)
+        if (runway.getReciprocalRunway() != null)
             reciprocalComputer.setObstacleDetailsAsRecip(obstacleXL, obstacleXR, obstacleY, obstacleHeight);
     }
 
-    public void setObstacleDetailsAsRecip(Double obstacleXL, Double obstacleXR, Double obstacleY, Double obstacleHeight)
-    {
+    public void setObstacleDetailsAsRecip(Double obstacleXL, Double obstacleXR, Double obstacleY, Double obstacleHeight) {
         this.obstacleXL = obstacleXL;
         this.obstacleXR = obstacleXR;
         this.obstacleY = obstacleY;
         this.obstacleHeight = obstacleHeight;
     }
 
-    public void setParameters(Double tora, Double toda, Double asda, Double lda)
-    {
+    public void setParameters(Double tora, Double toda, Double asda, Double lda) {
         this.tora = tora;
         this.toda = toda;
         this.asda = asda;
         this.lda = lda;
     }
 
-    private void setCase1BD(Double localTora, Double localToda, Double localAsda, Double localLda)
-    {
+    private void setCase1BD(Double localTora, Double localToda, Double localAsda, Double localLda) {
         toraBD = " = Original TORA - Displaced Treshold - Distance from Treshold - Blast Protection\n = " +
                 Double.toString(tora) + " - " + Double.toString(dispTresh) + " - " +
                 Double.toString(obstacleXR) + " - " + Double.toString(BLAST_PROTECTION) + "\n" +
@@ -304,8 +266,7 @@ public class RedeclarationComputer {
                 + "\n = " + Double.toString(localLda);
     }
 
-    private void setCase2BD(Double localTora, Double localToda, Double localAsda, Double localLda)
-    {
+    private void setCase2BD(Double localTora, Double localToda, Double localAsda, Double localLda) {
         toraBD = " = Displaced Treshold + Distance from Treshhold - max(Slope Calculation, RESA) - Strip End\n = " +
                 Double.toString(dispTresh) + " + " + Double.toString(obstacleXR) + " - " +
                 Double.toString(Math.max(SLOPE_INVERSE * obstacleHeight, RESA)) + " - " + Double.toString(STRIP_END) + "\n" +
@@ -320,8 +281,7 @@ public class RedeclarationComputer {
                 Double.toString(STRIP_END) + "\n = " + Double.toString(localLda);
     }
 
-    private void setCase3BD(Double localTora, Double localToda, Double localAsda, Double localLda)
-    {
+    private void setCase3BD(Double localTora, Double localToda, Double localAsda, Double localLda) {
         toraBD = " = Original TORA - Displaced Treshold - Distance from Treshold - Blast Protection\n = " +
                 Double.toString(tora) + " - " + Double.toString(dispTresh) + " - " +
                 Double.toString(obstacleXL) + " - " + Double.toString(BLAST_PROTECTION) + "\n" +
@@ -339,8 +299,7 @@ public class RedeclarationComputer {
                 Double.toString(localLda);
     }
 
-    private void setCase4BD(Double localTora, Double localToda, Double localAsda, Double localLda)
-    {
+    private void setCase4BD(Double localTora, Double localToda, Double localAsda, Double localLda) {
         toraBD = " = Displaced Treshold + Distance from Treshold - Max(Slope calculation, RESA) - Strip End\n = " +
                 Double.toString(dispTresh) + " + " + Double.toString(obstacleXL) + " - " +
                 Double.toString(Math.max(SLOPE_INVERSE * obstacleHeight, RESA)) + " - " + STRIP_END + "\n"
@@ -355,88 +314,76 @@ public class RedeclarationComputer {
                 Double.toString(localLda);
     }
 
+    public RedeclarationComputer getReciprocalComputer() {
+        return reciprocalComputer;
+    }
+
 /*==================================================================================================================================
 //  Getters
 //================================================================================================================================*/
 
-    public RedeclarationComputer getReciprocalComputer()
-    {
-        return reciprocalComputer;
+    public void setReciprocalComputer(RedeclarationComputer reciprocalComputer) {
+        this.reciprocalComputer = reciprocalComputer;
     }
 
-    public Double getTora()
-    {
+    public Double getTora() {
         return tora;
     }
 
-    public Double getToda()
-    {
+    public Double getToda() {
         return toda;
     }
 
-    public Double getAsda()
-    {
+    public Double getAsda() {
         return asda;
     }
 
-    public Double getLda()
-    {
+    public Double getLda() {
         return lda;
     }
 
-    public Double getDispTresh()
-    {
+    public Double getDispTresh() {
         return dispTresh;
     }
 
-    public Double getObstacleXL()
-    {
+    public Double getObstacleXL() {
         return obstacleXL;
     }
 
-    public Double getObstacleXR()
-    {
+    public Double getObstacleXR() {
         return obstacleXR;
     }
 
-    public Double getObstacleY()
-    {
+    public Double getObstacleY() {
         return obstacleY;
     }
 
-    public Double getObstacleHeight()
-    {
+    public Double getObstacleHeight() {
         return obstacleHeight;
     }
 
-    public String getToraBD()
-    {
+    public String getToraBD() {
         return toraBD;
     }
 
-    public String getTodaBD()
-    {
+    public String getTodaBD() {
         return todaBD;
     }
 
-    public String getAsdaBD()
-    {
+    public String getAsdaBD() {
         return asdaBD;
     }
 
-    public String getLdaBD()
-    {
+    public String getLdaBD() {
         return ldaBD;
     }
 
-    public int getCalculationCase()
-    {
+    public int getCalculationCase() {
         return calculationCase;
     }
 
-    public Double getAppropriateX()
-    {
-        if(runway.getRunwayName().charAt(2) == 'L')
+    public Double getAppropriateX() {
+        if (runway.getRunwayName().charAt(2) == 'L')
             return obstacleXL;
         else
             return obstacleXR;
@@ -446,10 +393,8 @@ public class RedeclarationComputer {
 //  Exceptions
 //================================================================================================================================*/
 
-    public class InvalidActionException extends Throwable
-    {
-        public InvalidActionException(String s)
-        {
+    public class InvalidActionException extends Throwable {
+        public InvalidActionException(String s) {
             System.out.println(s);
         }
     }
