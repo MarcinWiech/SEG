@@ -91,6 +91,11 @@ public class DashboardController {
 
     private double obstacleXL = 0;
     private double obstacleXR = 0;
+    private double toraInput;
+    private double todaInput;
+    private double asdaInput;
+    private double ldaInput;
+    private double dispThresholdInput;
 
     private Image greentickIcon;
     private Image switchIcon;
