@@ -5,7 +5,6 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="452.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <TableView layoutX="14.0" layoutY="60.0" prefHeight="377.0" prefWidth="462.0">
@@ -23,13 +22,13 @@
       <Button layoutX="495.0" layoutY="190.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="91.0" text="Add New" />
       <Button layoutX="495.0" layoutY="331.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="91.0" text="Save" />
       <Button layoutX="495.0" layoutY="369.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="91.0" text="Save As" />
-      <Separator layoutX="477.0" layoutY="299.0" prefHeight="4.0" prefWidth="129.0" />
+      <Separator layoutX="477.0" layoutY="299.0" prefHeight="4.0" prefWidth="122.0" />
       <Text layoutX="14.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Heathrow Airport" wrappingWidth="274.7294921875">
          <font>
             <Font size="22.0" />
          </font>
       </Text>
-      <Separator layoutX="476.0" layoutY="155.0" prefHeight="4.0" prefWidth="129.0" />
+      <Separator layoutX="476.0" layoutY="155.0" prefHeight="4.0" prefWidth="122.0" />
       <Text layoutX="476.0" layoutY="176.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Runway Options" textAlignment="CENTER" wrappingWidth="121.7294921875">
          <font>
             <Font size="14.0" />
