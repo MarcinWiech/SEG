@@ -18,7 +18,7 @@ import java.util.ResourceBundle;
 
 public class LoginViewController implements Initializable {
 
-    private HashMap<String,String> loginsAndPasswords = new HashMap<>();
+    private HashMap<String,String> loginsAndPasswords = new HashMap<String,String>();
 
     public TextField loginTextField;
     public PasswordField passwordTextField;

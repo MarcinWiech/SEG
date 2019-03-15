@@ -32,7 +32,8 @@ public class XMLReaderDOM {
     private HashMap<String, Airport> airportHashMap;
 
     public XMLReaderDOM() {
-        String filePath = "./src/airportsXML.xml";
+        String filePath = "../../airportsXML.xml";
+//        URl url = getClass().getResource("ListStopWords.txt");
         File xmlFile = new File(filePath);
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder;
