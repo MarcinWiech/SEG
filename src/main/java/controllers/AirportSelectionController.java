@@ -1,4 +1,4 @@
-package seg.java.controllers;
+package controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -11,8 +11,8 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import seg.java.models.Airport;
-import seg.java.XMLReaderDOM;
+import models.Airport;
+import models.XMLReaderDOM;
 
 import java.net.URL;
 import java.util.ResourceBundle;

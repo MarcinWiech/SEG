@@ -1,4 +1,4 @@
-package seg.java.controllers;
+package controllers;
 
 import javafx.scene.image.Image ;
 import javafx.geometry.Pos;
@@ -7,7 +7,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
-import seg.java.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
@@ -15,15 +14,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;                                                  // for Button and stuff
-import javafx.scene.canvas.*;                                                   // for Canvas and stuff
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import seg.java.models.Airport;
-import seg.java.models.RedeclarationComputer;
-import seg.java.models.Runway;
+import models.*;
 import org.controlsfx.control.Notifications;
 
-import java.awt.*;
 
 public class DashboardController
 {
@@ -91,6 +86,7 @@ public class DashboardController
         redeclarationComputer.setReciprocalComputer(reciprocalComputer);
         reciprocalComputer.setReciprocalComputer(redeclarationComputer);
         canvasDrawer = new CanvasDrawer(redeclarationComputer);
+
 
 
         //  REALLY IMPORTANT: canvases get resizable by binding them to their parents

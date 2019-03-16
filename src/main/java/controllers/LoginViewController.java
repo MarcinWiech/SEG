@@ -1,16 +1,14 @@
-package seg.java.controllers;
+package controllers;
 
-import com.sun.org.apache.xpath.internal.SourceTree;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import seg.java.models.Airport;
-import seg.java.XMLReaderDOM;
+import models.Airport;
+import models.XMLReaderDOM;
 
 import java.net.URL;
 import java.util.HashMap;
