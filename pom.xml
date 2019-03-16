@@ -18,13 +18,7 @@
                 </configuration>
             </plugin>
         </plugins>
-        <!--<resources>-->
-            <!--<resource>-->
-                <!--<directory>src/local-maven-repo</directory>-->
-            <!--</resource>-->
-        <!--</resources>-->
     </build>
-    <!-- https://mvnrepository.com/artifact/org.controlsfx/controlsfx -->
     <dependencies>
         <!-- https://mvnrepository.com/artifact/org.controlsfx/controlsfx -->
         <dependency>
