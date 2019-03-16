@@ -1,4 +1,4 @@
-package seg.java;
+package models;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -9,38 +9,34 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-import seg.java.models.Airport;
-import seg.java.models.Runway;
+import models.Airport;
+import models.Runway;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 
 public class XMLReaderDOM {
     private HashMap<String, Airport> airportHashMap;
 
     public XMLReaderDOM() {
-        String filePath = "../../airportsXML.xml";
-//        URl url = getClass().getResource("ListStopWords.txt");
-        File xmlFile = new File(filePath);
+//        String filePath = "../../airportsXML.xml";
+////        URl url = getClass().getResource("ListStopWords.txt");
+//        ClassLoader classLoader = ClassLoader.getSystemClassLoader();
+//        System.out.println(classLoader.getResource("airportsXML.xml").getFile() + " sdsd");
+//        File xmlFile = new File(classLoader.getResource("airportsXML.xml").getFile());
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        InputStream is = classloader.getResourceAsStream("airportsXML.xml");
+
+//        File xmlFile = new File(filePath);
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder;
 
         try {
             dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(xmlFile);
+            //Document doc = dBuilder.parse(xmlFile);
+            Document doc = dBuilder.parse(is);
             doc.getDocumentElement().normalize();
 
             NodeList airportNodeList = doc.getElementsByTagName("Airport");

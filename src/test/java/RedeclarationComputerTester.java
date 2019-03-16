@@ -4,8 +4,8 @@ package seg.tests;//package seg.tests;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import seg.java.models.RedeclarationComputer;
-import seg.java.models.Runway;
+import models.RedeclarationComputer;
+import models.Runway;
 
 import static org.junit.Assert.assertEquals;
 

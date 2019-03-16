@@ -1,6 +1,5 @@
-package seg.java;
+package models;
 
-import javafx.geometry.Bounds;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.*;
 import javafx.scene.canvas.Canvas;
@@ -11,8 +10,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.transform.*;
-import seg.java.models.RedeclarationComputer;
-import seg.java.models.Runway;
+import models.RedeclarationComputer;
+import models.Runway;
 
 public class CanvasDrawer
 {
@@ -225,7 +224,7 @@ public class CanvasDrawer
     {
         //  Draws the plane - the image needs to be in the assets folder
         gc = canvas.getGraphicsContext2D();
-        ImageView imageView = new ImageView("/seg/resources/images/top-down-plane.png");
+        ImageView imageView = new ImageView("images/top-down-plane.png");
         imageView.setRotate(-90);
         imageView.setPreserveRatio(true);
         imageView.setFitHeight(canvasHeight * 0.2);
@@ -262,7 +261,7 @@ public class CanvasDrawer
     {
         //  Draws the plane - the image needs to be in the assets folder
         gc = canvas.getGraphicsContext2D();
-        ImageView imageView = new ImageView("/seg/resources/images/side-view-plane.png");
+        ImageView imageView = new ImageView("images/side-view-plane.png");
         imageView.setPreserveRatio(true);
         imageView.setFitHeight(canvasHeight * 0.006 * redeclarationComputer.getObstacleHeight());
         if(redeclarationComputer.getCalculationCase() == 1 || redeclarationComputer.getCalculationCase() == 3)

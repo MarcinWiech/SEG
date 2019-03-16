@@ -6,6 +6,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.io.File;
+
 
 public class Main extends Application {
 
@@ -15,6 +17,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("views/airportSelection.fxml"));
         primaryStage.setTitle("Select Airport");
         primaryStage.setScene(new Scene(root, 385, 151));  // v: width v1: height

@@ -1,4 +1,4 @@
-package seg.java.models;
+package models;
 
 import java.util.HashMap;
 

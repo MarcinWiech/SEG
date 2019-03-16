@@ -130,8 +130,8 @@ public class DashboardController
         ldaNewTextbox.setEditable(false);
         thresholdInitialTextbox.setEditable(false);
 
-        greentickIcon = new Image("/seg/resources/images/greentick.png");
-        switchIcon = new Image("/seg/resources/images/switch.png");
+        greentickIcon = new Image("images/greentick.png");
+        switchIcon = new Image("images/switch.png");
     }
 
 /*==================================================================================================================================
@@ -300,7 +300,7 @@ public class DashboardController
         {
             Stage stage = (Stage) yTextbox.getScene().getWindow();
             stage.close();
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/airportSelection.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("views/airportSelection.fxml"));
             Parent root1 = fxmlLoader.load();
             stage = new Stage();
             stage.setTitle("Switch Airport");

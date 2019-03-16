@@ -24,7 +24,7 @@ public class ConfigureAirportController {
         try {
             Stage stage = (Stage) addAirportButton.getScene().getWindow();
             stage.close();
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/airportSelection.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("views/airportSelection.fxml"));
             Parent root1 = fxmlLoader.load();
             stage = new Stage();
             stage.setTitle("Airport Selection");
@@ -45,7 +45,7 @@ public class ConfigureAirportController {
             try {
                 Stage stage = (Stage) addAirportButton.getScene().getWindow();
                 stage.close();
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/configureRunway.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("views/configureRunway.fxml"));
                 Parent root1 = fxmlLoader.load();
 
                 ConfigureRunwayController configureRunwayController = fxmlLoader.getController();
