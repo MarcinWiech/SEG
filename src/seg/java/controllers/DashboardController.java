@@ -1,63 +1,87 @@
 package seg.java.controllers;
 
-import javafx.scene.image.Image ;
-import javafx.geometry.Pos;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
-import javafx.util.Duration;
-import seg.java.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;                                                  // for Button and stuff
-import javafx.scene.canvas.*;                                                   // for Canvas and stuff
+import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+import org.controlsfx.control.Notifications;
+import seg.java.CanvasDrawer;
+import seg.java.XMLReaderDOM;
 import seg.java.models.Airport;
+import seg.java.models.IllegalValueException;
 import seg.java.models.RedeclarationComputer;
 import seg.java.models.Runway;
-import org.controlsfx.control.Notifications;
 
-import java.awt.*;
+public class DashboardController {
+    @FXML
+    private TextField heightTextbox;
+    @FXML
+    private Pane topDownPane;
+    @FXML
+    private Pane sideOnPane;
+    @FXML
+    private Pane topDownPaneCopy;
+    @FXML
+    private Pane sideOnPaneCopy;
 
-public class DashboardController
-{
-    @FXML private TextField heightTextbox;
-    @FXML private Pane topDownPane;
-    @FXML private Pane sideOnPane;
-    @FXML private Pane topDownPaneCopy;
-    @FXML private Pane sideOnPaneCopy;
+    @FXML
+    private ChoiceBox runwayDroplist;
 
-    @FXML private ChoiceBox runwayDroplist;
+    @FXML
+    private Canvas topDownCanvas;
+    @FXML
+    private Canvas sideOnCanvas;
+    @FXML
+    private Canvas topDownCanvasCopy;
+    @FXML
+    private Canvas sideOnCanvasCopy;
 
-    @FXML private Canvas topDownCanvas;
-    @FXML private Canvas sideOnCanvas;
-    @FXML private Canvas topDownCanvasCopy;
-    @FXML private Canvas sideOnCanvasCopy;
+    @FXML
+    private TextField xLTextbox;
+    @FXML
+    private TextField xRTextbox;
+    @FXML
+    private TextField yTextbox;
 
-    @FXML private TextField xLTextbox;
-    @FXML private TextField xRTextbox;
-    @FXML private TextField yTextbox;
+    @FXML
+    private TextField toraInitialTextbox;
+    @FXML
+    private TextField todaInitialTextbox;
+    @FXML
+    private TextField asdaInitialTextbox;
+    @FXML
+    private TextField ldaInitialTextbox;
+    @FXML
+    private TextField thresholdInitialTextbox;
+    @FXML
+    private TextField toraNewTextbox;
+    @FXML
+    private TextField todaNewTextbox;
+    @FXML
+    private TextField asdaNewTextbox;
+    @FXML
+    private TextField ldaNewTextbox;
 
-    @FXML private TextField toraInitialTextbox;
-    @FXML private TextField todaInitialTextbox;
-    @FXML private TextField asdaInitialTextbox;
-    @FXML private TextField ldaInitialTextbox;
-    @FXML private TextField thresholdInitialTextbox;
-    @FXML private TextField toraNewTextbox;
-    @FXML private TextField todaNewTextbox;
-    @FXML private TextField asdaNewTextbox;
-    @FXML private TextField ldaNewTextbox;
-
-    @FXML private TextArea toraBDTextArea;
-    @FXML private TextArea todaBDTextArea;
-    @FXML private TextArea asdaBDTextArea;
-    @FXML private TextArea ldaBDTextArea;
+    @FXML
+    private TextArea toraBDTextArea;
+    @FXML
+    private TextArea todaBDTextArea;
+    @FXML
+    private TextArea asdaBDTextArea;
+    @FXML
+    private TextArea ldaBDTextArea;
 
     private XMLReaderDOM xmlReaderDOM;
     private CanvasDrawer canvasDrawer;
@@ -77,14 +101,14 @@ public class DashboardController
     private double dispThresholdInput;
 
     private Image greentickIcon;
+    private Image warningIcon;
     private Image switchIcon;
 
 /*==================================================================================================================================
 //  Initialize
 //================================================================================================================================*/
 
-    public void initialize()
-    {
+    public void initialize() {
         //  Main objects get initialized & related preparations
         redeclarationComputer = new RedeclarationComputer();
         reciprocalComputer = new RedeclarationComputer();
@@ -131,6 +155,7 @@ public class DashboardController
         thresholdInitialTextbox.setEditable(false);
 
         greentickIcon = new Image("/seg/resources/images/greentick.png");
+        warningIcon = new Image("/seg/resources/images/alert-triangle-yellow.png");
         switchIcon = new Image("/seg/resources/images/switch.png");
     }
 
@@ -138,57 +163,62 @@ public class DashboardController
 //  Other methods
 //================================================================================================================================*/
 
-    public void redeclareButtonPressed(ActionEvent event) throws RedeclarationComputer.InvalidActionException
-    {
+
+    public void redeclareButtonPressed(ActionEvent event) throws IllegalValueException {
         //  Obstacle details
         double obstacleX = 0;
         double obstacleY = 0;
         double obstacleHeight = 0;
 
+
         //  Obstacle details get read
-        try
-        {
+        try {
+
             obstacleHeight = Double.parseDouble(heightTextbox.getText());
-        }
-        catch (Exception e)
-        {
+
+
+        } catch (Exception e) {
             new Alert(Alert.AlertType.ERROR, "Please enter a valid value for: obstacle height!").showAndWait();
             return;
         }
 
-        try
-        {
-            obstacleXL = Double.parseDouble(xLTextbox.getText());
+        try {
+            obstacleHeight = Double.parseDouble(heightTextbox.getText());
+            if (obstacleHeight < 0) {
+                throw new IllegalValueException("negativeheight");
+            } else if (obstacleHeight > 100) {
+                throw new IllegalValueException("largeheight");
+            }
+
+        } catch (IllegalValueException e) {
+            return;
         }
-        catch (Exception e)
-        {
+
+
+        try {
+            obstacleXL = Double.parseDouble(xLTextbox.getText());
+
+        } catch (Exception e) {
             new Alert(Alert.AlertType.ERROR, "Please enter a valid value for: obstacle XL position!").showAndWait();
             return;
         }
 
-        try
-        {
+        try {
             obstacleXR = Double.parseDouble(xRTextbox.getText());
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             new Alert(Alert.AlertType.ERROR, "Please enter a valid value for: obstacle XR position!").showAndWait();
             return;
         }
 
-        try
-        {
+        try {
             obstacleY = Double.parseDouble(yTextbox.getText());
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             new Alert(Alert.AlertType.ERROR, "Please enter a valid value for: obstacle Y position!").showAndWait();
             return;
         }
 
         //  Recalculation of parameters
-        try
-        {
+        try {
             toraInput = Double.parseDouble(toraInitialTextbox.getText());
             todaInput = Double.parseDouble(todaInitialTextbox.getText());
             asdaInput = Double.parseDouble(asdaInitialTextbox.getText());
@@ -196,28 +226,38 @@ public class DashboardController
             dispThresholdInput = Double.parseDouble(thresholdInitialTextbox.getText());
             redeclarationComputer.setRunway(currentRunway);
 
+
             //  Obstacle details get passed to redeclarationComputer
             redeclarationComputer.setObstacleDetails(obstacleXL, obstacleXR, obstacleY, obstacleHeight);
 
             // We check to see whether we need to recalculate
-            if (redeclarationComputer.needsRecalculation(redeclarationComputer.getObstacleXL(), redeclarationComputer.getObstacleXR(), redeclarationComputer.getObstacleY()))
-            {
+            if (redeclarationComputer.needsRecalculation(redeclarationComputer.getObstacleXL(), redeclarationComputer.getObstacleXR(), redeclarationComputer.getObstacleY())) {
+                makeNotification("Runway Redeclared", "The runway has now been redeclared.", greentickIcon);
+
                 redeclare();
+                if (redeclarationComputer.getTora() > 5600) {
+                    makeNotification("Runway too large", "The redeclared runway is too large for operating", warningIcon);
+                } else if (redeclarationComputer.getTora() < 200) {
+                    makeNotification("Runway too small", "The redeclared runway is too small for operating", warningIcon);
+                }else if(redeclarationComputer.getTora() > redeclarationComputer.getToda()){
+                    makeNotification("TODA smaller than TORA", "The recalculated TODA is too small for operating", warningIcon);
+                }else if(redeclarationComputer.getToda() < redeclarationComputer.getAsda()){
+                    makeNotification("TODA smaller than ASDA ", "The recalculated TODA is too small for operating", warningIcon);
+                }else if(redeclarationComputer.calculateClearway() > redeclarationComputer.getTora()/2){
+                    makeNotification("Clearway too big", "The recalculated values indicated that clearway is larger than half of TORA", warningIcon);
+                }
             }
 
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             new Alert(Alert.AlertType.ERROR, "Please select a runway!").showAndWait();
             e.printStackTrace();
             return;
         }
 
-        makeNotification("Runway Redeclared" , "The runway has now been redeclared.", greentickIcon );
+
     }
 
-    private void redeclare()
-    {
+    private void redeclare() {
         //  We set the parameters and then calculate
         redeclarationComputer.calculate();
 
@@ -242,21 +282,17 @@ public class DashboardController
 
     }
 
-    public void switchButtonPressed()
-    {
+    public void switchButtonPressed() {
         //  Check special cases
-        if(currentRunway == null)
-        {
+        if (currentRunway == null) {
             new Alert(Alert.AlertType.ERROR, "Please select a runway!").showAndWait();
             return;
         }
-        if(currentRunway.getReciprocalRunway() == null)
-        {
+        if (currentRunway.getReciprocalRunway() == null) {
             new Alert(Alert.AlertType.ERROR, "No reciprocal runway exists!").showAndWait();
             return;
         }
-        if(toraNewTextbox.getText().equals(""))
-        {
+        if (toraNewTextbox.getText().equals("")) {
             runwayDroplist.setValue(currentRunway.getReciprocalRunway().getRunwayName());
             return;
         }
@@ -294,10 +330,8 @@ public class DashboardController
         makeNotification("Switched runway", "The reciprocal runway is now being viewed", switchIcon);
     }
 
-    public void switchAirport(ActionEvent actionEvent)
-    {
-        try
-        {
+    public void switchAirport(ActionEvent actionEvent) {
+        try {
             Stage stage = (Stage) yTextbox.getScene().getWindow();
             stage.close();
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/airportSelection.fxml"));
@@ -306,23 +340,19 @@ public class DashboardController
             stage.setTitle("Switch Airport");
             stage.setScene(new Scene(root1));
             stage.show();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             System.out.println(e);
             new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong :(").showAndWait();
         }
     }
 
-    public void setValues(XMLReaderDOM xmlReaderDOM, Airport airport)
-    {
+    public void setValues(XMLReaderDOM xmlReaderDOM, Airport airport) {
         xmlReaderDOM = xmlReaderDOM;
         currentAirport = airport;
         addToRunwayDroplist();
     }
 
-    public void selectRunway(ActionEvent actionEvent)
-    {
+    public void selectRunway(ActionEvent actionEvent) {
         currentRunway = currentAirport.getRunwayHashMap().get(runwayDroplist.getValue().toString());
         toraInitialTextbox.setText(currentRunway.getTora().toString());
         todaInitialTextbox.setText(currentRunway.getToda().toString());
@@ -331,23 +361,26 @@ public class DashboardController
         thresholdInitialTextbox.setText(currentRunway.getDisplacedThreshold().toString());
     }
 
-    public void addToRunwayDroplist()
-    {
-        for (String runwayName: currentAirport.getRunwayHashMap().keySet())
-        {
+    public void addToRunwayDroplist() {
+        for (String runwayName : currentAirport.getRunwayHashMap().keySet()) {
             runwayDroplist.getItems().add(runwayName);
         }
     }
 
     public void makeNotification(String title, String text, Image icon) {
+
         Notifications notificationBuilder = Notifications.create()
                 .title(title)
                 .text(text)
                 .graphic(new ImageView(icon))
                 .hideAfter(Duration.seconds(5))
                 .position(Pos.BOTTOM_RIGHT);
+
         notificationBuilder.darkStyle();
         notificationBuilder.show();
     }
+
+
+
 }
 
