@@ -295,11 +295,26 @@ public class DashboardController {
     public void switchAirport(ActionEvent actionEvent) {
         try {
             Stage stage = (Stage) yTextbox.getScene().getWindow();
-            stage.close();
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/airportSelection.fxml"));
             Parent root1 = fxmlLoader.load();
             stage = new Stage();
             stage.setTitle("Switch Airport");
+            stage.setScene(new Scene(root1));
+            stage.show();
+        } catch (Exception e) {
+            System.out.println(e);
+            new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong :(").showAndWait();
+        }
+    }
+
+    public void configureAirports(ActionEvent actionEvent) {
+        try {
+            Stage stage = (Stage) yTextbox.getScene().getWindow();
+            stage.close();
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/airportConfig.fxml"));
+            Parent root1 = fxmlLoader.load();
+            stage = new Stage();
+            stage.setTitle("Configure Airports");
             stage.setScene(new Scene(root1));
             stage.show();
         } catch (Exception e) {

@@ -84,6 +84,23 @@ public class AirportSelectionController implements Initializable {
         }
     }
 
+    public void configureAirports(ActionEvent actionEvent) {
+        try {
+            Stage stage = (Stage) addAirportLabel.getScene().getWindow();
+            stage.close();
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/airportConfig.fxml"));
+            Parent root1 = fxmlLoader.load();
+            stage = new Stage();
+            stage.setTitle("Configure Airports");
+            stage.setScene(new Scene(root1));
+            stage.show();
+        } catch (Exception e) {
+            System.out.println(e);
+            new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong :(").showAndWait();
+        }
+    }
+
+
     /**
      * HOVER OVER UNDERLINES LIKE HYPERLINK
      */
