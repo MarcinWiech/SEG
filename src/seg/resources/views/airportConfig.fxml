@@ -7,14 +7,14 @@
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="452.0" prefWidth="600.0"
             xmlns="http://javafx.com/javafx/8.0.121" fx:controller="seg.java.controllers.AirportConfigurationController">
     <children>
-        <TableView layoutX="14.0" layoutY="60.0" prefHeight="377.0" prefWidth="462.0">
+        <TableView fx:id="runwayTable" layoutX="14.0" layoutY="60.0" prefHeight="377.0" prefWidth="462.0">
             <columns>
-                <TableColumn editable="false" prefWidth="94.0" text="Designator"/>
-                <TableColumn editable="false" prefWidth="56.0" text="TORA"/>
-                <TableColumn editable="false" prefWidth="78.0" text="ASDA"/>
-                <TableColumn editable="false" prefWidth="65.0" text="LDA"/>
-                <TableColumn editable="false" prefWidth="87.0" text="Threshold"/>
-                <TableColumn editable="false" prefWidth="59.0" text="TODA"/>
+                <TableColumn fx:id="designator" editable="false" prefWidth="94.0" text="Designator"/>
+                <TableColumn fx:id="tora" editable="false" prefWidth="56.0" text="TORA"/>
+                <TableColumn fx:id="asda" editable="false" prefWidth="78.0" text="ASDA"/>
+                <TableColumn fx:id="lda" editable="false" prefWidth="65.0" text="LDA"/>
+                <TableColumn fx:id="threshold" editable="false" prefWidth="87.0" text="Threshold"/>
+                <TableColumn fx:id="toda" editable="false" prefWidth="59.0" text="TODA"/>
             </columns>
         </TableView>
         <Button layoutX="495.0" layoutY="226.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="91.0" text="Edit"/>
@@ -26,7 +26,7 @@
         <Button layoutX="495.0" layoutY="369.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="91.0"
                 text="Save As"/>
         <Separator layoutX="477.0" layoutY="299.0" prefHeight="4.0" prefWidth="122.0"/>
-        <Text layoutX="14.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Heathrow Airport"
+        <Text fx:id="airportName" layoutX="14.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Airport Name"
               wrappingWidth="274.7294921875">
             <font>
                 <Font size="22.0"/>

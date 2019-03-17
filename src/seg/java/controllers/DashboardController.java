@@ -308,6 +308,7 @@ public class DashboardController {
     }
 
     public void configureAirports(ActionEvent actionEvent) {
+
         try {
             Stage stage = (Stage) yTextbox.getScene().getWindow();
             stage.close();
@@ -317,7 +318,11 @@ public class DashboardController {
             stage.setTitle("Configure Airports");
             stage.setScene(new Scene(root1));
             stage.show();
+
+            AirportConfigurationController acc = fxmlLoader.getController();
+            acc.setAirport(currentAirport);
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println(e);
             new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong :(").showAndWait();
         }
