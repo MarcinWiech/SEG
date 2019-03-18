@@ -19,7 +19,9 @@ import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
 import seg.java.CanvasDrawer;
 import seg.java.controllers.config.AirportConfigurationController;
+import seg.java.XMLReaderDOM;
 import seg.java.models.Airport;
+import seg.java.models.IllegalValueException;
 import seg.java.models.RedeclarationComputer;
 import seg.java.models.Runway;
 
@@ -98,6 +100,7 @@ public class DashboardController {
     private double dispThresholdInput;
 
     private Image greentickIcon;
+    private Image warningIcon;
     private Image switchIcon;
 
 /*==================================================================================================================================
@@ -151,6 +154,7 @@ public class DashboardController {
         thresholdInitialTextbox.setEditable(false);
 
         greentickIcon = new Image("/seg/resources/images/greentick.png");
+        warningIcon = new Image("/seg/resources/images/alert-triangle-yellow.png");
         switchIcon = new Image("/seg/resources/images/switch.png");
     }
 
@@ -158,19 +162,34 @@ public class DashboardController {
 //  Other methods
 //================================================================================================================================*/
 
-    public void redeclareButtonPressed(ActionEvent event) throws RedeclarationComputer.InvalidActionException {
+    public void redeclareButtonPressed(ActionEvent event) throws IllegalValueException {
         //  Obstacle details
         double obstacleX = 0;
         double obstacleY = 0;
         double obstacleHeight = 0;
 
+
         //  Obstacle details get read
         try {
             obstacleHeight = Double.parseDouble(heightTextbox.getText());
+
         } catch (Exception e) {
             new Alert(Alert.AlertType.ERROR, "Please enter a valid value for: obstacle height!").showAndWait();
             return;
         }
+
+        try {
+            obstacleHeight = Double.parseDouble(heightTextbox.getText());
+            if (obstacleHeight < 0) {
+                throw new IllegalValueException("negativeheight");
+            } else if (obstacleHeight > 100) {
+                throw new IllegalValueException("largeheight");
+            }
+
+        } catch (IllegalValueException e) {
+            return;
+        }
+
 
         try {
             obstacleXL = Double.parseDouble(xLTextbox.getText());
@@ -202,12 +221,24 @@ public class DashboardController {
             dispThresholdInput = Double.parseDouble(thresholdInitialTextbox.getText());
             redeclarationComputer.setRunway(currentRunway);
 
+
             //  Obstacle details get passed to redeclarationComputer
             redeclarationComputer.setObstacleDetails(obstacleXL, obstacleXR, obstacleY, obstacleHeight);
 
             // We check to see whether we need to recalculate
             if (redeclarationComputer.needsRecalculation(redeclarationComputer.getObstacleXL(), redeclarationComputer.getObstacleXR(), redeclarationComputer.getObstacleY())) {
                 redeclare();
+                if (redeclarationComputer.getTora() > 5600) {
+                    makeNotification("Runway too large", "The redeclared runway is too large for operating", warningIcon);
+                } else if (redeclarationComputer.getTora() < 200) {
+                    makeNotification("Runway too small", "The redeclared runway is too small for operating", warningIcon);
+                }else if(redeclarationComputer.getTora() > redeclarationComputer.getToda()){
+                    makeNotification("TODA smaller than TORA", "The recalculated TODA is too small for operating", warningIcon);
+                }else if(redeclarationComputer.getToda() < redeclarationComputer.getAsda()){
+                    makeNotification("TODA smaller than ASDA ", "The recalculated TODA is too small for operating", warningIcon);
+                }else if(redeclarationComputer.calculateClearway() > redeclarationComputer.getTora()/2){
+                    makeNotification("Clearway too big", "The recalculated values indicated that clearway is larger than half of TORA", warningIcon);
+                }
             }
 
         } catch (Exception e) {
@@ -215,7 +246,6 @@ public class DashboardController {
             e.printStackTrace();
             return;
         }
-
         makeNotification("Runway Redeclared", "The runway has now been redeclared.", greentickIcon);
     }
 
@@ -329,6 +359,7 @@ public class DashboardController {
     }
 
     public void setValues(Airport airport) {
+
         currentAirport = airport;
         addToRunwayDroplist();
     }
@@ -349,14 +380,19 @@ public class DashboardController {
     }
 
     public void makeNotification(String title, String text, Image icon) {
+
         Notifications notificationBuilder = Notifications.create()
                 .title(title)
                 .text(text)
                 .graphic(new ImageView(icon))
                 .hideAfter(Duration.seconds(5))
                 .position(Pos.BOTTOM_RIGHT);
+
         notificationBuilder.darkStyle();
         notificationBuilder.show();
     }
+
+
+
 }
 
