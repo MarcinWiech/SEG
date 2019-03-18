@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="123.0" prefWidth="331.0"
-            xmlns="http://javafx.com/javafx/10.0.1" fx:controller="seg.java.controllers.ConfigureAirportController">
+            xmlns="http://javafx.com/javafx/10.0.1" fx:controller="seg.java.controllers.config.AirportCreationController">
     <children>
         <Label layoutX="14.0" layoutY="14.0" prefHeight="21.0" prefWidth="200.0" text="CONFIGURE A NEW AIRPORT">
             <font>
@@ -15,9 +15,5 @@
         <TextField fx:id="airportNameTextbox" layoutX="74.0" layoutY="44.0" prefHeight="25.0" prefWidth="184.0"/>
         <Button fx:id="addAirportButton" layoutX="274.0" layoutY="80.0" mnemonicParsing="false" onAction="#addAirport"
                 text="Add"/>
-        <Button fx:id="backToAirportSelection" layoutX="14.0" layoutY="80.0" mnemonicParsing="false"
-                onAction="#backToAirportSelection" text="Back"/>
-        <Button fx:id="importAirportButton" layoutX="74.0" layoutY="80.0" mnemonicParsing="false"
-                onAction="#importAirportsFromXML" prefHeight="25.0" prefWidth="184.0" text="Import an Airport"/>
     </children>
 </AnchorPane>

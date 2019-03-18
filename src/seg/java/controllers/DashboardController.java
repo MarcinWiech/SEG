@@ -19,6 +19,7 @@ import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
 import seg.java.CanvasDrawer;
 import seg.java.XMLReaderDOM;
+import seg.java.controllers.config.AirportConfigurationController;
 import seg.java.models.Airport;
 import seg.java.models.RedeclarationComputer;
 import seg.java.models.Runway;
@@ -312,7 +313,7 @@ public class DashboardController {
         try {
             Stage stage = (Stage) yTextbox.getScene().getWindow();
             stage.close();
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/airportConfig.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/config/airportConfig.fxml"));
             Parent root1 = fxmlLoader.load();
             stage = new Stage();
             stage.setTitle("Configure Airports");

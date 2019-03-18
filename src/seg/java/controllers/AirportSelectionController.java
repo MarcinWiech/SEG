@@ -12,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import seg.java.XMLReaderDOM;
+import seg.java.controllers.config.AirportCreationController;
 import seg.java.models.Airport;
 
 import java.net.URL;
@@ -40,7 +41,7 @@ public class AirportSelectionController implements Initializable {
         try {
             Stage stage = (Stage) addAirportLabel.getScene().getWindow();
             stage.close();
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/configureAirport.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/config/airportCreate.fxml"));
             Parent root1 = fxmlLoader.load();
             stage = new Stage();
             stage.setTitle("Airport Configuration");
@@ -48,8 +49,7 @@ public class AirportSelectionController implements Initializable {
             stage.show();
 
 
-            ConfigureAirportController airportController = fxmlLoader.getController();
-            airportController.setAirportArrayList(xmlReaderDOM);
+            AirportCreationController airportController = fxmlLoader.getController();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -88,7 +88,7 @@ public class AirportSelectionController implements Initializable {
         try {
             Stage stage = (Stage) addAirportLabel.getScene().getWindow();
             stage.close();
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/airportConfig.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/config/airportConfig.fxml"));
             Parent root1 = fxmlLoader.load();
             stage = new Stage();
             stage.setTitle("Configure Airports");

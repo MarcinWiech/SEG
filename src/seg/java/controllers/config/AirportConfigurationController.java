@@ -1,4 +1,4 @@
-package seg.java.controllers;
+package seg.java.controllers.config;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;

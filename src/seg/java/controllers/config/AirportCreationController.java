@@ -1,4 +1,4 @@
-package seg.java.controllers;
+package seg.java.controllers.config;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -8,32 +8,12 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import seg.java.XMLReaderDOM;
+import seg.java.controllers.ConfigureRunwayController;
 import seg.java.models.Airport;
 
-
-public class ConfigureAirportController {
-    public Button backToAirportSelection;
+public class AirportCreationController {
     public Button addAirportButton;
     public TextField airportNameTextbox;
-
-    private XMLReaderDOM xmlReaderDOM;
-
-
-    public void backToAirportSelection(ActionEvent actionEvent) {
-        try {
-            Stage stage = (Stage) addAirportButton.getScene().getWindow();
-            stage.close();
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/airportSelection.fxml"));
-            Parent root1 = fxmlLoader.load();
-            stage = new Stage();
-            stage.setTitle("Airport Selection");
-            stage.setScene(new Scene(root1));
-            stage.show();
-        } catch (Exception e) {
-            new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong :(").showAndWait();
-        }
-    }
 
     public void addAirport(ActionEvent actionEvent) {
         if (airportNameTextbox.getText().isEmpty()) {
@@ -60,15 +40,5 @@ public class ConfigureAirportController {
                 new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong :(").showAndWait();
             }
         }
-    }
-
-    public void setAirportArrayList(XMLReaderDOM xmlReaderDOM) {
-        this.xmlReaderDOM = xmlReaderDOM;
-    }
-
-    /**
-     * *** TO BE DONE **** IMPORTS AIRPORTS FROM airportsXML.xml AND ADDS THEM TO ARRAY LIST
-     */
-    public void importAirportsFromXML(ActionEvent actionEvent) {
     }
 }
