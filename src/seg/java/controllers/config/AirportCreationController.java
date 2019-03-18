@@ -25,18 +25,19 @@ public class AirportCreationController {
             try {
                 Stage stage = (Stage) addAirportButton.getScene().getWindow();
                 stage.close();
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/configureRunway.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/config/airportConfig.fxml"));
                 Parent root1 = fxmlLoader.load();
 
-                ConfigureRunwayController configureRunwayController = fxmlLoader.getController();
+                AirportConfigurationController controller = fxmlLoader.getController();
 
-                configureRunwayController.setAirport(airport);
+                controller.setAirport(airport);
 
                 stage = new Stage();
                 stage.setTitle("Add Runway");
                 stage.setScene(new Scene(root1));
                 stage.show();
             } catch (Exception e) {
+                e.printStackTrace();
                 new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong :(").showAndWait();
             }
         }

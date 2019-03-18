@@ -80,7 +80,7 @@ public class AirportConfigurationController implements Initializable {
         this.airport = airport;
         airportName.setText(airport.getName());
 
-        tableView.setItems(runwayModels);
+        //tableView.setItems(runwayModels);
     }
 
     public Runway getSelectedRunway(){
