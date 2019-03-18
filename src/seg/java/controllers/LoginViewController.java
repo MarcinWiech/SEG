@@ -25,7 +25,6 @@ public class LoginViewController implements Initializable {
     private XMLReaderDOM xmlReaderDOM;
 
     public LoginViewController() {
-
         loginsAndPasswords.put("ctw", "ctw");
         loginsAndPasswords.put("owner", "owner");
         xmlReaderDOM = new XMLReaderDOM();
@@ -114,7 +113,6 @@ public class LoginViewController implements Initializable {
     }
 
     private boolean authorise(String login, String password){
-
         return loginsAndPasswords.containsKey(login) && loginsAndPasswords.get(login).equals(password);
     }
 }
