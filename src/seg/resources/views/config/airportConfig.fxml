@@ -8,7 +8,7 @@
 
 <AnchorPane prefHeight="452.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seg.java.controllers.config.AirportConfigurationController">
     <children>
-        <TableView fx:id="runwayTable" layoutX="14.0" layoutY="60.0" prefHeight="377.0" prefWidth="462.0">
+        <TableView fx:id="tableView" layoutX="14.0" layoutY="60.0" prefHeight="377.0" prefWidth="462.0">
             <columns>
                 <TableColumn fx:id="designator" editable="false" prefWidth="94.0" text="Designator" />
                 <TableColumn fx:id="tora" editable="false" prefWidth="56.0" text="TORA" />
@@ -18,7 +18,7 @@
                 <TableColumn fx:id="toda" editable="false" prefWidth="59.0" text="TODA" />
             </columns>
         </TableView>
-        <Button layoutX="495.0" layoutY="226.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="91.0" text="Edit" />
+        <Button layoutX="495.0" layoutY="226.0" mnemonicParsing="false" onAction="#editRunwayButtonPressed" prefHeight="25.0" prefWidth="91.0" text="Edit" />
         <Button layoutX="495.0" layoutY="262.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="91.0" text="Delete" />
         <Button layoutX="495.0" layoutY="190.0" mnemonicParsing="false" onAction="#newRunwayButtonPressed" prefHeight="25.0" prefWidth="91.0" text="Add New" />
         <Button disable="true" layoutX="495.0" layoutY="331.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="91.0" text="Save" />

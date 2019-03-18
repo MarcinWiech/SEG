@@ -17,6 +17,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.text.Text;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import seg.java.controllers.DashboardController;
 import seg.java.models.Airport;
 import seg.java.models.Runway;
 
@@ -29,7 +30,7 @@ import java.util.ResourceBundle;
  */
 public class AirportConfigurationController implements Initializable {
 
-    @FXML private TableView<RunwayModel> tableView;
+    @FXML public TableView<RunwayModel> tableView;
     @FXML public TableColumn<RunwayModel, String> designator;
     @FXML public TableColumn<RunwayModel, Integer> tora;
     @FXML public TableColumn<RunwayModel, Integer> asda;
@@ -68,6 +69,8 @@ public class AirportConfigurationController implements Initializable {
         lda.setCellValueFactory(new PropertyValueFactory<>("lda"));
         threshold.setCellValueFactory(new PropertyValueFactory<>("threshold"));
         toda.setCellValueFactory(new PropertyValueFactory<>("toda"));
+
+        tableView.setItems(runwayModels);
     }
 
     private ObservableList<RunwayModel> runwayModels = FXCollections.observableArrayList(
@@ -79,8 +82,6 @@ public class AirportConfigurationController implements Initializable {
     public void setAirport(Airport airport){
         this.airport = airport;
         airportName.setText(airport.getName());
-
-        //tableView.setItems(runwayModels);
     }
 
     public Runway getSelectedRunway(){
@@ -100,6 +101,9 @@ public class AirportConfigurationController implements Initializable {
             stage.setTitle("Dashboard");
             stage.setScene(new Scene(root1));
             stage.show();
+
+            DashboardController dashboardController = fxmlLoader.getController();
+            dashboardController.setValues(airport);
         } catch(IOException e){
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong :(").showAndWait();

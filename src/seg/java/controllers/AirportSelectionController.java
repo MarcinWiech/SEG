@@ -76,7 +76,7 @@ public class AirportSelectionController implements Initializable {
 
                 Airport airportToPass = xmlReaderDOM.getAirportArraylist().get(airportDroplist.getValue().toString());
                 DashboardController dashboardController = fxmlLoader.getController();
-                dashboardController.setValues(xmlReaderDOM, airportToPass);
+                dashboardController.setValues(airportToPass);
             } catch (Exception e) {
                 System.out.println(e);
                 new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong :(").showAndWait();

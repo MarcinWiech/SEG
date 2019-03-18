@@ -18,7 +18,6 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
 import seg.java.CanvasDrawer;
-import seg.java.XMLReaderDOM;
 import seg.java.controllers.config.AirportConfigurationController;
 import seg.java.models.Airport;
 import seg.java.models.RedeclarationComputer;
@@ -329,8 +328,7 @@ public class DashboardController {
         }
     }
 
-    public void setValues(XMLReaderDOM xmlReaderDOM, Airport airport) {
-        xmlReaderDOM = xmlReaderDOM;
+    public void setValues(Airport airport) {
         currentAirport = airport;
         addToRunwayDroplist();
     }
