@@ -18,8 +18,8 @@ import javafx.scene.text.Text;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import seg.java.controllers.DashboardController;
-import seg.java.models.Airport;
-import seg.java.models.Runway;
+import seg.java.models.AirportOld;
+import seg.java.models.RunwayOld;
 
 import java.io.IOException;
 import java.net.URL;
@@ -41,7 +41,7 @@ public class AirportConfigurationController implements Initializable {
     @FXML private Text airportName;
     @FXML private Button backButton;
 
-    protected Airport airport;
+    protected AirportOld airportOld;
 
     public class RunwayModel {
         private SimpleDoubleProperty tora;
@@ -127,14 +127,15 @@ public class AirportConfigurationController implements Initializable {
         new RunwayModel("Test3", 1.0 ,2.0, 3.0, 4.0, 5.0)
     );
 
-    public void setAirport(Airport airport){
-        this.airport = airport;
-        airportName.setText(airport.getName());
+    public void setAirportOld(AirportOld airportOld){
+        this.airportOld = airportOld;
+        airportName.setText(airportOld.getName());
     }
 
-    public Runway getSelectedRunway(){
-        //TODO: Fix me.
-        return new Runway("A", "B",1.0,2.0,3.0,4.0,4.0);
+    public RunwayOld getSelectedRunway(){
+        RunwayModel runwayModel = tableView.getSelectionModel().getSelectedItem();
+
+        return new RunwayOld("A", "B",1.0,2.0,3.0,4.0,4.0);
     }
 
     // Actions
@@ -151,7 +152,7 @@ public class AirportConfigurationController implements Initializable {
             stage.show();
 
             DashboardController dashboardController = fxmlLoader.getController();
-            dashboardController.setValues(airport);
+            dashboardController.setValues(airportOld);
         } catch(IOException e){
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong :(").showAndWait();
@@ -167,7 +168,7 @@ public class AirportConfigurationController implements Initializable {
 
             RunwayCreationController controller = fxmlLoader.getController();
 
-            controller.setAirport(airport);
+            controller.setAirportOld(airportOld);
 
             stage = new Stage();
             stage.setTitle("Runway Configuration");
@@ -188,7 +189,7 @@ public class AirportConfigurationController implements Initializable {
 
             RunwayCreationController controller = fxmlLoader.getController();
 
-            controller.setAirport(airport);
+            controller.setAirportOld(airportOld);
             controller.setRunway(getSelectedRunway());
 
             stage = new Stage();

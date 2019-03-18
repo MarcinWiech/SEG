@@ -15,7 +15,7 @@ public class RedeclarationComputer {
     private Double obstacleXR;
     private Double obstacleY;
     private Double obstacleHeight;
-    private Runway runway;
+    private RunwayOld runwayOld;
     private char runwayDirection;
     private Double tora;
     private Double toda;
@@ -46,7 +46,7 @@ public class RedeclarationComputer {
 
     public Boolean needsRecalculation(Double obstacleXL, Double obstacleXR, Double obstacleY) {
         // We mirror the process for the reciprocal computer
-        if (runway.getReciprocalRunway() != null && reciprocalComputer.needsRecalculationAsRecip(obstacleXL, obstacleXR, obstacleY))
+        if (runwayOld.getReciprocalRunwayOld() != null && reciprocalComputer.needsRecalculationAsRecip(obstacleXL, obstacleXR, obstacleY))
             reciprocalComputer.calculate();
 
 
@@ -200,28 +200,28 @@ public class RedeclarationComputer {
 //================================================================================================================================*/
 
     //  Sets the runway for which we calculate
-    public void setRunway(Runway runway) {
-        this.runway = runway;
-        this.runwayDirection = Character.toUpperCase(runway.getRunwayName().charAt(2));
-        this.tora = runway.getTora();
-        this.toda = runway.getToda();
-        this.asda = runway.getAsda();
-        this.lda = runway.getLda();
-        this.dispTresh = runway.getDisplacedThreshold();
+    public void setRunwayOld(RunwayOld runwayOld) {
+        this.runwayOld = runwayOld;
+        this.runwayDirection = Character.toUpperCase(runwayOld.getRunwayName().charAt(2));
+        this.tora = runwayOld.getTora();
+        this.toda = runwayOld.getToda();
+        this.asda = runwayOld.getAsda();
+        this.lda = runwayOld.getLda();
+        this.dispTresh = runwayOld.getDisplacedThreshold();
 
-        if (runway.getReciprocalRunway() != null)
-            reciprocalComputer.setRunwayAsRecip(runway.getReciprocalRunway());
+        if (runwayOld.getReciprocalRunwayOld() != null)
+            reciprocalComputer.setRunwayAsRecip(runwayOld.getReciprocalRunwayOld());
     }
 
     //  Sets the runway for the reciprocal computer
-    public void setRunwayAsRecip(Runway runway) {
-        this.runway = runway;
-        this.runwayDirection = Character.toUpperCase(runway.getRunwayName().charAt(2));
-        this.tora = runway.getTora();
-        this.toda = runway.getToda();
-        this.asda = runway.getAsda();
-        this.lda = runway.getLda();
-        this.dispTresh = runway.getDisplacedThreshold();
+    public void setRunwayAsRecip(RunwayOld runwayOld) {
+        this.runwayOld = runwayOld;
+        this.runwayDirection = Character.toUpperCase(runwayOld.getRunwayName().charAt(2));
+        this.tora = runwayOld.getTora();
+        this.toda = runwayOld.getToda();
+        this.asda = runwayOld.getAsda();
+        this.lda = runwayOld.getLda();
+        this.dispTresh = runwayOld.getDisplacedThreshold();
     }
 
     public void setObstacleDetails(Double obstacleXL, Double obstacleXR, Double obstacleY, Double obstacleHeight) {
@@ -230,7 +230,7 @@ public class RedeclarationComputer {
         this.obstacleY = obstacleY;
         this.obstacleHeight = obstacleHeight;
 
-        if (runway.getReciprocalRunway() != null)
+        if (runwayOld.getReciprocalRunwayOld() != null)
             reciprocalComputer.setObstacleDetailsAsRecip(obstacleXL, obstacleXR, obstacleY, obstacleHeight);
     }
 
@@ -383,7 +383,7 @@ public class RedeclarationComputer {
     }
 
     public Double getAppropriateX() {
-        if (runway.getRunwayName().charAt(2) == 'L')
+        if (runwayOld.getRunwayName().charAt(2) == 'L')
             return obstacleXL;
         else
             return obstacleXR;

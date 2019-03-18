@@ -1,15 +1,13 @@
 package seg.java.controllers;
 
-import com.sun.org.apache.xpath.internal.SourceTree;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import seg.java.models.Airport;
+import seg.java.models.AirportOld;
 import seg.java.XMLReaderDOM;
 
 import java.net.URL;
@@ -78,9 +76,9 @@ public class LoginViewController implements Initializable {
                     stage.setScene(new Scene(root1));
                     stage.show();
 
-                    Airport airportToPass = xmlReaderDOM.getAirportArraylist().get("Heathrow");
+                    AirportOld airportOldToPass = xmlReaderDOM.getAirportArraylist().get("Heathrow");
                     DashboardController dashboardController = fxmlLoader.getController();
-                    dashboardController.setValues( airportToPass);
+                    dashboardController.setValues(airportOldToPass);
 
                 } catch (Exception e) {
 

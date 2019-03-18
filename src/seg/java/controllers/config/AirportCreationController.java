@@ -8,7 +8,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import seg.java.models.Airport;
+import seg.java.models.AirportOld;
 
 public class AirportCreationController {
     public Button addAirportButton;
@@ -19,7 +19,7 @@ public class AirportCreationController {
             new Alert(Alert.AlertType.ERROR, "Please ensure all fields are filled!").showAndWait();
         } else {
 
-            Airport airport = new Airport(airportNameTextbox.getText());
+            AirportOld airportOld = new AirportOld(airportNameTextbox.getText());
 
             try {
                 Stage stage = (Stage) addAirportButton.getScene().getWindow();
@@ -29,7 +29,7 @@ public class AirportCreationController {
 
                 AirportConfigurationController controller = fxmlLoader.getController();
 
-                controller.setAirport(airport);
+                controller.setAirportOld(airportOld);
 
                 stage = new Stage();
                 stage.setTitle("Airport Configuration");

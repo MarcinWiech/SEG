@@ -13,7 +13,7 @@ import javafx.scene.transform.Affine;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 import seg.java.models.RedeclarationComputer;
-import seg.java.models.Runway;
+import seg.java.models.RunwayOld;
 
 public class CanvasDrawer {
 
@@ -23,7 +23,7 @@ public class CanvasDrawer {
 
     double imageX, imageY;
     private GraphicsContext gc;
-    private Runway runway;
+    private RunwayOld runwayOld;
     private RedeclarationComputer redeclarationComputer;
     private double widthToHeightRatio = 2.3;
     private double canvasWidth;
@@ -141,8 +141,8 @@ public class CanvasDrawer {
 
         // Runway designator gets drawn here
         String text;
-        if (runway != null) {
-            text = runway.getRunwayName();
+        if (runwayOld != null) {
+            text = runwayOld.getRunwayName();
         } else {
             text = "N/A";
         }
@@ -164,7 +164,7 @@ public class CanvasDrawer {
         gc.fillText(text, 0.4 * canvasWidth + xOffset, 0.3 * canvasHeight + yOffset);
 
         // Details get drawn here
-        if (runway != null) {
+        if (runwayOld != null) {
             drawTopDownRunwayDirection(canvas);
             // Really important that the image gets drawn before details do
             drawTopDownObstacle(canvas);
@@ -198,7 +198,7 @@ public class CanvasDrawer {
         gc.setFill(Color.GRAY);
         fillRect(asphaltRect);
 
-        if (runway != null) {
+        if (runwayOld != null) {
             drawSideOnRunwayDirection(canvas);
             // Really important that the image gets drawn before details do
             drawSideOnObstacle(canvas);
@@ -225,8 +225,8 @@ public class CanvasDrawer {
         Image image1 = imageView.snapshot(parameters, null);
 
         Double x = redeclarationComputer.getAppropriateX();
-        Double tora = runway.getTora();
-        Double dispTresh = runway.getDisplacedThreshold();
+        Double tora = runwayOld.getTora();
+        Double dispTresh = runwayOld.getDisplacedThreshold();
 
         if (redeclarationComputer.getCalculationCase() == 1 || redeclarationComputer.getCalculationCase() == 3) {
             imageX = canvasWidth * (0.9 - 0.8 * ((dispTresh + x) / tora)) + xOffset;
@@ -256,8 +256,8 @@ public class CanvasDrawer {
         Image image1 = imageView.snapshot(parameters, null);
 
         Double x = redeclarationComputer.getAppropriateX();
-        Double tora = runway.getTora();
-        Double dispTresh = runway.getDisplacedThreshold();
+        Double tora = runwayOld.getTora();
+        Double dispTresh = runwayOld.getDisplacedThreshold();
 
         if (redeclarationComputer.getCalculationCase() == 1 || redeclarationComputer.getCalculationCase() == 3) {
             imageX = canvasWidth * (0.9 - 0.8 * ((dispTresh + x) / tora)) + xOffset;
@@ -362,7 +362,7 @@ public class CanvasDrawer {
         gc.setFill(Color.rgb(0, 0, 0, 0.5));
         fillRect(backgroundRect);
 
-        drawHorizontalArrow(0.03, 0.08, 0.33, true, false, runway.getRunwayName() + " - Landing and Take-off in this direction", Color.WHITE);
+        drawHorizontalArrow(0.03, 0.08, 0.33, true, false, runwayOld.getRunwayName() + " - Landing and Take-off in this direction", Color.WHITE);
         if (redeclarationComputer.getCalculationCase() == 2 || redeclarationComputer.getCalculationCase() == 4) {
             drawHorizontalArrow(0.03, 0.13, 0.33, true, false, "Take Off Towards, Landing Towards", Color.WHITE);
         } else {
@@ -387,7 +387,7 @@ public class CanvasDrawer {
         gc.setFill(Color.rgb(0, 0, 0, 0.5));
         fillRect(backgroundRect);
 
-        drawHorizontalArrow(0.03, 0.08, 0.33, true, false, runway.getRunwayName() + " - Landing and Take-off in this direction", Color.WHITE);
+        drawHorizontalArrow(0.03, 0.08, 0.33, true, false, runwayOld.getRunwayName() + " - Landing and Take-off in this direction", Color.WHITE);
         if (redeclarationComputer.getCalculationCase() == 2 || redeclarationComputer.getCalculationCase() == 4) {
             drawHorizontalArrow(0.03, 0.13, 0.33, true, false, "Take Off Towards, Landing Towards", Color.WHITE);
         } else {
@@ -409,8 +409,8 @@ public class CanvasDrawer {
 
     private void drawTopDownDetails(Canvas canvas) {
         // Rectangle asphaltRect = new Rectangle(0.1 * canvasWidth, 0.55 * canvasHeight, 0.80 * canvasWidth, 0.03 * canvasHeight);
-        Double initialTora = runway.getTora();
-        Double dispTresh = runway.getDisplacedThreshold();
+        Double initialTora = runwayOld.getTora();
+        Double dispTresh = runwayOld.getDisplacedThreshold();
         Double tora = redeclarationComputer.getTora();
         Double toda = redeclarationComputer.getToda();
         Double asda = redeclarationComputer.getAsda();
@@ -495,12 +495,12 @@ public class CanvasDrawer {
         fillRect(stopwayRect);
 
         // Reciprocal clearway and stopway get drawn
-        if (runway.getReciprocalRunway() != null) {
+        if (runwayOld.getReciprocalRunwayOld() != null) {
             RedeclarationComputer recipComp = redeclarationComputer.getReciprocalComputer();
             clearway = recipComp.getToda() - recipComp.getTora();
             stopway = recipComp.getAsda() - recipComp.getTora();
             Double recipTora = recipComp.getTora();
-            Double recipInitTora = runway.getReciprocalRunway().getTora();
+            Double recipInitTora = runwayOld.getReciprocalRunwayOld().getTora();
 
             if (redeclarationComputer.getCalculationCase() == 1 || redeclarationComputer.getCalculationCase() == 3) {
                 // Reciprocal clearway gets drawn
@@ -601,8 +601,8 @@ public class CanvasDrawer {
 
     private void drawSideOnDetails(Canvas canvas) {
         // Rectangle asphaltRect = new Rectangle(0.1 * canvasWidth, 0.55 * canvasHeight, 0.80 * canvasWidth, 0.03 * canvasHeight);
-        Double initialTora = runway.getTora();
-        Double dispTresh = runway.getDisplacedThreshold();
+        Double initialTora = runwayOld.getTora();
+        Double dispTresh = runwayOld.getDisplacedThreshold();
         Double tora = redeclarationComputer.getTora();
         Double toda = redeclarationComputer.getToda();
         Double asda = redeclarationComputer.getAsda();
@@ -687,12 +687,12 @@ public class CanvasDrawer {
         fillRect(stopwayRect);
 
         // Reciprocal clearway and stopway get drawn
-        if (runway.getReciprocalRunway() != null) {
+        if (runwayOld.getReciprocalRunwayOld() != null) {
             RedeclarationComputer recipComp = redeclarationComputer.getReciprocalComputer();
             clearway = recipComp.getToda() - recipComp.getTora();
             stopway = recipComp.getAsda() - recipComp.getTora();
             Double recipTora = recipComp.getTora();
-            Double recipInitTora = runway.getReciprocalRunway().getTora();
+            Double recipInitTora = runwayOld.getReciprocalRunwayOld().getTora();
 
             if (redeclarationComputer.getCalculationCase() == 1 || redeclarationComputer.getCalculationCase() == 3) {
                 // Reciprocal clearway gets drawn
@@ -849,8 +849,8 @@ public class CanvasDrawer {
 //  Setters
 //================================================================================================================================*/
 
-    public void setRunway(Runway runway) {
-        this.runway = runway;
+    public void setRunwayOld(RunwayOld runwayOld) {
+        this.runwayOld = runwayOld;
     }
 
     public void setRedeclarationComputer(RedeclarationComputer redeclarationComputer) {

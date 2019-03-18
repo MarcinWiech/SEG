@@ -5,14 +5,14 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import seg.java.models.RedeclarationComputer;
-import seg.java.models.Runway;
+import seg.java.models.RunwayOld;
 
 import static org.junit.Assert.assertEquals;
 
 public class RedeclarationComputerTester {
 
     private RedeclarationComputer redeclarationComputer;
-    private Runway runway;
+    private RunwayOld runwayOld;
 
     @Before
     public void setUp() throws Exception
@@ -29,8 +29,8 @@ public class RedeclarationComputerTester {
     @Test
     public void test1()
     {
-        runway = new Runway("09L", "27R", 3902.0, 3902.0, 3902.0, 3596.0, 306.0);
-        redeclarationComputer.setRunway(runway);
+        runwayOld = new RunwayOld("09L", "27R", 3902.0, 3902.0, 3902.0, 3596.0, 306.0);
+        redeclarationComputer.setRunwayOld(runwayOld);
         redeclarationComputer.setObstacleDetails(-50.0, 3646.0, 0.0, 12.0);
         if(redeclarationComputer.needsRecalculation(-50.0, 3646.0, 0.0))
             redeclarationComputer.calculate();
@@ -44,8 +44,8 @@ public class RedeclarationComputerTester {
     @Test
     public void test2()
     {
-        runway = new Runway("27R", "09L", 3884.0, 3962.0, 3884.0, 3884.0, 0.0);
-        redeclarationComputer.setRunway(runway);
+        runwayOld = new RunwayOld("27R", "09L", 3884.0, 3962.0, 3884.0, 3884.0, 0.0);
+        redeclarationComputer.setRunwayOld(runwayOld);
         redeclarationComputer.setObstacleDetails(-50.0, 3646.0, 0.0, 12.0);
         if(redeclarationComputer.needsRecalculation(-50.0, 3646.0, 0.0))
             redeclarationComputer.calculate();
@@ -59,8 +59,8 @@ public class RedeclarationComputerTester {
     @Test
     public void test3()
     {
-        runway = new Runway("09R", "27L", 3660.0, 3660.0, 3660.0, 3353.0, 307.0);
-        redeclarationComputer.setRunway(runway);
+        runwayOld = new RunwayOld("09R", "27L", 3660.0, 3660.0, 3660.0, 3353.0, 307.0);
+        redeclarationComputer.setRunwayOld(runwayOld);
         redeclarationComputer.setObstacleDetails(500.0, 2853.0, -20.0, 25.0);
         if(redeclarationComputer.needsRecalculation(500.0, 2853.0, -20.0))
             redeclarationComputer.calculate();
@@ -74,8 +74,8 @@ public class RedeclarationComputerTester {
     @Test
     public void test4()
     {
-        runway = new Runway("27L", "09R", 3660.0, 3660.0, 3660.0, 3660.0, 0.0);
-        redeclarationComputer.setRunway(runway);
+        runwayOld = new RunwayOld("27L", "09R", 3660.0, 3660.0, 3660.0, 3660.0, 0.0);
+        redeclarationComputer.setRunwayOld(runwayOld);
         redeclarationComputer.setObstacleDetails(500.0, 2853.0, -20.0, 25.0);
         if(redeclarationComputer.needsRecalculation(500.0, 2853.0, -20.0))
             redeclarationComputer.calculate();
@@ -89,8 +89,8 @@ public class RedeclarationComputerTester {
     @Test
     public void test5()
     {
-        runway = new Runway("09R", "27L", 3660.0, 3660.0, 3660.0, 3353.0, 307.0);
-        redeclarationComputer.setRunway(runway);
+        runwayOld = new RunwayOld("09R", "27L", 3660.0, 3660.0, 3660.0, 3353.0, 307.0);
+        redeclarationComputer.setRunwayOld(runwayOld);
         redeclarationComputer.setObstacleDetails(3203.0, 150.0, 60.0, 15.0);
         if(redeclarationComputer.needsRecalculation(3203.0, 150.0, 60.0))
             redeclarationComputer.calculate();
@@ -104,8 +104,8 @@ public class RedeclarationComputerTester {
     @Test
     public void test6()
     {
-        runway = new Runway("27L", "09R", 3660.0, 3660.0, 3660.0, 3660.0, 0.0);
-        redeclarationComputer.setRunway(runway);
+        runwayOld = new RunwayOld("27L", "09R", 3660.0, 3660.0, 3660.0, 3660.0, 0.0);
+        redeclarationComputer.setRunwayOld(runwayOld);
         redeclarationComputer.setObstacleDetails(3203.0, 150.0, 60.0, 15.0);
         if(redeclarationComputer.needsRecalculation(3203.0, 150.0, 60.0))
             redeclarationComputer.calculate();
@@ -119,8 +119,8 @@ public class RedeclarationComputerTester {
     @Test
     public void test7()
     {
-        runway = new Runway("09L", "27R", 3902.0, 3902.0, 3902.0, 3596.0, 306.0);
-        redeclarationComputer.setRunway(runway);
+        runwayOld = new RunwayOld("09L", "27R", 3902.0, 3902.0, 3902.0, 3596.0, 306.0);
+        redeclarationComputer.setRunwayOld(runwayOld);
         redeclarationComputer.setObstacleDetails(3546.0, 50.0, 20.0, 20.0);
         if(redeclarationComputer.needsRecalculation(3546.0, 50.0, 20.0))
             redeclarationComputer.calculate();
@@ -134,8 +134,8 @@ public class RedeclarationComputerTester {
     @Test
     public void test8()
     {
-        runway = new Runway("27R", "09L", 3884.0, 3962.0, 3884.0, 3884.0, 0.0);
-        redeclarationComputer.setRunway(runway);
+        runwayOld = new RunwayOld("27R", "09L", 3884.0, 3962.0, 3884.0, 3884.0, 0.0);
+        redeclarationComputer.setRunwayOld(runwayOld);
         redeclarationComputer.setObstacleDetails(3546.0, 50.0, 20.0, 20.0);
         if(redeclarationComputer.needsRecalculation(3546.0, 50.0, 20.0))
             redeclarationComputer.calculate();

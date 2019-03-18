@@ -12,7 +12,7 @@
 
 <AnchorPane prefHeight="139.0" prefWidth="333.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seg.java.controllers.AirportSelectionController">
     <children>
-        <Label layoutX="30.0" layoutY="28.0" prefHeight="30.0" prefWidth="142.0" text="Select an airport: ">
+        <Label layoutX="30.0" layoutY="28.0" prefHeight="30.0" prefWidth="142.0" text="Select an airportOld: ">
             <font>
                 <Font size="15.0" />
             </font>

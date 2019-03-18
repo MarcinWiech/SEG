@@ -13,7 +13,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import seg.java.XMLReaderDOM;
 import seg.java.controllers.config.AirportCreationController;
-import seg.java.models.Airport;
+import seg.java.models.AirportOld;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -74,9 +74,9 @@ public class AirportSelectionController implements Initializable {
                 stage.setScene(new Scene(root1));
                 stage.show();
 
-                Airport airportToPass = xmlReaderDOM.getAirportArraylist().get(airportDroplist.getValue().toString());
+                AirportOld airportOldToPass = xmlReaderDOM.getAirportArraylist().get(airportDroplist.getValue().toString());
                 DashboardController dashboardController = fxmlLoader.getController();
-                dashboardController.setValues(airportToPass);
+                dashboardController.setValues(airportOldToPass);
             } catch (Exception e) {
                 System.out.println(e);
                 new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong :(").showAndWait();
