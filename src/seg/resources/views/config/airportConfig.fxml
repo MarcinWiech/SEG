@@ -20,7 +20,7 @@
         </TableView>
         <Button layoutX="495.0" layoutY="226.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="91.0" text="Edit" />
         <Button layoutX="495.0" layoutY="262.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="91.0" text="Delete" />
-        <Button layoutX="495.0" layoutY="190.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="91.0" text="Add New" />
+        <Button layoutX="495.0" layoutY="190.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="91.0" text="Add New" onAction="#newRunwayButtonPressed"/>
         <Button layoutX="495.0" layoutY="331.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="91.0" text="Save" />
         <Button layoutX="495.0" layoutY="373.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="91.0" text="Save As" />
         <Separator layoutX="477.0" layoutY="299.0" prefHeight="4.0" prefWidth="122.0" />

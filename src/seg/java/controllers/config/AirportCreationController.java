@@ -8,7 +8,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import seg.java.controllers.ConfigureRunwayController;
 import seg.java.models.Airport;
 
 public class AirportCreationController {
@@ -33,7 +32,7 @@ public class AirportCreationController {
                 controller.setAirport(airport);
 
                 stage = new Stage();
-                stage.setTitle("Add Runway");
+                stage.setTitle("Airport Configuration");
                 stage.setScene(new Scene(root1));
                 stage.show();
             } catch (Exception e) {

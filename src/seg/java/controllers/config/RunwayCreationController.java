@@ -1,4 +1,4 @@
-package seg.java.controllers;
+package seg.java.controllers.config;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -9,9 +9,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import seg.java.XMLReaderDOM;
+import seg.java.controllers.DashboardController;
 import seg.java.models.Airport;
+import seg.java.models.Runway;
 
-public class ConfigureRunwayController {
+public class RunwayCreationController {
     public Button addRunwayButton;
     public Button backButton;
     public TextField ldaTextbox;
@@ -31,7 +33,7 @@ public class ConfigureRunwayController {
         try {
             Stage stage = (Stage) asdaTextbox.getScene().getWindow();
             stage.close();
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/config/airportCreate.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/config/airportConfig.fxml"));
             Parent root1 = fxmlLoader.load();
             stage = new Stage();
             stage.setTitle("Configure Airport");
@@ -39,8 +41,8 @@ public class ConfigureRunwayController {
             stage.show();
 
 
-            ConfigureRunwayController runwayController = fxmlLoader.getController();
-            runwayController.setAirportArrayList(xmlReaderDOM);
+            AirportConfigurationController controller = fxmlLoader.getController();
+            controller.setAirport(this.airport);
 
         } catch (Exception e) {
             new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong :(").showAndWait();
@@ -71,15 +73,15 @@ public class ConfigureRunwayController {
         try {
             Stage stage = (Stage) asdaTextbox.getScene().getWindow();
             stage.close();
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/dashboard.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/config/airportConfig.fxml"));
             Parent root1 = fxmlLoader.load();
             stage = new Stage();
-            stage.setTitle("Dashboard");
+            stage.setTitle("Aiport Configuration");
             stage.setScene(new Scene(root1));
             stage.show();
 
-            DashboardController dashboardController = fxmlLoader.getController();
-            dashboardController.setValues(xmlReaderDOM, this.airport);
+            AirportConfigurationController controller = fxmlLoader.getController();
+            controller.setAirport(this.airport);
         } catch (Exception e) {
             System.out.println(e);
             new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong :(").showAndWait();
@@ -92,5 +94,9 @@ public class ConfigureRunwayController {
 
     public void setAirport(Airport airport) {
         this.airport = airport;
+    }
+
+    public void setRunway(Runway runway){
+        // Todo: Runway editing.
     }
 }

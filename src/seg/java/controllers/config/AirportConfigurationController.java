@@ -105,4 +105,47 @@ public class AirportConfigurationController implements Initializable {
             new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong :(").showAndWait();
         }
     }
+
+    public void newRunwayButtonPressed(ActionEvent ae){
+        try {
+            Stage stage = (Stage) backButton.getScene().getWindow();
+            stage.close();
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/config/runwayConfig.fxml"));
+            Parent root1 = fxmlLoader.load();
+
+            RunwayCreationController controller = fxmlLoader.getController();
+
+            controller.setAirport(airport);
+
+            stage = new Stage();
+            stage.setTitle("Runway Configuration");
+            stage.setScene(new Scene(root1));
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong :(").showAndWait();
+        }
+    }
+
+    public void editRunwayButtonPressed(ActionEvent ae){
+        try {
+            Stage stage = (Stage) backButton.getScene().getWindow();
+            stage.close();
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/config/runwayConfig.fxml"));
+            Parent root1 = fxmlLoader.load();
+
+            RunwayCreationController controller = fxmlLoader.getController();
+
+            controller.setAirport(airport);
+            controller.setRunway(getSelectedRunway());
+
+            stage = new Stage();
+            stage.setTitle("Runway Configuration");
+            stage.setScene(new Scene(root1));
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong :(").showAndWait();
+        }
+    }
 }
