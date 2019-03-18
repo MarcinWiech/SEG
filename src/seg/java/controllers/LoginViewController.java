@@ -58,6 +58,8 @@ public class LoginViewController implements Initializable {
 
         //for now hard coded
         //check if login and password match
+        // We should probably use salt / hashing in the future.
+        // Maybe a db store too.
         if(!authorise(login,password)){
 
             new Alert(Alert.AlertType.ERROR, "Password or login is incorrect").showAndWait();

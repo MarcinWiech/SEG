@@ -1,6 +1,6 @@
 package seg.java.controllers.config;
 
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -32,32 +32,80 @@ public class AirportConfigurationController implements Initializable {
 
     @FXML public TableView<RunwayModel> tableView;
     @FXML public TableColumn<RunwayModel, String> designator;
-    @FXML public TableColumn<RunwayModel, Integer> tora;
-    @FXML public TableColumn<RunwayModel, Integer> asda;
-    @FXML public TableColumn<RunwayModel, Integer> lda;
-    @FXML public TableColumn<RunwayModel, Integer> threshold;
-    @FXML public TableColumn<RunwayModel, Integer> toda;
+    @FXML public TableColumn<RunwayModel, Double> tora;
+    @FXML public TableColumn<RunwayModel, Double> asda;
+    @FXML public TableColumn<RunwayModel, Double> lda;
+    @FXML public TableColumn<RunwayModel, Double> threshold;
+    @FXML public TableColumn<RunwayModel, Double> toda;
 
     @FXML private Text airportName;
     @FXML private Button backButton;
 
     protected Airport airport;
 
-    private class RunwayModel {
+    public class RunwayModel {
+        private SimpleDoubleProperty tora;
+        private SimpleDoubleProperty asda;
         private SimpleStringProperty designator;
-        private SimpleIntegerProperty tora;
-        private SimpleIntegerProperty asda;
-        private SimpleIntegerProperty lda;
-        private SimpleIntegerProperty threshold;
-        private SimpleIntegerProperty toda;
+        private SimpleDoubleProperty lda;
+        private SimpleDoubleProperty threshold;
+        private SimpleDoubleProperty toda;
 
-        public RunwayModel(String designator, Integer tora, Integer asda, Integer lda, Integer threshold, Integer toda){
+        public RunwayModel(String designator, Double tora, Double asda, Double lda, Double threshold, Double toda){
             this.designator = new SimpleStringProperty(designator);
-            this.tora = new SimpleIntegerProperty(tora);
-            this.asda = new SimpleIntegerProperty(asda);
-            this.lda = new SimpleIntegerProperty(lda);
-            this.threshold = new SimpleIntegerProperty(threshold);
-            this.toda = new SimpleIntegerProperty(toda);
+            this.tora = new SimpleDoubleProperty(tora);
+            this.asda = new SimpleDoubleProperty(asda);
+            this.lda = new SimpleDoubleProperty(lda);
+            this.threshold = new SimpleDoubleProperty(threshold);
+            this.toda = new SimpleDoubleProperty(toda);
+        }
+
+        public String getDesignator() {
+            return designator.get();
+        }
+
+        public SimpleStringProperty designatorProperty() {
+            return designator;
+        }
+
+        public double getTora() {
+            return tora.get();
+        }
+
+        public SimpleDoubleProperty toraProperty() {
+            return tora;
+        }
+
+        public double getAsda() {
+            return asda.get();
+        }
+
+        public SimpleDoubleProperty asdaProperty() {
+            return asda;
+        }
+
+        public double getLda() {
+            return lda.get();
+        }
+
+        public SimpleDoubleProperty ldaProperty() {
+            return lda;
+        }
+
+        public double getThreshold() {
+            return threshold.get();
+        }
+
+        public SimpleDoubleProperty thresholdProperty() {
+            return threshold;
+        }
+
+        public double getToda() {
+            return toda.get();
+        }
+
+        public SimpleDoubleProperty todaProperty() {
+            return toda;
         }
     }
 
@@ -74,9 +122,9 @@ public class AirportConfigurationController implements Initializable {
     }
 
     private ObservableList<RunwayModel> runwayModels = FXCollections.observableArrayList(
-        new RunwayModel("Test1", 1 ,2, 3, 4, 5),
-        new RunwayModel("Test2", 1 ,2, 3, 4, 5),
-        new RunwayModel("Test3", 1 ,2, 3, 4, 5)
+        new RunwayModel("Test1", 1.0 ,2.0, 3.0, 4.0, 5.0),
+        new RunwayModel("Test2", 1.0 ,2.0, 3.0, 4.0, 5.0),
+        new RunwayModel("Test3", 1.0 ,2.0, 3.0, 4.0, 5.0)
     );
 
     public void setAirport(Airport airport){
