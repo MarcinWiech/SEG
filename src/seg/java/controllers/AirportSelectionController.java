@@ -65,7 +65,7 @@ public class AirportSelectionController implements Initializable {
             new Alert(Alert.AlertType.ERROR, "Please select an airport to continue!").showAndWait();
         } else {
             try {
-                Stage stage = (Stage) addAirportLabel.getScene().getWindow();
+                Stage stage = (Stage) selectButton.getScene().getWindow();
                 stage.close();
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/dashboard.fxml"));
                 Parent root1 = fxmlLoader.load();
@@ -75,10 +75,11 @@ public class AirportSelectionController implements Initializable {
                 stage.show();
 
                 Airport airportToPass = xmlReaderDOM.getAirportArraylist().get(airportDroplist.getValue().toString());
-                DashboardController dashboardController = fxmlLoader.getController();
+                seg.java.controllers.DashboardController dashboardController = fxmlLoader.getController();
                 dashboardController.setValues(airportToPass);
             } catch (Exception e) {
                 System.out.println(e);
+                e.printStackTrace();
                 new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong :(").showAndWait();
             }
         }
@@ -95,6 +96,7 @@ public class AirportSelectionController implements Initializable {
             stage.setScene(new Scene(root1));
             stage.show();
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println(e);
             new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong :(").showAndWait();
         }
