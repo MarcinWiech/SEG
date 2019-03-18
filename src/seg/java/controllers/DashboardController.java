@@ -18,11 +18,13 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
 import seg.java.CanvasDrawer;
+import seg.java.controllers.config.AirportConfigurationController;
 import seg.java.XMLReaderDOM;
 import seg.java.models.Airport;
 import seg.java.models.IllegalValueException;
 import seg.java.models.RedeclarationComputer;
 import seg.java.models.Runway;
+
 
 public class DashboardController {
     @FXML
@@ -83,7 +85,6 @@ public class DashboardController {
     @FXML
     private TextArea ldaBDTextArea;
 
-    private XMLReaderDOM xmlReaderDOM;
     private CanvasDrawer canvasDrawer;
     private RedeclarationComputer redeclarationComputer;
     private RedeclarationComputer reciprocalComputer;
@@ -92,8 +93,6 @@ public class DashboardController {
 
     private double obstacleXL = 0;
     private double obstacleXR = 0;
-    private double obstacleY = 0;
-    private double obstacleHeight = 0;
     private double toraInput;
     private double todaInput;
     private double asdaInput;
@@ -163,7 +162,6 @@ public class DashboardController {
 //  Other methods
 //================================================================================================================================*/
 
-
     public void redeclareButtonPressed(ActionEvent event) throws IllegalValueException {
         //  Obstacle details
         double obstacleX = 0;
@@ -173,9 +171,7 @@ public class DashboardController {
 
         //  Obstacle details get read
         try {
-
             obstacleHeight = Double.parseDouble(heightTextbox.getText());
-
 
         } catch (Exception e) {
             new Alert(Alert.AlertType.ERROR, "Please enter a valid value for: obstacle height!").showAndWait();
@@ -197,7 +193,6 @@ public class DashboardController {
 
         try {
             obstacleXL = Double.parseDouble(xLTextbox.getText());
-
         } catch (Exception e) {
             new Alert(Alert.AlertType.ERROR, "Please enter a valid value for: obstacle XL position!").showAndWait();
             return;
@@ -232,8 +227,6 @@ public class DashboardController {
 
             // We check to see whether we need to recalculate
             if (redeclarationComputer.needsRecalculation(redeclarationComputer.getObstacleXL(), redeclarationComputer.getObstacleXR(), redeclarationComputer.getObstacleY())) {
-                makeNotification("Runway Redeclared", "The runway has now been redeclared.", greentickIcon);
-
                 redeclare();
                 if (redeclarationComputer.getTora() > 5600) {
                     makeNotification("Runway too large", "The redeclared runway is too large for operating", warningIcon);
@@ -253,8 +246,7 @@ public class DashboardController {
             e.printStackTrace();
             return;
         }
-
-
+        makeNotification("Runway Redeclared", "The runway has now been redeclared.", greentickIcon);
     }
 
     private void redeclare() {
@@ -333,7 +325,6 @@ public class DashboardController {
     public void switchAirport(ActionEvent actionEvent) {
         try {
             Stage stage = (Stage) yTextbox.getScene().getWindow();
-            stage.close();
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/airportSelection.fxml"));
             Parent root1 = fxmlLoader.load();
             stage = new Stage();
@@ -346,8 +337,29 @@ public class DashboardController {
         }
     }
 
-    public void setValues(XMLReaderDOM xmlReaderDOM, Airport airport) {
-        xmlReaderDOM = xmlReaderDOM;
+    public void configureAirports(ActionEvent actionEvent) {
+
+        try {
+            Stage stage = (Stage) yTextbox.getScene().getWindow();
+            stage.close();
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/config/airportConfig.fxml"));
+            Parent root1 = fxmlLoader.load();
+            stage = new Stage();
+            stage.setTitle("Configure Airports");
+            stage.setScene(new Scene(root1));
+            stage.show();
+
+            AirportConfigurationController acc = fxmlLoader.getController();
+            acc.setAirport(currentAirport);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println(e);
+            new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong :(").showAndWait();
+        }
+    }
+
+    public void setValues(Airport airport) {
+
         currentAirport = airport;
         addToRunwayDroplist();
     }

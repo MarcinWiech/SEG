@@ -78,7 +78,7 @@ public class LoginViewController implements Initializable {
 
                     Airport airportToPass = xmlReaderDOM.getAirportArraylist().get("Heathrow");
                     DashboardController dashboardController = fxmlLoader.getController();
-                    dashboardController.setValues(xmlReaderDOM, airportToPass);
+                    dashboardController.setValues( airportToPass);
 
                 } catch (Exception e) {
 

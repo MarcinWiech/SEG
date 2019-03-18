@@ -5,19 +5,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 import seg.java.models.Airport;
 import seg.java.models.Runway;
 
@@ -60,17 +47,13 @@ public class XMLReaderDOM {
                 }
 
                 //  We set the reciprocal runways
-                for (String runwayName : newAirport.getRunwayHashMap().keySet())
-                {
+                for (String runwayName : newAirport.getRunwayHashMap().keySet()) {
                     Runway runway = newAirport.getRunwayHashMap().get(runwayName);
                     String reciprocalName = runway.getReciprocalName();
 
-                    if(runwayName.equals("null") == false)
-                    {
+                    if (runwayName.equals("null") == false) {
                         runway.setReciprocal(newAirport.getRunwayHashMap().get(reciprocalName));
-                    }
-                    else
-                    {
+                    } else {
                         runway.setReciprocal(null);
                     }
                 }
