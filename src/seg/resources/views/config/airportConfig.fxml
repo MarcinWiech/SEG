@@ -53,7 +53,7 @@
             </font>
         </Text>
         <Button layoutX="491.0" layoutY="86.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="91.0"
-                text="Edit Name"/>
+                disable="true" text="Edit Name"/>
         <Button disable="true" layoutX="491.0" layoutY="123.0" mnemonicParsing="false" prefHeight="25.0"
                 prefWidth="91.0" text="Delete"/>
         <AnchorPane layoutX="59.0" layoutY="-228.0" prefHeight="200.0" prefWidth="200.0"/>
