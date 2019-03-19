@@ -8,18 +8,18 @@ public class Airport {
     private String name;
     private ObservableList<Runway> runways;
 
-    public Airport(String name){
+    public Airport(String name) {
         this.name = name;
         runways = FXCollections.observableArrayList();
     }
 
-    public void addRunway(Runway runway){
+    public void addRunway(Runway runway) {
         runways.add(runway);
     }
 
     public Runway getRunwayByName(String name) throws Exception {
-        for (Runway runway : runways){
-            if (runway.getName().equals(name)){
+        for (Runway runway : runways) {
+            if (runway.getName().equals(name)) {
                 return runway;
             }
         }

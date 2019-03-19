@@ -101,33 +101,32 @@ public class XMLLoader {
 
     private static String getTagValue(Element element, String tag) {
         NodeList nodeList = element.getElementsByTagName(tag).item(0).getChildNodes();
-        Node node = (Node) nodeList.item(0);
+        Node node = nodeList.item(0);
         return node.getNodeValue();
     }
 
     // Public Methods
 
-    public ArrayList<Airport> getAirportList() {
-        return airportList;
-    }
-
-    public Airport getAirportByName(String name) throws Exception{
-        for (Airport airport: getAirportList()){
-            if (airport.getName().equals(name)){
-                return airport;
-            }
-        }
-        throw new Exception("Unable to find airport with name " + name);
-    }
-
     // Singleton
-    public static XMLLoader getInstance()
-    {
-        if (instance == null){
+    public static XMLLoader getInstance() {
+        if (instance == null) {
             instance = new XMLLoader();
         }
 
         return instance;
+    }
+
+    public ArrayList<Airport> getAirportList() {
+        return airportList;
+    }
+
+    public Airport getAirportByName(String name) throws Exception {
+        for (Airport airport : getAirportList()) {
+            if (airport.getName().equals(name)) {
+                return airport;
+            }
+        }
+        throw new Exception("Unable to find airport with name " + name);
     }
 
 }

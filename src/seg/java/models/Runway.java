@@ -13,7 +13,7 @@ public class Runway {
     private SimpleDoubleProperty toda;
     private Runway reciprocalRunway;
 
-    public Runway(String name, Runway reciprocalRunway, Double tora, Double asda, Double lda, Double threshold, Double toda){
+    public Runway(String name, Runway reciprocalRunway, Double tora, Double asda, Double lda, Double threshold, Double toda) {
         this.name = new SimpleStringProperty(name);
         this.tora = new SimpleDoubleProperty(tora);
         this.asda = new SimpleDoubleProperty(asda);
@@ -30,72 +30,72 @@ public class Runway {
         return tora.get();
     }
 
-    public SimpleDoubleProperty toraProperty() {
-        return tora;
-    }
-
     public void setTora(double tora) {
         this.tora.set(tora);
+    }
+
+    public SimpleDoubleProperty toraProperty() {
+        return tora;
     }
 
     public double getAsda() {
         return asda.get();
     }
 
-    public SimpleDoubleProperty asdaProperty() {
-        return asda;
-    }
-
     public void setAsda(double asda) {
         this.asda.set(asda);
+    }
+
+    public SimpleDoubleProperty asdaProperty() {
+        return asda;
     }
 
     public String getName() {
         return name.get();
     }
 
-    public SimpleStringProperty nameProperty() {
-        return name;
-    }
-
     public void setName(String name) {
         this.name.set(name);
+    }
+
+    public SimpleStringProperty nameProperty() {
+        return name;
     }
 
     public double getLda() {
         return lda.get();
     }
 
-    public SimpleDoubleProperty ldaProperty() {
-        return lda;
-    }
-
     public void setLda(double lda) {
         this.lda.set(lda);
+    }
+
+    public SimpleDoubleProperty ldaProperty() {
+        return lda;
     }
 
     public double getThreshold() {
         return threshold.get();
     }
 
-    public SimpleDoubleProperty thresholdProperty() {
-        return threshold;
-    }
-
     public void setThreshold(double threshold) {
         this.threshold.set(threshold);
+    }
+
+    public SimpleDoubleProperty thresholdProperty() {
+        return threshold;
     }
 
     public double getToda() {
         return toda.get();
     }
 
-    public SimpleDoubleProperty todaProperty() {
-        return toda;
-    }
-
     public void setToda(double toda) {
         this.toda.set(toda);
+    }
+
+    public SimpleDoubleProperty todaProperty() {
+        return toda;
     }
 
     public Runway getReciprocalRunway() {

@@ -24,9 +24,9 @@ public class RedeclarationComputer {
     private Double dispTresh;
     private int calculationCase;
 
-/*==================================================================================================================================
-//  Constants
-//================================================================================================================================*/
+    /*==================================================================================================================================
+    //  Constants
+    //================================================================================================================================*/
     private String toraBD = "";
     private String todaBD = "";
     private String asdaBD = "";
@@ -55,11 +55,7 @@ public class RedeclarationComputer {
             return false;
         }
 
-        if (obstacleY < -75 || obstacleY > 75) {
-            return false;
-        }
-
-        return true;
+        return obstacleY >= -75 && obstacleY <= 75;
     }
 
     public Boolean needsRecalculationAsRecip(Double obstacleXL, Double obstacleXR, Double obstacleY) {
@@ -67,11 +63,7 @@ public class RedeclarationComputer {
             return false;
         }
 
-        if (obstacleY < -75 || obstacleY > 75) {
-            return false;
-        }
-
-        return true;
+        return obstacleY >= -75 && obstacleY <= 75;
     }
 
     // The actual recalculation happens here
@@ -128,7 +120,6 @@ public class RedeclarationComputer {
         localToda = localTora + calculateClearway();
 
         localAsda = localTora + calculateStopway();
-        ;
 
         localLda = lda - obstacleXR - Math.max(Math.max(SLOPE_INVERSE * obstacleHeight, RESA) + STRIP_END, BLAST_PROTECTION);
 
@@ -251,68 +242,68 @@ public class RedeclarationComputer {
 
     private void setCase1BD(Double localTora, Double localToda, Double localAsda, Double localLda) {
         toraBD = " = Original TORA - Displaced Treshold - Distance from Treshold - Blast Protection\n = " +
-                Double.toString(tora) + " - " + Double.toString(dispTresh) + " - " +
-                Double.toString(obstacleXR) + " - " + Double.toString(BLAST_PROTECTION) + "\n" +
-                " = " + Double.toString(localTora);
+                tora + " - " + dispTresh + " - " +
+                obstacleXR + " - " + BLAST_PROTECTION + "\n" +
+                " = " + localTora;
 
-        todaBD = " = (R) TORA + Clearway\n = " + Double.toString(localTora) + " + " + Double.toString(calculateClearway()) +
-                "\n = " + Double.toString(localToda);
+        todaBD = " = (R) TORA + Clearway\n = " + localTora + " + " + calculateClearway() +
+                "\n = " + localToda;
 
-        asdaBD = " = (R) TORA + Stopway\n = " + Double.toString(localTora) + " + " + Double.toString(calculateStopway()) +
-                "\n = " + Double.toString(localAsda);
+        asdaBD = " = (R) TORA + Stopway\n = " + localTora + " + " + calculateStopway() +
+                "\n = " + localAsda;
 
         ldaBD = " = Original LDA - Distance from Treshold - max(max(Slope Calculation, RESA) + Strip End, Blast Protection)\n = " +
-                Double.toString(lda) + " - " + Double.toString(obstacleXR) + " - " +
-                Double.toString(Math.max(Math.max(SLOPE_INVERSE * obstacleHeight, RESA) + STRIP_END, BLAST_PROTECTION))
-                + "\n = " + Double.toString(localLda);
+                lda + " - " + obstacleXR + " - " +
+                Math.max(Math.max(SLOPE_INVERSE * obstacleHeight, RESA) + STRIP_END, BLAST_PROTECTION)
+                + "\n = " + localLda;
     }
 
     private void setCase2BD(Double localTora, Double localToda, Double localAsda, Double localLda) {
         toraBD = " = Displaced Treshold + Distance from Treshhold - max(Slope Calculation, RESA) - Strip End\n = " +
-                Double.toString(dispTresh) + " + " + Double.toString(obstacleXR) + " - " +
-                Double.toString(Math.max(SLOPE_INVERSE * obstacleHeight, RESA)) + " - " + Double.toString(STRIP_END) + "\n" +
-                " = " + Double.toString(localTora);
+                dispTresh + " + " + obstacleXR + " - " +
+                Math.max(SLOPE_INVERSE * obstacleHeight, RESA) + " - " + STRIP_END + "\n" +
+                " = " + localTora;
 
-        todaBD = " = (R) TORA\n = " + Double.toString(localTora);
+        todaBD = " = (R) TORA\n = " + localTora;
 
-        asdaBD = " = (R) TORA\n = " + Double.toString(localTora);
+        asdaBD = " = (R) TORA\n = " + localTora;
 
         ldaBD = " = Distance from Treshold - RESA - Strip End\n = " +
-                Double.toString(obstacleXR) + " - " + Double.toString(RESA) + " - " +
-                Double.toString(STRIP_END) + "\n = " + Double.toString(localLda);
+                obstacleXR + " - " + RESA + " - " +
+                STRIP_END + "\n = " + localLda;
     }
 
     private void setCase3BD(Double localTora, Double localToda, Double localAsda, Double localLda) {
         toraBD = " = Original TORA - Displaced Treshold - Distance from Treshold - Blast Protection\n = " +
-                Double.toString(tora) + " - " + Double.toString(dispTresh) + " - " +
-                Double.toString(obstacleXL) + " - " + Double.toString(BLAST_PROTECTION) + "\n" +
-                " = " + Double.toString(localTora);
+                tora + " - " + dispTresh + " - " +
+                obstacleXL + " - " + BLAST_PROTECTION + "\n" +
+                " = " + localTora;
 
-        todaBD = " = (R) TORA + Clearway\n = " + Double.toString(localTora) + " + " + Double.toString(calculateClearway()) +
-                "\n = " + Double.toString(localToda);
+        todaBD = " = (R) TORA + Clearway\n = " + localTora + " + " + calculateClearway() +
+                "\n = " + localToda;
 
-        asdaBD = " = (R) TORA + Stopway\n = " + Double.toString(localTora) + " + " + Double.toString(calculateStopway()) +
-                "\n = " + Double.toString(localAsda);
+        asdaBD = " = (R) TORA + Stopway\n = " + localTora + " + " + calculateStopway() +
+                "\n = " + localAsda;
 
         ldaBD = " = Original LDA - Distance from Treshold - max (max(Slope Calculation, RESA) + Strip End, Blast Protection)\n = " +
-                Double.toString(lda) + " - " + Double.toString(obstacleXL) + " - " +
-                Double.toString(Math.max(Math.max(SLOPE_INVERSE * obstacleHeight, RESA) + STRIP_END, BLAST_PROTECTION)) + "\n = " +
-                Double.toString(localLda);
+                lda + " - " + obstacleXL + " - " +
+                Math.max(Math.max(SLOPE_INVERSE * obstacleHeight, RESA) + STRIP_END, BLAST_PROTECTION) + "\n = " +
+                localLda;
     }
 
     private void setCase4BD(Double localTora, Double localToda, Double localAsda, Double localLda) {
         toraBD = " = Displaced Treshold + Distance from Treshold - Max(Slope calculation, RESA) - Strip End\n = " +
-                Double.toString(dispTresh) + " + " + Double.toString(obstacleXL) + " - " +
-                Double.toString(Math.max(SLOPE_INVERSE * obstacleHeight, RESA)) + " - " + STRIP_END + "\n"
-                + " = " + Double.toString(localTora);
+                dispTresh + " + " + obstacleXL + " - " +
+                Math.max(SLOPE_INVERSE * obstacleHeight, RESA) + " - " + STRIP_END + "\n"
+                + " = " + localTora;
 
-        todaBD = " = (R) TORA\n = " + Double.toString(localTora);
+        todaBD = " = (R) TORA\n = " + localTora;
 
-        asdaBD = " = (R) TORA\n = " + Double.toString(localTora);
+        asdaBD = " = (R) TORA\n = " + localTora;
 
         ldaBD = " = Distance from Treshold - RESA - Strip End\n = " +
-                Double.toString(obstacleXL) + " - " + Double.toString(RESA) + " - " + Double.toString(STRIP_END) + "\n = " +
-                Double.toString(localLda);
+                obstacleXL + " - " + RESA + " - " + STRIP_END + "\n = " +
+                localLda;
     }
 
     public RedeclarationComputer getReciprocalComputer() {
