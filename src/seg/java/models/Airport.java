@@ -1,46 +1,56 @@
 package seg.java.models;
 
-import java.util.HashMap;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class Airport {
-    private String name;
-    private Integer numberOfRunways;
-    private HashMap<String, Runway> runwayHashMap;
 
-    public Airport() {
-        runwayHashMap = new HashMap<>();
-        numberOfRunways = 0;
-    }
+    private String name;
+    private ObservableList<Runway> runways;
 
     public Airport(String name) {
-        runwayHashMap = new HashMap<>();
-        numberOfRunways = 0;
+        this.name = name;
+        runways = FXCollections.observableArrayList();
+    }
+
+    public void addRunway(Runway runway) {
+        runways.add(runway);
+    }
+
+    public Runway getRunwayByName(String name) throws Exception {
+        for (Runway runway : runways) {
+            if (runway.getName().equals(name)) {
+                return runway;
+            }
+        }
+        throw new Exception("No such runway " + name);
+    }
+
+    public void deleteRunway(Runway runway) {
+        ObservableList<Runway> newRunwayList = FXCollections.observableArrayList();
+        for (Runway rw : runways) {
+            if (!rw.getName().equals(runway.getName())) {
+                newRunwayList.add(rw);
+            }
+        }
+        setRunways(newRunwayList);
+    }
+
+    // Getters and Setters
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
         this.name = name;
     }
 
-    /**
-     * GETTERS & SETTERS
-     *
-     * @return
-     */
-    public void setNumberOfRunways(Integer airportRunway) {
-        this.numberOfRunways = airportRunway;
+    public ObservableList<Runway> getRunways() {
+        return runways;
     }
 
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String airportName) {
-        this.name = airportName;
-    }
-
-    public HashMap<String, Runway> getRunwayHashMap() {
-        return this.runwayHashMap;
-    }
-
-    public void addRunway(String runwayDesignator, String reciprocalName, Double tora, Double toda, Double asda, Double lda, Double displacedThreshold) {
-        Runway newRunway = new Runway(runwayDesignator, reciprocalName, tora, toda, asda, lda, displacedThreshold);
-        runwayHashMap.put(newRunway.getRunwayName(), newRunway);
+    public void setRunways(ObservableList<Runway> runways) {
+        this.runways = runways;
     }
 }

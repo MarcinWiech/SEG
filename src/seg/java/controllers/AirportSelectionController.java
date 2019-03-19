@@ -11,7 +11,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import seg.java.XMLReaderDOM;
+import seg.java.XMLLoader;
 import seg.java.controllers.config.AirportCreationController;
 import seg.java.models.Airport;
 
@@ -23,15 +23,15 @@ public class AirportSelectionController implements Initializable {
     public ChoiceBox airportDroplist;
     public Button selectButton;
 
-    private XMLReaderDOM xmlReaderDOM;
-
     /**
      * INITIALIZE - ADDS AIRPORTS TO DROPLIST (READ IN FROM XML FILE)
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        xmlReaderDOM = new XMLReaderDOM();
-        addToAirportDroplist();
+        XMLLoader xmlLoader = XMLLoader.getInstance();
+        for (Airport airport : xmlLoader.getAirportList()) {
+            airportDroplist.getItems().add(airport.getName());
+        }
     }
 
     /**
@@ -73,10 +73,12 @@ public class AirportSelectionController implements Initializable {
                 stage.setTitle("Dashboard");
                 stage.setScene(new Scene(root1));
                 stage.show();
+              
+                XMLLoader xmlLoader = XMLLoader.getInstance();
+                Airport airport = xmlLoader.getAirportByName(airportDroplist.getValue().toString());
 
-                Airport airportToPass = xmlReaderDOM.getAirportArraylist().get(airportDroplist.getValue().toString());
-                seg.java.controllers.DashboardController dashboardController = fxmlLoader.getController();
-                dashboardController.setValues(airportToPass);
+                DashboardController dashboardController = fxmlLoader.getController();
+                dashboardController.setAirport(airport);
             } catch (Exception e) {
                 System.out.println(e);
                 e.printStackTrace();
@@ -117,12 +119,4 @@ public class AirportSelectionController implements Initializable {
         addAirportLabel.setUnderline(false);
     }
 
-    /**
-     * ADD AIRPORTS TO THE DROPDOWN LIST
-     */
-    public void addToAirportDroplist() {
-        for (String airportName : xmlReaderDOM.getAirportArraylist().keySet()) {
-            airportDroplist.getItems().add(airportName);
-        }
-    }
 }

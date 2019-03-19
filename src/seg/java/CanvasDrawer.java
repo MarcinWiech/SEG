@@ -12,7 +12,6 @@ import javafx.scene.text.Text;
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
-import seg.java.models.RedeclarationComputer;
 import seg.java.models.Runway;
 
 public class CanvasDrawer {
@@ -142,7 +141,7 @@ public class CanvasDrawer {
         // Runway designator gets drawn here
         String text;
         if (runway != null) {
-            text = runway.getRunwayName();
+            text = runway.getName();
         } else {
             text = "N/A";
         }
@@ -226,7 +225,7 @@ public class CanvasDrawer {
 
         Double x = redeclarationComputer.getAppropriateX();
         Double tora = runway.getTora();
-        Double dispTresh = runway.getDisplacedThreshold();
+        Double dispTresh = runway.getThreshold();
 
         if (redeclarationComputer.getCalculationCase() == 1 || redeclarationComputer.getCalculationCase() == 3) {
             imageX = canvasWidth * (0.9 - 0.8 * ((dispTresh + x) / tora)) + xOffset;
@@ -257,7 +256,7 @@ public class CanvasDrawer {
 
         Double x = redeclarationComputer.getAppropriateX();
         Double tora = runway.getTora();
-        Double dispTresh = runway.getDisplacedThreshold();
+        Double dispTresh = runway.getThreshold();
 
         if (redeclarationComputer.getCalculationCase() == 1 || redeclarationComputer.getCalculationCase() == 3) {
             imageX = canvasWidth * (0.9 - 0.8 * ((dispTresh + x) / tora)) + xOffset;
@@ -362,7 +361,7 @@ public class CanvasDrawer {
         gc.setFill(Color.rgb(0, 0, 0, 0.5));
         fillRect(backgroundRect);
 
-        drawHorizontalArrow(0.03, 0.08, 0.33, true, false, runway.getRunwayName() + " - Landing and Take-off in this direction", Color.WHITE);
+        drawHorizontalArrow(0.03, 0.08, 0.33, true, false, runway.getName() + " - Landing and Take-off in this direction", Color.WHITE);
         if (redeclarationComputer.getCalculationCase() == 2 || redeclarationComputer.getCalculationCase() == 4) {
             drawHorizontalArrow(0.03, 0.13, 0.33, true, false, "Take Off Towards, Landing Towards", Color.WHITE);
         } else {
@@ -387,7 +386,7 @@ public class CanvasDrawer {
         gc.setFill(Color.rgb(0, 0, 0, 0.5));
         fillRect(backgroundRect);
 
-        drawHorizontalArrow(0.03, 0.08, 0.33, true, false, runway.getRunwayName() + " - Landing and Take-off in this direction", Color.WHITE);
+        drawHorizontalArrow(0.03, 0.08, 0.33, true, false, runway.getName() + " - Landing and Take-off in this direction", Color.WHITE);
         if (redeclarationComputer.getCalculationCase() == 2 || redeclarationComputer.getCalculationCase() == 4) {
             drawHorizontalArrow(0.03, 0.13, 0.33, true, false, "Take Off Towards, Landing Towards", Color.WHITE);
         } else {
@@ -410,7 +409,7 @@ public class CanvasDrawer {
     private void drawTopDownDetails(Canvas canvas) {
         // Rectangle asphaltRect = new Rectangle(0.1 * canvasWidth, 0.55 * canvasHeight, 0.80 * canvasWidth, 0.03 * canvasHeight);
         Double initialTora = runway.getTora();
-        Double dispTresh = runway.getDisplacedThreshold();
+        Double dispTresh = runway.getThreshold();
         Double tora = redeclarationComputer.getTora();
         Double toda = redeclarationComputer.getToda();
         Double asda = redeclarationComputer.getAsda();
@@ -602,7 +601,7 @@ public class CanvasDrawer {
     private void drawSideOnDetails(Canvas canvas) {
         // Rectangle asphaltRect = new Rectangle(0.1 * canvasWidth, 0.55 * canvasHeight, 0.80 * canvasWidth, 0.03 * canvasHeight);
         Double initialTora = runway.getTora();
-        Double dispTresh = runway.getDisplacedThreshold();
+        Double dispTresh = runway.getThreshold();
         Double tora = redeclarationComputer.getTora();
         Double toda = redeclarationComputer.getToda();
         Double asda = redeclarationComputer.getAsda();

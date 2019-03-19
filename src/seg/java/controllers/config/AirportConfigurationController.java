@@ -1,9 +1,5 @@
 package seg.java.controllers.config;
 
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,8 +10,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.text.Text;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import seg.java.controllers.DashboardController;
 import seg.java.models.Airport;
@@ -30,68 +26,51 @@ import java.util.ResourceBundle;
  */
 public class AirportConfigurationController implements Initializable {
 
-    @FXML public TableView<RunwayModel> tableView;
-    @FXML public TableColumn<RunwayModel, String> designator;
-    @FXML public TableColumn<RunwayModel, Integer> tora;
-    @FXML public TableColumn<RunwayModel, Integer> asda;
-    @FXML public TableColumn<RunwayModel, Integer> lda;
-    @FXML public TableColumn<RunwayModel, Integer> threshold;
-    @FXML public TableColumn<RunwayModel, Integer> toda;
+    @FXML
+    public TableView<Runway> tableView;
+    @FXML
+    public TableColumn<Runway, String> name;
+    @FXML
+    public TableColumn<Runway, Double> tora;
+    @FXML
+    public TableColumn<Runway, Double> asda;
+    @FXML
+    public TableColumn<Runway, Double> lda;
+    @FXML
+    public TableColumn<Runway, Double> threshold;
+    @FXML
+    public TableColumn<Runway, Double> toda;
 
-    @FXML private Text airportName;
-    @FXML private Button backButton;
+    @FXML
+    private Text airportName;
+    @FXML
+    private Button backButton;
 
-    protected Airport airport;
-
-    private class RunwayModel {
-        private SimpleStringProperty designator;
-        private SimpleIntegerProperty tora;
-        private SimpleIntegerProperty asda;
-        private SimpleIntegerProperty lda;
-        private SimpleIntegerProperty threshold;
-        private SimpleIntegerProperty toda;
-
-        public RunwayModel(String designator, Integer tora, Integer asda, Integer lda, Integer threshold, Integer toda){
-            this.designator = new SimpleStringProperty(designator);
-            this.tora = new SimpleIntegerProperty(tora);
-            this.asda = new SimpleIntegerProperty(asda);
-            this.lda = new SimpleIntegerProperty(lda);
-            this.threshold = new SimpleIntegerProperty(threshold);
-            this.toda = new SimpleIntegerProperty(toda);
-        }
-    }
+    private Airport airport;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        designator.setCellValueFactory(new PropertyValueFactory<>("designator"));
+        name.setCellValueFactory(new PropertyValueFactory<>("name"));
         tora.setCellValueFactory(new PropertyValueFactory<>("tora"));
         asda.setCellValueFactory(new PropertyValueFactory<>("asda"));
         lda.setCellValueFactory(new PropertyValueFactory<>("lda"));
         threshold.setCellValueFactory(new PropertyValueFactory<>("threshold"));
         toda.setCellValueFactory(new PropertyValueFactory<>("toda"));
-
-        tableView.setItems(runwayModels);
     }
 
-    private ObservableList<RunwayModel> runwayModels = FXCollections.observableArrayList(
-        new RunwayModel("Test1", 1 ,2, 3, 4, 5),
-        new RunwayModel("Test2", 1 ,2, 3, 4, 5),
-        new RunwayModel("Test3", 1 ,2, 3, 4, 5)
-    );
-
-    public void setAirport(Airport airport){
+    public void setAirport(Airport airport) {
         this.airport = airport;
         airportName.setText(airport.getName());
+        tableView.setItems(airport.getRunways());
     }
 
-    public Runway getSelectedRunway(){
-        //TODO: Fix me.
-        return new Runway("A", "B",1.0,2.0,3.0,4.0,4.0);
+    public Runway getSelectedRunway() {
+        return tableView.getSelectionModel().getSelectedItem();
     }
 
     // Actions
 
-    public void backButtonPressed(ActionEvent actionEvent){
+    public void backButtonPressed(ActionEvent actionEvent) {
         try {
             Stage stage = (Stage) backButton.getScene().getWindow();
             stage.close();
@@ -103,21 +82,21 @@ public class AirportConfigurationController implements Initializable {
             stage.show();
 
             DashboardController dashboardController = fxmlLoader.getController();
-            dashboardController.setValues(airport);
-        } catch(IOException e){
+            dashboardController.setAirport(airport);
+        } catch (IOException e) {
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong :(").showAndWait();
         }
     }
 
-    public void newRunwayButtonPressed(ActionEvent ae){
+    public void newRunwayButtonPressed(ActionEvent ae) {
         try {
             Stage stage = (Stage) backButton.getScene().getWindow();
             stage.close();
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/config/runwayConfig.fxml"));
             Parent root1 = fxmlLoader.load();
 
-            RunwayCreationController controller = fxmlLoader.getController();
+            RunwayConfigurationController controller = fxmlLoader.getController();
 
             controller.setAirport(airport);
 
@@ -131,25 +110,38 @@ public class AirportConfigurationController implements Initializable {
         }
     }
 
-    public void editRunwayButtonPressed(ActionEvent ae){
-        try {
-            Stage stage = (Stage) backButton.getScene().getWindow();
-            stage.close();
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/config/runwayConfig.fxml"));
-            Parent root1 = fxmlLoader.load();
+    public void editRunwayButtonPressed(ActionEvent ae) {
+        if (getSelectedRunway() == null) {
+            new Alert(Alert.AlertType.WARNING, "Please select a runway to edit.").showAndWait();
+        } else {
+            try {
+                Stage stage = (Stage) backButton.getScene().getWindow();
+                stage.close();
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/config/runwayConfig.fxml"));
+                Parent root1 = fxmlLoader.load();
 
-            RunwayCreationController controller = fxmlLoader.getController();
+                RunwayConfigurationController controller = fxmlLoader.getController();
 
-            controller.setAirport(airport);
-            controller.setRunway(getSelectedRunway());
+                controller.setAirport(airport);
+                controller.setRunway(getSelectedRunway());
 
-            stage = new Stage();
-            stage.setTitle("Runway Configuration");
-            stage.setScene(new Scene(root1));
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong :(").showAndWait();
+                stage = new Stage();
+                stage.setTitle("Runway Configuration");
+                stage.setScene(new Scene(root1));
+                stage.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+                new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong :(").showAndWait();
+            }
+        }
+    }
+
+    public void deleteRunwayButtonPressed(ActionEvent actionEvent) {
+        if (getSelectedRunway() == null) {
+            new Alert(Alert.AlertType.WARNING, "Please select a runway to delete.").showAndWait();
+        } else {
+            airport.deleteRunway(getSelectedRunway());
+            tableView.setItems(airport.getRunways());
         }
     }
 }

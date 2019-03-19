@@ -19,14 +19,15 @@ import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
 import seg.java.CanvasDrawer;
 import seg.java.controllers.config.AirportConfigurationController;
-import seg.java.XMLReaderDOM;
 import seg.java.models.Airport;
-import seg.java.models.IllegalValueException;
-import seg.java.models.RedeclarationComputer;
+import seg.java.IllegalValueException;
+import seg.java.RedeclarationComputer;
 import seg.java.models.Runway;
 
 
 public class DashboardController {
+    Airport currentAirport;
+    Runway currentRunway;
     @FXML
     private TextField heightTextbox;
     @FXML
@@ -37,10 +38,8 @@ public class DashboardController {
     private Pane topDownPaneCopy;
     @FXML
     private Pane sideOnPaneCopy;
-
     @FXML
     private ChoiceBox runwayDroplist;
-
     @FXML
     private Canvas topDownCanvas;
     @FXML
@@ -49,14 +48,12 @@ public class DashboardController {
     private Canvas topDownCanvasCopy;
     @FXML
     private Canvas sideOnCanvasCopy;
-
     @FXML
     private TextField xLTextbox;
     @FXML
     private TextField xRTextbox;
     @FXML
     private TextField yTextbox;
-
     @FXML
     private TextField toraInitialTextbox;
     @FXML
@@ -75,7 +72,6 @@ public class DashboardController {
     private TextField asdaNewTextbox;
     @FXML
     private TextField ldaNewTextbox;
-
     @FXML
     private TextArea toraBDTextArea;
     @FXML
@@ -84,13 +80,9 @@ public class DashboardController {
     private TextArea asdaBDTextArea;
     @FXML
     private TextArea ldaBDTextArea;
-
     private CanvasDrawer canvasDrawer;
     private RedeclarationComputer redeclarationComputer;
     private RedeclarationComputer reciprocalComputer;
-    private Airport currentAirport;
-    private Runway currentRunway;
-
     private double obstacleXL = 0;
     private double obstacleXR = 0;
     private double toraInput;
@@ -98,7 +90,6 @@ public class DashboardController {
     private double asdaInput;
     private double ldaInput;
     private double dispThresholdInput;
-
     private Image greentickIcon;
     private Image warningIcon;
     private Image switchIcon;
@@ -137,21 +128,6 @@ public class DashboardController {
         sideOnCanvasCopy.heightProperty().bind(sideOnPaneCopy.heightProperty());
         sideOnCanvasCopy.widthProperty().addListener(event -> canvasDrawer.drawSideOnCanvas(sideOnCanvasCopy));
         sideOnCanvasCopy.heightProperty().addListener(event -> canvasDrawer.drawSideOnCanvas(sideOnCanvasCopy));
-
-        // Prevent user from changing textFields
-        toraInitialTextbox.setEditable(false);
-        todaInitialTextbox.setEditable(false);
-        asdaInitialTextbox.setEditable(false);
-        ldaInitialTextbox.setEditable(false);
-        toraBDTextArea.setEditable(false);
-        todaBDTextArea.setEditable(false);
-        asdaBDTextArea.setEditable(false);
-        ldaBDTextArea.setEditable(false);
-        toraNewTextbox.setEditable(false);
-        todaNewTextbox.setEditable(false);
-        asdaNewTextbox.setEditable(false);
-        ldaNewTextbox.setEditable(false);
-        thresholdInitialTextbox.setEditable(false);
 
         greentickIcon = new Image("/seg/resources/images/greentick.png");
         warningIcon = new Image("/seg/resources/images/alert-triangle-yellow.png");
@@ -232,11 +208,11 @@ public class DashboardController {
                     makeNotification("Runway too large", "The redeclared runway is too large for operating", warningIcon);
                 } else if (redeclarationComputer.getTora() < 200) {
                     makeNotification("Runway too small", "The redeclared runway is too small for operating", warningIcon);
-                }else if(redeclarationComputer.getTora() > redeclarationComputer.getToda()){
+                } else if (redeclarationComputer.getTora() > redeclarationComputer.getToda()) {
                     makeNotification("TODA smaller than TORA", "The recalculated TODA is too small for operating", warningIcon);
-                }else if(redeclarationComputer.getToda() < redeclarationComputer.getAsda()){
+                } else if (redeclarationComputer.getToda() < redeclarationComputer.getAsda()) {
                     makeNotification("TODA smaller than ASDA ", "The recalculated TODA is too small for operating", warningIcon);
-                }else if(redeclarationComputer.calculateClearway() > redeclarationComputer.getTora()/2){
+                } else if (redeclarationComputer.calculateClearway() > redeclarationComputer.getTora() / 2) {
                     makeNotification("Clearway too big", "The recalculated values indicated that clearway is larger than half of TORA", warningIcon);
                 }
             }
@@ -285,25 +261,17 @@ public class DashboardController {
             return;
         }
         if (toraNewTextbox.getText().equals("")) {
-            runwayDroplist.setValue(currentRunway.getReciprocalRunway().getRunwayName());
+            runwayDroplist.setValue(currentRunway.getReciprocalRunway().getName());
             return;
         }
 
-        currentRunway = currentRunway.getReciprocalRunway();
 
-        //  Update the dropdown menu as well
-        runwayDroplist.setValue(currentRunway.getRunwayName());
+        setCurrentRunway(currentRunway.getReciprocalRunway());
 
         //  Switch computers
         RedeclarationComputer aux = redeclarationComputer;
         redeclarationComputer = reciprocalComputer;
         reciprocalComputer = aux;
-
-        //  New values are displayed
-        toraNewTextbox.setText(Double.toString(redeclarationComputer.getTora()));
-        todaNewTextbox.setText(Double.toString(redeclarationComputer.getToda()));
-        asdaNewTextbox.setText(Double.toString(redeclarationComputer.getAsda()));
-        ldaNewTextbox.setText(Double.toString(redeclarationComputer.getLda()));
 
         //  Canvas drawing gets triggered here
         canvasDrawer.setRedeclarationComputer(redeclarationComputer);
@@ -343,14 +311,18 @@ public class DashboardController {
             Stage stage = (Stage) yTextbox.getScene().getWindow();
             stage.close();
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/config/airportConfig.fxml"));
+
+
             Parent root1 = fxmlLoader.load();
+            AirportConfigurationController acc = fxmlLoader.getController();
+            acc.setAirport(currentAirport);
+
             stage = new Stage();
-            stage.setTitle("Configure Airports");
+            stage.setTitle("Configure Airport");
             stage.setScene(new Scene(root1));
             stage.show();
 
-            AirportConfigurationController acc = fxmlLoader.getController();
-            acc.setAirport(currentAirport);
+
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println(e);
@@ -358,25 +330,36 @@ public class DashboardController {
         }
     }
 
-    public void setValues(Airport airport) {
-
+    public void setAirport(Airport airport) {
         currentAirport = airport;
-        addToRunwayDroplist();
+        updateRunwayDropList();
+    }
+
+    public void updateRunwayDropList() {
+        for (Runway runway : currentAirport.getRunways()) {
+            runwayDroplist.getItems().add(runway.getName());
+        }
     }
 
     public void selectRunway(ActionEvent actionEvent) {
-        currentRunway = currentAirport.getRunwayHashMap().get(runwayDroplist.getValue().toString());
-        toraInitialTextbox.setText(currentRunway.getTora().toString());
-        todaInitialTextbox.setText(currentRunway.getToda().toString());
-        asdaInitialTextbox.setText(currentRunway.getAsda().toString());
-        ldaInitialTextbox.setText(currentRunway.getLda().toString());
-        thresholdInitialTextbox.setText(currentRunway.getDisplacedThreshold().toString());
+        try {
+            Runway runway = currentAirport.getRunwayByName(runwayDroplist.getValue().toString());
+            setCurrentRunway(runway);
+        } catch (Exception e) {
+            new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong :(").showAndWait();
+        }
     }
 
-    public void addToRunwayDroplist() {
-        for (String runwayName : currentAirport.getRunwayHashMap().keySet()) {
-            runwayDroplist.getItems().add(runwayName);
-        }
+    public void setCurrentRunway(Runway runway) {
+        currentRunway = runway;
+        toraInitialTextbox.setText(Double.toString(runway.getTora()));
+        todaInitialTextbox.setText(Double.toString(runway.getToda()));
+        asdaInitialTextbox.setText(Double.toString(runway.getAsda()));
+        ldaInitialTextbox.setText(Double.toString(runway.getLda()));
+        thresholdInitialTextbox.setText(Double.toString(runway.getThreshold()));
+
+        // Update selected box
+        runwayDroplist.setValue(runway.getName());
     }
 
     public void makeNotification(String title, String text, Image icon) {
@@ -391,8 +374,6 @@ public class DashboardController {
         notificationBuilder.darkStyle();
         notificationBuilder.show();
     }
-
-
 
 }
 
