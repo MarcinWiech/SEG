@@ -2,6 +2,7 @@ package seg.java.controllers.config;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -12,7 +13,10 @@ import seg.java.models.Airport;
 import seg.java.models.IllegalValueException;
 import seg.java.models.Runway;
 
-public class RunwayCreationController {
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class RunwayConfigurationController {
     public Button addRunwayButton;
     public Button backButton;
     public TextField ldaTextbox;
@@ -23,6 +27,7 @@ public class RunwayCreationController {
     public TextField thresholdTextbox;
 
     private Airport airport;
+    private Runway runway;
     /**
      * WHEN ADD BUTTON IS PRESSED
      **/
@@ -52,86 +57,6 @@ public class RunwayCreationController {
     }
 
     public void addRunway(ActionEvent actionEvent) {
-        try {
-
-
-            if (runwayDesignatorTextbox.getText().isEmpty() || toraTextbox.getText().isEmpty() || todaTextbox.getText().isEmpty()
-                    || asdaTextbox.getText().isEmpty() || ldaTextbox.getText().isEmpty() || thresholdTextbox.getText().isEmpty()) {
-                throw new IllegalValueException("fields");
-
-            }
-            designator = runwayDesignatorTextbox.getText();
-
-
-        } catch (IllegalValueException e) {
-            return;
-        }
-
-        try {
-            tora = Double.parseDouble(toraTextbox.getText());
-        } catch (Exception e) {
-            new Alert(Alert.AlertType.ERROR, "Please enter a valid value for: TORA input!").showAndWait();
-            return;
-        }
-        try {
-            toda = Double.parseDouble(todaTextbox.getText());
-        } catch (Exception e) {
-            new Alert(Alert.AlertType.ERROR, "Please enter a valid value for: TODA input!").showAndWait();
-            return;
-        }
-        try {
-            asda = Double.parseDouble(asdaTextbox.getText());
-        } catch (Exception e) {
-            new Alert(Alert.AlertType.ERROR, "Please enter a valid value for: ASDA input!").showAndWait();
-            return;
-        }
-        try {
-            lda = Double.parseDouble(ldaTextbox.getText());
-        } catch (Exception e) {
-            new Alert(Alert.AlertType.ERROR, "Please enter a valid value for: LDA input!").showAndWait();
-            return;
-        }
-        try {
-            thres = Double.parseDouble(thresholdTextbox.getText());
-        } catch (Exception e) {
-            new Alert(Alert.AlertType.ERROR, "Please enter a valid value for: Displaced Threshold input!").showAndWait();
-            return;
-        }
-
-
-        try {
-            tora = Double.parseDouble(toraTextbox.getText());
-            if (tora > 5600) {
-                throw new IllegalValueException("largetora");
-            } else if (tora < 100) {
-                throw new IllegalValueException("smalltora");
-            }
-
-        } catch (IllegalValueException e) {
-            return;
-        }
-        try {
-            toda = Double.parseDouble(todaTextbox.getText());
-
-            if (toda < tora) {
-                throw new IllegalValueException("smalltoda");
-            } else if (toda - tora > (tora / 2)) {
-                throw new IllegalValueException("largeclearway");
-            }
-
-        } catch (IllegalValueException e) {
-            return;
-        }
-        try {
-            asda = Double.parseDouble(asdaTextbox.getText());
-            if (tora > asda) {
-                throw new IllegalValueException("smallasda");
-            }
-
-        } catch (IllegalValueException e) {
-            return;
-        }
-
 
         try {
             String name = runwayDesignatorTextbox.getText();
@@ -142,12 +67,6 @@ public class RunwayCreationController {
             Double threshold = Double.parseDouble(thresholdTextbox.getText());
             Runway runway = new Runway(name, null, tora, toda, asda, lda, threshold);
             airport.addRunway(runway);
-            runwayDesignatorTextbox.clear();
-            toraTextbox.clear();
-            todaTextbox.clear();
-            asdaTextbox.clear();
-            ldaTextbox.clear();
-            thresholdTextbox.clear();
         } catch (IllegalValueException e) {
 
         }
@@ -157,16 +76,12 @@ public class RunwayCreationController {
     public void onFinish(ActionEvent actionEvent) throws IllegalValueException {
 
         try {
-
-
             if (runwayDesignatorTextbox.getText().isEmpty() || toraTextbox.getText().isEmpty() || todaTextbox.getText().isEmpty()
                     || asdaTextbox.getText().isEmpty() || ldaTextbox.getText().isEmpty() || thresholdTextbox.getText().isEmpty()) {
                 throw new IllegalValueException("fields");
 
             }
             designator = runwayDesignatorTextbox.getText();
-
-
         } catch (IllegalValueException e) {
             return;
         }
@@ -235,8 +150,100 @@ public class RunwayCreationController {
             return;
         }
 
-        addRunway(actionEvent);
+        try {
 
+
+            if (runwayDesignatorTextbox.getText().isEmpty() || toraTextbox.getText().isEmpty() || todaTextbox.getText().isEmpty()
+                    || asdaTextbox.getText().isEmpty() || ldaTextbox.getText().isEmpty() || thresholdTextbox.getText().isEmpty()) {
+                throw new IllegalValueException("fields");
+
+            }
+            designator = runwayDesignatorTextbox.getText();
+
+
+        } catch (IllegalValueException e) {
+            return;
+        }
+
+        try {
+            tora = Double.parseDouble(toraTextbox.getText());
+        } catch (Exception e) {
+            new Alert(Alert.AlertType.ERROR, "Please enter a valid value for: TORA input!").showAndWait();
+            return;
+        }
+        try {
+            toda = Double.parseDouble(todaTextbox.getText());
+        } catch (Exception e) {
+            new Alert(Alert.AlertType.ERROR, "Please enter a valid value for: TODA input!").showAndWait();
+            return;
+        }
+        try {
+            asda = Double.parseDouble(asdaTextbox.getText());
+        } catch (Exception e) {
+            new Alert(Alert.AlertType.ERROR, "Please enter a valid value for: ASDA input!").showAndWait();
+            return;
+        }
+        try {
+            lda = Double.parseDouble(ldaTextbox.getText());
+        } catch (Exception e) {
+            new Alert(Alert.AlertType.ERROR, "Please enter a valid value for: LDA input!").showAndWait();
+            return;
+        }
+        try {
+            thres = Double.parseDouble(thresholdTextbox.getText());
+        } catch (Exception e) {
+            new Alert(Alert.AlertType.ERROR, "Please enter a valid value for: Displaced Threshold input!").showAndWait();
+            return;
+        }
+
+
+        try {
+            tora = Double.parseDouble(toraTextbox.getText());
+            if (tora > 5600) {
+                throw new IllegalValueException("largetora");
+            } else if (tora < 100) {
+                throw new IllegalValueException("smalltora");
+            }
+
+        } catch (IllegalValueException e) {
+            return;
+        }
+        try {
+            toda = Double.parseDouble(todaTextbox.getText());
+
+            if (toda < tora) {
+                throw new IllegalValueException("smalltoda");
+            } else if (toda - tora > (tora / 2)) {
+                throw new IllegalValueException("largeclearway");
+            }
+
+        } catch (IllegalValueException e) {
+            return;
+        }
+        try {
+            asda = Double.parseDouble(asdaTextbox.getText());
+            if (tora > asda) {
+                throw new IllegalValueException("smallasda");
+            }
+
+        } catch (IllegalValueException e) {
+            return;
+        }
+
+        // Validated, now add it
+
+        if(runway == null){
+            addRunway(actionEvent);
+        } else {
+            runway.setName(runwayDesignatorTextbox.getText());
+            runway.setTora(Double.parseDouble(toraTextbox.getText()));
+            runway.setToda(Double.parseDouble(todaTextbox.getText()));
+            runway.setAsda(Double.parseDouble(asdaTextbox.getText()));
+            runway.setLda(Double.parseDouble(ldaTextbox.getText()));
+            runway.setThreshold(Double.parseDouble(thresholdTextbox.getText()));
+        }
+
+        // Go back to config screen.
         try {
             Stage stage = (Stage) asdaTextbox.getScene().getWindow();
             stage.close();
@@ -260,6 +267,12 @@ public class RunwayCreationController {
     }
 
     public void setRunway(Runway runway) {
-        // Todo: Runway editing.
+        this.runway = runway;
+        ldaTextbox.setText(Double.toString(runway.getLda()));
+        asdaTextbox.setText(Double.toString(runway.getAsda()));
+        todaTextbox.setText(Double.toString(runway.getToda()));
+        toraTextbox.setText(Double.toString(runway.getTora()));
+        thresholdTextbox.setText(Double.toString(runway.getThreshold()));
+        runwayDesignatorTextbox.setText(runway.getName());
     }
 }

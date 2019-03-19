@@ -1,9 +1,5 @@
 package seg.java.controllers.config;
 
-import javafx.beans.InvalidationListener;
-import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -100,7 +96,7 @@ public class AirportConfigurationController implements Initializable {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/config/runwayConfig.fxml"));
             Parent root1 = fxmlLoader.load();
 
-            RunwayCreationController controller = fxmlLoader.getController();
+            RunwayConfigurationController controller = fxmlLoader.getController();
 
             controller.setAirport(airport);
 
@@ -115,29 +111,37 @@ public class AirportConfigurationController implements Initializable {
     }
 
     public void editRunwayButtonPressed(ActionEvent ae) {
-        try {
-            Stage stage = (Stage) backButton.getScene().getWindow();
-            stage.close();
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/config/runwayConfig.fxml"));
-            Parent root1 = fxmlLoader.load();
+        if(getSelectedRunway() == null){
+            new Alert(Alert.AlertType.WARNING, "Please select a runway to edit.").showAndWait();
+        } else {
+            try {
+                Stage stage = (Stage) backButton.getScene().getWindow();
+                stage.close();
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/config/runwayConfig.fxml"));
+                Parent root1 = fxmlLoader.load();
 
-            RunwayCreationController controller = fxmlLoader.getController();
+                RunwayConfigurationController controller = fxmlLoader.getController();
 
-            controller.setAirport(airport);
-            controller.setRunway(getSelectedRunway());
+                controller.setAirport(airport);
+                controller.setRunway(getSelectedRunway());
 
-            stage = new Stage();
-            stage.setTitle("Runway Configuration");
-            stage.setScene(new Scene(root1));
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong :(").showAndWait();
+                stage = new Stage();
+                stage.setTitle("Runway Configuration");
+                stage.setScene(new Scene(root1));
+                stage.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+                new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong :(").showAndWait();
+            }
         }
     }
 
     public void deleteRunwayButtonPressed(ActionEvent actionEvent){
-        airport.deleteRunway(getSelectedRunway());
-        tableView.setItems(airport.getRunways());
+        if(getSelectedRunway() == null){
+            new Alert(Alert.AlertType.WARNING, "Please select a runway to delete.").showAndWait();
+        } else {
+            airport.deleteRunway(getSelectedRunway());
+            tableView.setItems(airport.getRunways());
+        }
     }
 }
