@@ -1,5 +1,9 @@
 package seg.java.controllers.config;
 
+import javafx.beans.InvalidationListener;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,7 +23,7 @@ import seg.java.models.Runway;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * The new airport configuration controller.
@@ -56,13 +60,12 @@ public class AirportConfigurationController implements Initializable {
         lda.setCellValueFactory(new PropertyValueFactory<>("lda"));
         threshold.setCellValueFactory(new PropertyValueFactory<>("threshold"));
         toda.setCellValueFactory(new PropertyValueFactory<>("toda"));
-
-        tableView.setItems(airport.getRunways());
     }
 
     public void setAirport(Airport airport) {
         this.airport = airport;
         airportName.setText(airport.getName());
+        tableView.setItems(airport.getRunways());
     }
 
     public Runway getSelectedRunway() {

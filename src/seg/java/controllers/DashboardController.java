@@ -311,14 +311,19 @@ public class DashboardController {
             Stage stage = (Stage) yTextbox.getScene().getWindow();
             stage.close();
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/config/airportConfig.fxml"));
+
+
+
             Parent root1 = fxmlLoader.load();
+            AirportConfigurationController acc = fxmlLoader.getController();
+            acc.setAirport(currentAirport);
+
             stage = new Stage();
-            stage.setTitle("Configure Airports");
+            stage.setTitle("Configure Airport");
             stage.setScene(new Scene(root1));
             stage.show();
 
-            AirportConfigurationController acc = fxmlLoader.getController();
-            acc.setAirport(currentAirport);
+
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println(e);

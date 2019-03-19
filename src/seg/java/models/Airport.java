@@ -1,7 +1,10 @@
 package seg.java.models;
 
+import com.sun.javafx.collections.ObservableSequentialListWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
+import java.util.ArrayList;
 
 public class Airport {
 
