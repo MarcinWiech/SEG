@@ -13,6 +13,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 public class XMLLoader {
@@ -20,14 +21,15 @@ public class XMLLoader {
     private ArrayList<Airport> airportList;
 
     private XMLLoader() {
-        String filePath = "./src/airports.xml";
-        File xmlFile = new File(filePath);
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        InputStream file = classloader.getResourceAsStream("airports.xml");
+
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder;
 
         try {
             dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(xmlFile);
+            Document doc = dBuilder.parse(file);
             doc.getDocumentElement().normalize();
 
             NodeList airportNodeList = doc.getElementsByTagName("Airport");
@@ -86,7 +88,7 @@ public class XMLLoader {
 
         Runway runway = new Runway(name, null, tora, toda, asda, lda, threshold);
 
-        if (runway.getName().equals("null") == false) {
+        if (!runway.getName().equals("null")) {
             try {
                 Runway reciprocal = airport.getRunwayByName(reciprocalName);
                 runway.setReciprocalRunway(reciprocal);

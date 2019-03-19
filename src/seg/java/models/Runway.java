@@ -13,7 +13,7 @@ public class Runway {
     private SimpleDoubleProperty toda;
     private Runway reciprocalRunway;
 
-    public Runway(String name, Runway reciprocalRunway, Double tora, Double asda, Double lda, Double threshold, Double toda) {
+    public Runway(String name, Runway reciprocalRunway, Double tora, Double asda, Double lda, Double toda, Double threshold) {
         this.name = new SimpleStringProperty(name);
         this.tora = new SimpleDoubleProperty(tora);
         this.asda = new SimpleDoubleProperty(asda);
