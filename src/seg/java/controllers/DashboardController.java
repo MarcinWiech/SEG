@@ -1,19 +1,22 @@
 package seg.java.controllers;
 
+import javafx.animation.PathTransition;
+import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.*;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
@@ -376,7 +379,104 @@ public class DashboardController {
     }
 
     public void runButtonPressed(){
+
+
         //maybe something such as using top down pane and adding a new canvas there
+        Button btn = new Button("ClickMe");
+        ImageView imageView = new ImageView("/seg/resources/images/side-view-plane.png");
+        imageView.setPreserveRatio(true);
+        imageView.setFitHeight(25);
+        imageView.setY(100);
+        imageView.setRotate(180);
+        System.out.println("run Pressed");
+
+//        Rectangle rectPath = new Rectangle (0, 0, 40, 40);
+//        rectPath.setArcHeight(10);
+//        rectPath.setArcWidth(10);
+//        rectPath.setFill(Color.ORANGE);
+
+//        Path path = new Path();
+//        path.getElements().add(new MoveTo(500,100));
+//        path.getElements().add(new MoveTo(550,70));
+//        path.getElements().add(new CubicCurveTo(380, 0, 380, 120, 200, 120));
+//        path.getElements().add(new CubicCurveTo(0, 120, 0, 240, 380, 240));
+//        PathTransition pathTransition = new PathTransition();
+//        pathTransition.setDuration(Duration.millis(4000));
+//        pathTransition.setPath(path);
+//        pathTransition.setNode(imageView);
+//        pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+//        pathTransition.setCycleCount(Timeline.INDEFINITE);
+//        pathTransition.setAutoReverse(true);
+//        pathTransition.play();
+//        System.out.println(path.getTranslateX());
+
+
+        Path path = new Path();
+
+        MoveTo moveTo = new MoveTo();
+        moveTo.setX(0.0f);
+        moveTo.setY(200);
+
+        HLineTo hLineTo = new HLineTo();
+        hLineTo.setX(300);
+
+//        QuadCurveTo quadCurveTo = new QuadCurveTo();
+//        quadCurveTo.setX(120.0f);
+//        quadCurveTo.setY(60.0f);
+//        quadCurveTo.setControlX(100.0f);
+//        quadCurveTo.setControlY(0.0f);
+
+        LineTo lineTo = new LineTo();
+        lineTo.setX(400);
+        lineTo.setY(150);
+
+//        ArcTo arcTo = new ArcTo();
+//        arcTo.setX(50.0f);
+//        arcTo.setY(50.0f);
+//        arcTo.setRadiusX(50.0f);
+//        arcTo.setRadiusY(50.0f);
+
+        path.getElements().add(moveTo);
+        path.getElements().add(hLineTo);
+//        path.getElements().add(quadCurveTo);
+        path.getElements().add(lineTo);
+//        path.getElements().add(arcTo);
+
+        PathTransition pathTransition = new PathTransition();
+        pathTransition.setDuration(Duration.millis(4000));
+        pathTransition.setPath(path);
+        pathTransition.setNode(imageView);
+        pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+//        pathTransition.setCycleCount(Timeline.INDEFINITE);
+//        pathTransition.setAutoReverse(true);
+        pathTransition.play();
+
+//        //Duration = 2.5 seconds
+//        Duration duration = Duration.millis(2500);
+//        //Create new translate transition
+//        TranslateTransition transition = new TranslateTransition(duration, imageView);
+//
+//        //Move in X axis by +200
+//        transition.setByX(200);
+//        //Move in Y axis by +100
+//        transition.setByY(0);
+//
+//        //Move in X axis by +200
+//        transition.setByX(50);
+//        //Move in Y axis by +100
+//        transition.setByY(-20);
+//
+//        transition.play();
+
+        //Go back to previous position after 2.5 seconds
+//        transition.setAutoReverse(true);
+        //Repeat animation twice
+//        transition.setCycleCount(2);
+
+        // works only on one pane
+        topDownPane.getChildren().add(imageView);
+//        topDownPaneCopy.getChildren().add(btn);
+
     }
 
 }

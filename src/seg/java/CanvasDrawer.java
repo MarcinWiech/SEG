@@ -1,5 +1,6 @@
 package seg.java;
 
+import com.sun.org.apache.regexp.internal.RE;
 import javafx.animation.*;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -267,7 +268,7 @@ public class CanvasDrawer {
         }
 //        draw(gc, 10,10,200,image1);
 //        animate(canvas);
-        
+
 
     }
 
@@ -285,6 +286,12 @@ public class CanvasDrawer {
     private void animate(Canvas canvas){
 
         gc = canvas.getGraphicsContext2D();
+
+        Rectangle rec = new Rectangle (0, 0, 40, 40);
+        rec.setArcHeight(10);
+        rec.setArcWidth(10);
+        rec.setFill(Color.ORANGE);
+
 
         DoubleProperty x1  = new SimpleDoubleProperty();
         DoubleProperty y  = new SimpleDoubleProperty();
