@@ -7,10 +7,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -28,58 +25,33 @@ import seg.java.models.Runway;
 public class DashboardController {
     Airport currentAirport;
     Runway currentRunway;
-    @FXML
-    private TextField heightTextbox;
-    @FXML
-    private Pane topDownPane;
-    @FXML
-    private Pane sideOnPane;
-    @FXML
-    private Pane topDownPaneCopy;
-    @FXML
-    private Pane sideOnPaneCopy;
-    @FXML
-    private ChoiceBox runwayDroplist;
-    @FXML
-    private Canvas topDownCanvas;
-    @FXML
-    private Canvas sideOnCanvas;
-    @FXML
-    private Canvas topDownCanvasCopy;
-    @FXML
-    private Canvas sideOnCanvasCopy;
-    @FXML
-    private TextField xLTextbox;
-    @FXML
-    private TextField xRTextbox;
-    @FXML
-    private TextField yTextbox;
-    @FXML
-    private TextField toraInitialTextbox;
-    @FXML
-    private TextField todaInitialTextbox;
-    @FXML
-    private TextField asdaInitialTextbox;
-    @FXML
-    private TextField ldaInitialTextbox;
-    @FXML
-    private TextField thresholdInitialTextbox;
-    @FXML
-    private TextField toraNewTextbox;
-    @FXML
-    private TextField todaNewTextbox;
-    @FXML
-    private TextField asdaNewTextbox;
-    @FXML
-    private TextField ldaNewTextbox;
-    @FXML
-    private TextArea toraBDTextArea;
-    @FXML
-    private TextArea todaBDTextArea;
-    @FXML
-    private TextArea asdaBDTextArea;
-    @FXML
-    private TextArea ldaBDTextArea;
+    @FXML private TextField heightTextbox;
+    @FXML private Pane topDownPane;
+    @FXML private Pane sideOnPane;
+    @FXML private Pane topDownPaneCopy;
+    @FXML private Pane sideOnPaneCopy;
+    @FXML private ChoiceBox runwayDroplist;
+    @FXML private Canvas topDownCanvas;
+    @FXML private Canvas sideOnCanvas;
+    @FXML private Canvas topDownCanvasCopy;
+    @FXML private Canvas sideOnCanvasCopy;
+    @FXML private TextField xLTextbox;
+    @FXML private TextField xRTextbox;
+    @FXML private TextField yTextbox;
+    @FXML private TextField toraInitialTextbox;
+    @FXML private TextField todaInitialTextbox;
+    @FXML private TextField asdaInitialTextbox;
+    @FXML private TextField ldaInitialTextbox;
+    @FXML private TextField thresholdInitialTextbox;
+    @FXML private TextField toraNewTextbox;
+    @FXML private TextField todaNewTextbox;
+    @FXML private TextField asdaNewTextbox;
+    @FXML private TextField ldaNewTextbox;
+    @FXML private TextArea toraBDTextArea;
+    @FXML private TextArea todaBDTextArea;
+    @FXML private TextArea asdaBDTextArea;
+    @FXML private TextArea ldaBDTextArea;
+    @FXML private Button switchButton;
     private CanvasDrawer canvasDrawer;
     private RedeclarationComputer redeclarationComputer;
     private RedeclarationComputer reciprocalComputer;
@@ -132,6 +104,9 @@ public class DashboardController {
         greentickIcon = new Image("/seg/resources/images/greentick.png");
         warningIcon = new Image("/seg/resources/images/alert-triangle-yellow.png");
         switchIcon = new Image("/seg/resources/images/switch.png");
+
+        // Disable Switch Button
+        switchButton.disableProperty().setValue(true);
     }
 
 /*==================================================================================================================================
@@ -360,6 +335,14 @@ public class DashboardController {
 
         // Update selected box
         runwayDroplist.setValue(runway.getName());
+
+        // Enable / Disable Reciprocal Button
+
+        if(runway.getReciprocalRunway() == null){
+            switchButton.disableProperty().setValue(true);
+        }else{
+            switchButton.disableProperty().setValue(false);
+        }
     }
 
     public void makeNotification(String title, String text, Image icon) {
