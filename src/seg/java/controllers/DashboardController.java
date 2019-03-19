@@ -129,22 +129,6 @@ public class DashboardController {
         sideOnCanvasCopy.widthProperty().addListener(event -> canvasDrawer.drawSideOnCanvas(sideOnCanvasCopy));
         sideOnCanvasCopy.heightProperty().addListener(event -> canvasDrawer.drawSideOnCanvas(sideOnCanvasCopy));
 
-        // Prevent user from changing textFields
-        // TODO: Set this in scene builder.
-        toraInitialTextbox.setEditable(false);
-        todaInitialTextbox.setEditable(false);
-        asdaInitialTextbox.setEditable(false);
-        ldaInitialTextbox.setEditable(false);
-        toraBDTextArea.setEditable(false);
-        todaBDTextArea.setEditable(false);
-        asdaBDTextArea.setEditable(false);
-        ldaBDTextArea.setEditable(false);
-        toraNewTextbox.setEditable(false);
-        todaNewTextbox.setEditable(false);
-        asdaNewTextbox.setEditable(false);
-        ldaNewTextbox.setEditable(false);
-        thresholdInitialTextbox.setEditable(false);
-
         greentickIcon = new Image("/seg/resources/images/greentick.png");
         warningIcon = new Image("/seg/resources/images/alert-triangle-yellow.png");
         switchIcon = new Image("/seg/resources/images/switch.png");
