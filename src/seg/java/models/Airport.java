@@ -29,6 +29,16 @@ public class Airport {
         throw new Exception("No such runway " + name);
     }
 
+    public void deleteRunway(Runway runway){
+        ObservableList<Runway> newRunwayList = FXCollections.observableArrayList();
+        for (Runway rw : runways){
+            if(!rw.getName().equals(runway.getName())) {
+                newRunwayList.add(rw);
+            }
+        }
+        setRunways(newRunwayList);
+    }
+
     // Getters and Setters
 
     public String getName() {

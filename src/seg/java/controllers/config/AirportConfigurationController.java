@@ -135,4 +135,9 @@ public class AirportConfigurationController implements Initializable {
             new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong :(").showAndWait();
         }
     }
+
+    public void deleteRunwayButtonPressed(ActionEvent actionEvent){
+        airport.deleteRunway(getSelectedRunway());
+        tableView.setItems(airport.getRunways());
+    }
 }
