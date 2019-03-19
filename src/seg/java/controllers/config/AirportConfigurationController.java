@@ -27,7 +27,7 @@ import java.util.ResourceBundle;
 public class AirportConfigurationController implements Initializable {
 
     @FXML public TableView<Runway> tableView;
-    @FXML public TableColumn<Runway, String> designator;
+    @FXML public TableColumn<Runway, String> name;
     @FXML public TableColumn<Runway, Double> tora;
     @FXML public TableColumn<Runway, Double> asda;
     @FXML public TableColumn<Runway, Double> lda;
@@ -41,7 +41,7 @@ public class AirportConfigurationController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        designator.setCellValueFactory(new PropertyValueFactory<>("designator"));
+        name.setCellValueFactory(new PropertyValueFactory<>("name"));
         tora.setCellValueFactory(new PropertyValueFactory<>("tora"));
         asda.setCellValueFactory(new PropertyValueFactory<>("asda"));
         lda.setCellValueFactory(new PropertyValueFactory<>("lda"));

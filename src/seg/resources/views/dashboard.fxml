@@ -14,25 +14,25 @@
             <menus>
                 <Menu mnemonicParsing="false" text="File">
                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#switchAirport" text="Switch airportOld"/>
-                        <MenuItem mnemonicParsing="false" text="Import obstacle from XML file"/>
-                        <MenuItem mnemonicParsing="false" text="Export to XML file"/>
+                        <MenuItem mnemonicParsing="false" onAction="#switchAirport" text="Switch airport"/>
+                        <MenuItem mnemonicParsing="false" disable="true" text="Import obstacle from XML file"/>
+                        <MenuItem mnemonicParsing="false" disable="true" text="Export to XML file"/>
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Configure">
                     <items>
                         <MenuItem mnemonicParsing="false" text="Configure Airports / Runways" onAction="#configureAirports"/>
-                        <MenuItem mnemonicParsing="false" text="Configure Obstacles"/>
+                        <MenuItem mnemonicParsing="false" disable="true" text="Configure Obstacles"/>
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Help">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="FAQ"/>
+                        <MenuItem mnemonicParsing="false" disable="true" text="FAQ"/>
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="About">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="About this program "/>
+                        <MenuItem mnemonicParsing="false" disable="true" text="About this program "/>
                     </items>
                 </Menu>
             </menus>
