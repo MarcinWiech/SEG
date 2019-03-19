@@ -1,9 +1,5 @@
 package seg.java.controllers.config;
 
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,8 +14,8 @@ import javafx.scene.text.Text;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import seg.java.controllers.DashboardController;
-import seg.java.models.AirportOld;
-import seg.java.models.RunwayOld;
+import seg.java.models.Airport;
+import seg.java.models.Runway;
 
 import java.io.IOException;
 import java.net.URL;
@@ -30,84 +26,18 @@ import java.util.ResourceBundle;
  */
 public class AirportConfigurationController implements Initializable {
 
-    @FXML public TableView<RunwayModel> tableView;
-    @FXML public TableColumn<RunwayModel, String> designator;
-    @FXML public TableColumn<RunwayModel, Double> tora;
-    @FXML public TableColumn<RunwayModel, Double> asda;
-    @FXML public TableColumn<RunwayModel, Double> lda;
-    @FXML public TableColumn<RunwayModel, Double> threshold;
-    @FXML public TableColumn<RunwayModel, Double> toda;
+    @FXML public TableView<Runway> tableView;
+    @FXML public TableColumn<Runway, String> designator;
+    @FXML public TableColumn<Runway, Double> tora;
+    @FXML public TableColumn<Runway, Double> asda;
+    @FXML public TableColumn<Runway, Double> lda;
+    @FXML public TableColumn<Runway, Double> threshold;
+    @FXML public TableColumn<Runway, Double> toda;
 
     @FXML private Text airportName;
     @FXML private Button backButton;
 
-    protected AirportOld airportOld;
-
-    public class RunwayModel {
-        private SimpleDoubleProperty tora;
-        private SimpleDoubleProperty asda;
-        private SimpleStringProperty designator;
-        private SimpleDoubleProperty lda;
-        private SimpleDoubleProperty threshold;
-        private SimpleDoubleProperty toda;
-
-        public RunwayModel(String designator, Double tora, Double asda, Double lda, Double threshold, Double toda){
-            this.designator = new SimpleStringProperty(designator);
-            this.tora = new SimpleDoubleProperty(tora);
-            this.asda = new SimpleDoubleProperty(asda);
-            this.lda = new SimpleDoubleProperty(lda);
-            this.threshold = new SimpleDoubleProperty(threshold);
-            this.toda = new SimpleDoubleProperty(toda);
-        }
-
-        public String getDesignator() {
-            return designator.get();
-        }
-
-        public SimpleStringProperty designatorProperty() {
-            return designator;
-        }
-
-        public double getTora() {
-            return tora.get();
-        }
-
-        public SimpleDoubleProperty toraProperty() {
-            return tora;
-        }
-
-        public double getAsda() {
-            return asda.get();
-        }
-
-        public SimpleDoubleProperty asdaProperty() {
-            return asda;
-        }
-
-        public double getLda() {
-            return lda.get();
-        }
-
-        public SimpleDoubleProperty ldaProperty() {
-            return lda;
-        }
-
-        public double getThreshold() {
-            return threshold.get();
-        }
-
-        public SimpleDoubleProperty thresholdProperty() {
-            return threshold;
-        }
-
-        public double getToda() {
-            return toda.get();
-        }
-
-        public SimpleDoubleProperty todaProperty() {
-            return toda;
-        }
-    }
+    private Airport airport;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -118,24 +48,16 @@ public class AirportConfigurationController implements Initializable {
         threshold.setCellValueFactory(new PropertyValueFactory<>("threshold"));
         toda.setCellValueFactory(new PropertyValueFactory<>("toda"));
 
-        tableView.setItems(runwayModels);
+        tableView.setItems(airport.getRunways());
     }
 
-    private ObservableList<RunwayModel> runwayModels = FXCollections.observableArrayList(
-        new RunwayModel("Test1", 1.0 ,2.0, 3.0, 4.0, 5.0),
-        new RunwayModel("Test2", 1.0 ,2.0, 3.0, 4.0, 5.0),
-        new RunwayModel("Test3", 1.0 ,2.0, 3.0, 4.0, 5.0)
-    );
-
-    public void setAirportOld(AirportOld airportOld){
-        this.airportOld = airportOld;
-        airportName.setText(airportOld.getName());
+    public void setAirport(Airport airport){
+        this.airport = airport;
+        airportName.setText(airport.getName());
     }
 
-    public RunwayOld getSelectedRunway(){
-        RunwayModel runwayModel = tableView.getSelectionModel().getSelectedItem();
-
-        return new RunwayOld("A", "B",1.0,2.0,3.0,4.0,4.0);
+    public Runway getSelectedRunway(){
+        return tableView.getSelectionModel().getSelectedItem();
     }
 
     // Actions
@@ -152,7 +74,7 @@ public class AirportConfigurationController implements Initializable {
             stage.show();
 
             DashboardController dashboardController = fxmlLoader.getController();
-            dashboardController.setValues(airportOld);
+            dashboardController.setAirport(airport);
         } catch(IOException e){
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong :(").showAndWait();
@@ -168,7 +90,7 @@ public class AirportConfigurationController implements Initializable {
 
             RunwayCreationController controller = fxmlLoader.getController();
 
-            controller.setAirportOld(airportOld);
+            controller.setAirport(airport);
 
             stage = new Stage();
             stage.setTitle("Runway Configuration");
@@ -189,7 +111,7 @@ public class AirportConfigurationController implements Initializable {
 
             RunwayCreationController controller = fxmlLoader.getController();
 
-            controller.setAirportOld(airportOld);
+            controller.setAirport(airport);
             controller.setRunway(getSelectedRunway());
 
             stage = new Stage();

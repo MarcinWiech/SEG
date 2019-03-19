@@ -17,6 +17,15 @@ public class Airport {
         runways.add(runway);
     }
 
+    public Runway getRunwayByName(String name) throws Exception {
+        for (Runway runway : runways){
+            if (runway.getName().equals(name)){
+                return runway;
+            }
+        }
+        throw new Exception("No such runway " + name);
+    }
+
     // Getters and Setters
 
     public String getName() {

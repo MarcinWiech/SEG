@@ -8,10 +8,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import seg.java.XMLReaderDOM;
-import seg.java.models.AirportOld;
-import seg.java.models.RunwayOld;
+import seg.java.models.Airport;
 import seg.java.models.IllegalValueException;
+import seg.java.models.Runway;
 
 public class RunwayCreationController {
     public Button addRunwayButton;
@@ -23,8 +22,7 @@ public class RunwayCreationController {
     public TextField runwayDesignatorTextbox;
     public TextField thresholdTextbox;
 
-    private XMLReaderDOM xmlReaderDOM;
-    private AirportOld airportOld;
+    private Airport airport;
 
     /**
      * WHEN BACK BUTTON IS PRESSED - GOES BACK TO ConfigureAirport
@@ -40,9 +38,8 @@ public class RunwayCreationController {
             stage.setScene(new Scene(root1));
             stage.show();
 
-
             AirportConfigurationController controller = fxmlLoader.getController();
-            controller.setAirportOld(this.airportOld);
+            controller.setAirport(this.airport);
 
         } catch (Exception e) {
             new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong :(").showAndWait();
@@ -141,7 +138,14 @@ public class RunwayCreationController {
 
 
         try {
-            airportOld.addRunway("null", runwayDesignatorTextbox.getText(), Double.parseDouble(toraTextbox.getText()), Double.parseDouble(todaTextbox.getText()), Double.parseDouble(asdaTextbox.getText()), Double.parseDouble(ldaTextbox.getText()), Double.parseDouble(thresholdTextbox.getText()));
+            String name = runwayDesignatorTextbox.getText();
+            Double tora = Double.parseDouble(toraTextbox.getText());
+            Double toda = Double.parseDouble(todaTextbox.getText());
+            Double asda = Double.parseDouble(asdaTextbox.getText());
+            Double lda = Double.parseDouble(ldaTextbox.getText());
+            Double threshold = Double.parseDouble(thresholdTextbox.getText());
+            Runway runway = new Runway(name, null, tora, toda, asda, lda,threshold);
+            airport.addRunway(runway);
             runwayDesignatorTextbox.clear();
             toraTextbox.clear();
             todaTextbox.clear();
@@ -252,22 +256,18 @@ public class RunwayCreationController {
             stage.show();
 
             AirportConfigurationController controller = fxmlLoader.getController();
-            controller.setAirportOld(this.airportOld);
+            controller.setAirport(this.airport);
         } catch (Exception e) {
             System.out.println(e);
             new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong :(").showAndWait();
         }
     }
 
-    public void setAirportArrayList(XMLReaderDOM xmlReaderDOM) {
-        this.xmlReaderDOM = xmlReaderDOM;
+    public void setAirport(Airport airport) {
+        this.airport = airport;
     }
 
-    public void setAirportOld(AirportOld airportOld) {
-        this.airportOld = airportOld;
-    }
-
-    public void setRunway(RunwayOld runwayOld){
+    public void setRunway(Runway runway){
         // Todo: Runway editing.
     }
 }

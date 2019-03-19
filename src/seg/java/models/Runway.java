@@ -7,14 +7,14 @@ public class Runway {
 
     private SimpleDoubleProperty tora;
     private SimpleDoubleProperty asda;
-    private SimpleStringProperty designator;
+    private SimpleStringProperty name;
     private SimpleDoubleProperty lda;
     private SimpleDoubleProperty threshold; // Displaced Threshold
     private SimpleDoubleProperty toda;
     private Runway reciprocalRunway;
 
-    public Runway(String designator, Runway reciprocalRunway, Double tora, Double asda, Double lda, Double threshold, Double toda){
-        this.designator = new SimpleStringProperty(designator);
+    public Runway(String name, Runway reciprocalRunway, Double tora, Double asda, Double lda, Double threshold, Double toda){
+        this.name = new SimpleStringProperty(name);
         this.tora = new SimpleDoubleProperty(tora);
         this.asda = new SimpleDoubleProperty(asda);
         this.lda = new SimpleDoubleProperty(lda);
@@ -50,16 +50,16 @@ public class Runway {
         this.asda.set(asda);
     }
 
-    public String getDesignator() {
-        return designator.get();
+    public String getName() {
+        return name.get();
     }
 
-    public SimpleStringProperty designatorProperty() {
-        return designator;
+    public SimpleStringProperty nameProperty() {
+        return name;
     }
 
-    public void setDesignator(String designator) {
-        this.designator.set(designator);
+    public void setName(String name) {
+        this.name.set(name);
     }
 
     public double getLda() {
