@@ -43,23 +43,11 @@ public class XMLLoader {
                 for (int j = 0; j < runwayNodeList.getLength(); j++) {
                     Node childNode = runwayNodeList.item(j);
                     if ("Runway".equals(childNode.getNodeName())) {
-                        Runway runway = getRunwayFromNode(childNode);
+                        Runway runway = getRunwayFromNode(childNode, airport);
                         airport.addRunway(runway);
                     }
                 }
 
-                // TODO: Reciprocal Runways.
-                //  We set the reciprocal runways
-//                for (String runwayName : newAirportOld.getRunwayHashMap().keySet()) {
-//                    RunwayOld runwayOld = newAirportOld.getRunwayHashMap().get(runwayName);
-//                    String reciprocalName = runwayOld.getReciprocalName();
-//
-//                    if (runwayName.equals("null") == false) {
-//                        runwayOld.setReciprocal(newAirportOld.getRunwayHashMap().get(reciprocalName));
-//                    } else {
-//                        runwayOld.setReciprocal(null);
-//                    }
-//                }
             }
 
         } catch (SAXException | ParserConfigurationException | IOException e1) {
@@ -76,7 +64,7 @@ public class XMLLoader {
         return new Airport(name);
     }
 
-    private static Runway getRunwayFromNode(Node node) {
+    private static Runway getRunwayFromNode(Node node, Airport airport) {
         String name = "Runway";
         String reciprocalName = "Reciprocal Runway";
         Double tora = 100.0;
@@ -94,9 +82,21 @@ public class XMLLoader {
             asda = Double.valueOf(getTagValue(element, "asda"));
             lda = Double.valueOf(getTagValue(element, "lda"));
             threshold = Double.valueOf(getTagValue(element, "threshold"));
-            // TODO: Get Reciprocal.
         }
-        return new Runway(name, null, tora, toda, asda, lda, threshold);
+
+        Runway runway = new Runway(name, null, tora, toda, asda, lda, threshold);
+
+        if (runway.getName().equals("null") == false) {
+            try {
+                Runway reciprocal = airport.getRunwayByName(reciprocalName);
+                runway.setReciprocalRunway(reciprocal);
+                reciprocal.setReciprocalRunway(runway);
+            } catch (Exception e){
+                // No reciprocal found yet.
+            }
+        }
+
+        return runway;
     }
 
     private static String getTagValue(Element element, String tag) {
