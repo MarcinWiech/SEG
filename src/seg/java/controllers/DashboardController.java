@@ -375,5 +375,9 @@ public class DashboardController {
         notificationBuilder.show();
     }
 
+    public void runButtonPressed(){
+        //maybe something such as using top down pane and adding a new canvas there
+    }
+
 }
 

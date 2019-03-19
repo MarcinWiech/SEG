@@ -1,18 +1,45 @@
 package seg.java;
 
+import javafx.animation.*;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.CubicCurveTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
+import javafx.util.Duration;
 import seg.java.models.Runway;
+import javafx.application.Application;
+import javafx.stage.Stage;
+import javafx.animation.AnimationTimer;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.effect.Lighting;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
+import javafx.util.Duration;
+
 
 public class CanvasDrawer {
 
@@ -214,6 +241,8 @@ public class CanvasDrawer {
         imageView.setRotate(-90);
         imageView.setPreserveRatio(true);
         imageView.setFitHeight(canvasHeight * 0.2);
+
+
         if (redeclarationComputer.getCalculationCase() == 1 || redeclarationComputer.getCalculationCase() == 3) {
             Translate flipTranslation = new Translate(0, imageView.getImage().getHeight());
             Rotate flipRotation = new Rotate(180, Rotate.X_AXIS);
@@ -236,6 +265,66 @@ public class CanvasDrawer {
             imageY = canvasHeight * 0.5 - 0.5 * image1.getHeight() + canvasHeight * 0.1 * ((redeclarationComputer.getObstacleY() / 30)) + yOffset;
             gc.drawImage(image1, imageX, imageY);
         }
+//        draw(gc, 10,10,200,image1);
+//        animate(canvas);
+        
+
+    }
+
+    public void draw(GraphicsContext gc, int x, int y, int r, Image image) {
+
+
+        gc.save();
+        gc.translate(x, y);
+        gc.rotate(r);
+        gc.translate(-x, -y);
+        gc.drawImage(image, x, y);
+        gc.restore();
+    }
+
+    private void animate(Canvas canvas){
+
+        gc = canvas.getGraphicsContext2D();
+
+        DoubleProperty x1  = new SimpleDoubleProperty();
+        DoubleProperty y  = new SimpleDoubleProperty();
+
+        final double W = 200; // canvas dimensions.
+        final double H = 200;
+
+        final double D = 20;
+
+        Timeline timeline = new Timeline(
+                new KeyFrame(Duration.seconds(0),
+                        new KeyValue(x1, 0),
+                        new KeyValue(y, 0)
+                ),
+                new KeyFrame(Duration.seconds(3),
+                        new KeyValue(x1, W - D),
+                        new KeyValue(y, H - D)
+                )
+        );
+        timeline.setAutoReverse(true);
+        timeline.setCycleCount(Timeline.INDEFINITE);
+
+        AnimationTimer timer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                GraphicsContext gc = canvas.getGraphicsContext2D();
+
+                gc.setFill(Color.FORESTGREEN);
+                gc.fillOval(
+                        x1.doubleValue(),
+                        y.doubleValue(),
+                        D,
+                        D
+                );
+            }
+        };
+
+
+        timer.start();
+        timeline.play();
 
     }
 
@@ -272,9 +361,9 @@ public class CanvasDrawer {
     private void drawHorizontalArrow(double x, double y, double length, boolean leftArrowTipOn, boolean rightArrowTipOn, String text, Color color) {
         double textOffset = 0;
 
-        if (leftArrowTipOn == true && rightArrowTipOn == false) {
+        if (leftArrowTipOn && !rightArrowTipOn) {
             textOffset += 0.006;
-        } else if (leftArrowTipOn == false && rightArrowTipOn == true) {
+        } else if (!leftArrowTipOn && rightArrowTipOn) {
             textOffset -= 0.006;
         }
 
@@ -290,7 +379,7 @@ public class CanvasDrawer {
         gc.fillText(text, (x + textOffset + length / 2) * canvasWidth - 0.5 * textWidth + xOffset, (y - 0.01) * canvasHeight + yOffset);
 
         //  Left arrow tip gets drawn
-        if (leftArrowTipOn == true) {
+        if (leftArrowTipOn) {
             gc.fillPolygon(new double[]{
                     x * canvasWidth + xOffset,
                     (x + 0.015) * canvasWidth + xOffset,
@@ -304,7 +393,7 @@ public class CanvasDrawer {
         }
 
         //  Right arrow tip gets drawn
-        if (rightArrowTipOn == true) {
+        if (rightArrowTipOn) {
             gc.fillPolygon(new double[]{
                     (x + length) * canvasWidth + xOffset,
                     (x + length - 0.015) * canvasWidth + xOffset,
@@ -328,7 +417,7 @@ public class CanvasDrawer {
         gc.fillText(text, (x + 0.005) * canvasWidth + xOffset, (y + 0.14) * canvasHeight + yOffset);
 
         //  Upper arrow tip gets drawn
-        if (upperArrowTipOn == true) {
+        if (upperArrowTipOn) {
             gc.fillPolygon(new double[]{
                     x * canvasWidth + xOffset,
                     (x - 0.006) * canvasWidth + xOffset,
@@ -341,7 +430,7 @@ public class CanvasDrawer {
         }
 
         //  Lower arrow tip gets drawn
-        if (lowerArrowTipOn == true) {
+        if (lowerArrowTipOn) {
             gc.fillPolygon(new double[]{
                     x * canvasWidth + xOffset,
                     (x - 0.006) * canvasWidth + xOffset,
