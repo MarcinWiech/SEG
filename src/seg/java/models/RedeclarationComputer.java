@@ -206,7 +206,7 @@ public class RedeclarationComputer {
 
     //  Sets the runway for the reciprocal computer
     public void setRunwayAsRecip(Runway runway) {
-        // TODO: Refactor out duplicate code.
+        // TODO: Refactor out duplicate code
         this.runway = runway;
         this.runwayDirection = Character.toUpperCase(runway.getName().charAt(2));
         this.tora = runway.getTora();
