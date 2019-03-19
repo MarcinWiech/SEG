@@ -1,4 +1,4 @@
-package seg.java.models;
+package seg.java;
 
 import javafx.scene.control.Alert;
 

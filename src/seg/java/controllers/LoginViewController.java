@@ -5,7 +5,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import seg.java.XMLLoader;
 import seg.java.models.Airport;
@@ -16,10 +18,9 @@ import java.util.ResourceBundle;
 
 public class LoginViewController implements Initializable {
 
-    private HashMap<String,String> loginsAndPasswords = new HashMap<>();
-
     public TextField loginTextField;
     public PasswordField passwordTextField;
+    private HashMap<String, String> loginsAndPasswords = new HashMap<>();
     private XMLLoader xmlReaderDOM;
 
     public LoginViewController() {
@@ -33,7 +34,7 @@ public class LoginViewController implements Initializable {
 
     }
 
-    public void login(ActionEvent actionEvent){
+    public void login(ActionEvent actionEvent) {
 
 
         //check if the login and password are typed in
@@ -41,8 +42,7 @@ public class LoginViewController implements Initializable {
 
             new Alert(Alert.AlertType.ERROR, "Login seems to be missing").showAndWait();
             return;
-        }
-        else if(passwordTextField.getText().isEmpty()){
+        } else if (passwordTextField.getText().isEmpty()) {
 
             new Alert(Alert.AlertType.ERROR, "Password seems to be missing").showAndWait();
             return;
@@ -57,13 +57,12 @@ public class LoginViewController implements Initializable {
         //check if login and password match
         // We should probably use salt / hashing in the future.
         // Maybe a db store too.
-        if(!authorise(login,password)){
+        if (!authorise(login, password)) {
 
             new Alert(Alert.AlertType.ERROR, "Password or login is incorrect").showAndWait();
-        }
-        else{
+        } else {
 
-            if(login.equals("ctw")){
+            if (login.equals("ctw")) {
                 try {
 
                     Stage stage = (Stage) passwordTextField.getScene().getWindow();
@@ -85,8 +84,7 @@ public class LoginViewController implements Initializable {
                     System.out.println(e);
                     new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong :(").showAndWait();
                 }
-            }
-            else{
+            } else {
 
                 try {
 
@@ -103,17 +101,16 @@ public class LoginViewController implements Initializable {
                 } catch (Exception e) {
 
                     System.out.println(e);
-                    new Alert(Alert.AlertType.ERROR, "Uh ohairportOldToPass, something went wrong :(").showAndWait();
+                    new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong :(").showAndWait();
                 }
 
             }
         }
 
 
-
     }
 
-    private boolean authorise(String login, String password){
+    private boolean authorise(String login, String password) {
 
         return loginsAndPasswords.containsKey(login) && loginsAndPasswords.get(login).equals(password);
     }

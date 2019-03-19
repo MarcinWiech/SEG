@@ -2,7 +2,6 @@ package seg.java.controllers.config;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -10,11 +9,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import seg.java.models.Airport;
-import seg.java.models.IllegalValueException;
+import seg.java.IllegalValueException;
 import seg.java.models.Runway;
-
-import java.net.URL;
-import java.util.ResourceBundle;
 
 public class RunwayConfigurationController {
     public Button addRunwayButton;
@@ -232,7 +228,7 @@ public class RunwayConfigurationController {
 
         // Validated, now add it
 
-        if(runway == null){
+        if (runway == null) {
             addRunway(actionEvent);
         } else {
             runway.setName(runwayDesignatorTextbox.getText());

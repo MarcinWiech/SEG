@@ -12,7 +12,6 @@ import javafx.scene.text.Text;
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
-import seg.java.models.RedeclarationComputer;
 import seg.java.models.Runway;
 
 public class CanvasDrawer {

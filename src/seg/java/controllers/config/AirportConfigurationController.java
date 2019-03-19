@@ -19,7 +19,7 @@ import seg.java.models.Runway;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.*;
+import java.util.ResourceBundle;
 
 /**
  * The new airport configuration controller.
@@ -111,7 +111,7 @@ public class AirportConfigurationController implements Initializable {
     }
 
     public void editRunwayButtonPressed(ActionEvent ae) {
-        if(getSelectedRunway() == null){
+        if (getSelectedRunway() == null) {
             new Alert(Alert.AlertType.WARNING, "Please select a runway to edit.").showAndWait();
         } else {
             try {
@@ -136,8 +136,8 @@ public class AirportConfigurationController implements Initializable {
         }
     }
 
-    public void deleteRunwayButtonPressed(ActionEvent actionEvent){
-        if(getSelectedRunway() == null){
+    public void deleteRunwayButtonPressed(ActionEvent actionEvent) {
+        if (getSelectedRunway() == null) {
             new Alert(Alert.AlertType.WARNING, "Please select a runway to delete.").showAndWait();
         } else {
             airport.deleteRunway(getSelectedRunway());

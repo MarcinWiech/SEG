@@ -1,4 +1,6 @@
-package seg.java.models;
+package seg.java;
+
+import seg.java.models.Runway;
 
 public class RedeclarationComputer {
 

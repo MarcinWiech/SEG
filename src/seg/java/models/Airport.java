@@ -1,10 +1,7 @@
 package seg.java.models;
 
-import com.sun.javafx.collections.ObservableSequentialListWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
-import java.util.ArrayList;
 
 public class Airport {
 
@@ -29,10 +26,10 @@ public class Airport {
         throw new Exception("No such runway " + name);
     }
 
-    public void deleteRunway(Runway runway){
+    public void deleteRunway(Runway runway) {
         ObservableList<Runway> newRunwayList = FXCollections.observableArrayList();
-        for (Runway rw : runways){
-            if(!rw.getName().equals(runway.getName())) {
+        for (Runway rw : runways) {
+            if (!rw.getName().equals(runway.getName())) {
                 newRunwayList.add(rw);
             }
         }

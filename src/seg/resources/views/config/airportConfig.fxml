@@ -18,7 +18,8 @@
         </TableView>
         <Button layoutX="495.0" layoutY="226.0" mnemonicParsing="false" onAction="#editRunwayButtonPressed"
                 prefHeight="25.0" prefWidth="91.0" text="Edit"/>
-        <Button layoutX="495.0" layoutY="262.0" mnemonicParsing="false" onAction="#deleteRunwayButtonPressed" prefHeight="25.0" prefWidth="91.0"
+        <Button layoutX="495.0" layoutY="262.0" mnemonicParsing="false" onAction="#deleteRunwayButtonPressed"
+                prefHeight="25.0" prefWidth="91.0"
                 text="Delete"/>
         <Button layoutX="495.0" layoutY="190.0" mnemonicParsing="false" onAction="#newRunwayButtonPressed"
                 prefHeight="25.0" prefWidth="91.0" text="Add New"/>

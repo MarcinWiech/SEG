@@ -91,7 +91,7 @@ public class XMLLoader {
                 Runway reciprocal = airport.getRunwayByName(reciprocalName);
                 runway.setReciprocalRunway(reciprocal);
                 reciprocal.setReciprocalRunway(runway);
-            } catch (Exception e){
+            } catch (Exception e) {
                 // No reciprocal found yet.
             }
         }

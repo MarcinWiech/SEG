@@ -4,38 +4,34 @@ package seg.tests;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import seg.java.models.RedeclarationComputer;
+import seg.java.RedeclarationComputer;
 import seg.java.models.Runway;
 
 import static org.junit.Assert.assertEquals;
 
 public class RedeclarationComputerTester {
 
+    public final Runway reciprocal = new Runway("27R", null, 3902.0, 3902.0, 3902.0, 3596.0, 306.0);
     private RedeclarationComputer redeclarationComputer;
     private Runway runway;
 
     @Before
-    public void setUp() throws Exception
-    {
+    public void setUp() throws Exception {
         redeclarationComputer = new RedeclarationComputer();
     }
 
     @After
-    public void tearDown() throws Exception
-    {
+    public void tearDown() throws Exception {
 
     }
 
-    public final Runway reciprocal = new Runway("27R", null, 3902.0, 3902.0, 3902.0, 3596.0, 306.0);
-
     @Test
-    public void test1()
-    {
+    public void test1() {
         runway = new Runway("09L", reciprocal, 3902.0, 3902.0, 3902.0, 3596.0, 306.0);
         reciprocal.setReciprocalRunway(runway);
         redeclarationComputer.setRunway(runway);
         redeclarationComputer.setObstacleDetails(-50.0, 3646.0, 0.0, 12.0);
-        if(redeclarationComputer.needsRecalculation(-50.0, 3646.0, 0.0))
+        if (redeclarationComputer.needsRecalculation(-50.0, 3646.0, 0.0))
             redeclarationComputer.calculate();
 
         assertEquals(redeclarationComputer.getTora(), 3346, 0.00001);
@@ -45,12 +41,11 @@ public class RedeclarationComputerTester {
     }
 
     @Test
-    public void test2()
-    {
+    public void test2() {
         runway = new Runway("27R", reciprocal, 3884.0, 3962.0, 3884.0, 3884.0, 0.0);
         redeclarationComputer.setRunway(runway);
         redeclarationComputer.setObstacleDetails(-50.0, 3646.0, 0.0, 12.0);
-        if(redeclarationComputer.needsRecalculation(-50.0, 3646.0, 0.0))
+        if (redeclarationComputer.needsRecalculation(-50.0, 3646.0, 0.0))
             redeclarationComputer.calculate();
 
         assertEquals(redeclarationComputer.getTora(), 2986, 0.00001);
@@ -60,17 +55,16 @@ public class RedeclarationComputerTester {
     }
 
     @Test
-    public void test3()
-    {
-        runway= new Runway("09R", reciprocal, 3660.0, 3660.0, 3660.0, 3353.0, 307.0);
+    public void test3() {
+        runway = new Runway("09R", reciprocal, 3660.0, 3660.0, 3660.0, 3353.0, 307.0);
         redeclarationComputer.setRunway(runway);
         redeclarationComputer.setObstacleDetails(500.0, 2853.0, -20.0, 25.0);
-        if(redeclarationComputer.needsRecalculation(500.0, 2853.0, -20.0))
+        if (redeclarationComputer.needsRecalculation(500.0, 2853.0, -20.0))
             redeclarationComputer.calculate();
 
         assertEquals(redeclarationComputer.getTora(), 1850, 0.00001);
         assertEquals(redeclarationComputer.getToda(), 1850, 0.00001);
-        assertEquals((Double) redeclarationComputer.getAsda(), (Double) 18500.00001);
+        assertEquals(redeclarationComputer.getAsda(), (Double) 18500.00001);
         assertEquals(redeclarationComputer.getLda(), 2553, 0.00001);
     }
 
@@ -89,12 +83,11 @@ public class RedeclarationComputerTester {
     }
 
     @Test
-    public void test5()
-    {
+    public void test5() {
         runway = new Runway("09R", reciprocal, 3660.0, 3660.0, 3660.0, 3353.0, 307.0);
         redeclarationComputer.setRunway(runway);
         redeclarationComputer.setObstacleDetails(3203.0, 150.0, 60.0, 15.0);
-        if(redeclarationComputer.needsRecalculation(3203.0, 150.0, 60.0))
+        if (redeclarationComputer.needsRecalculation(3203.0, 150.0, 60.0))
             redeclarationComputer.calculate();
 
         assertEquals(redeclarationComputer.getTora(), 2903, 0.00001);
@@ -104,12 +97,11 @@ public class RedeclarationComputerTester {
     }
 
     @Test
-    public void test6()
-    {
+    public void test6() {
         runway = new Runway("27L", reciprocal, 3660.0, 3660.0, 3660.0, 3660.0, 0.0);
         redeclarationComputer.setRunway(runway);
         redeclarationComputer.setObstacleDetails(3203.0, 150.0, 60.0, 15.0);
-        if(redeclarationComputer.needsRecalculation(3203.0, 150.0, 60.0))
+        if (redeclarationComputer.needsRecalculation(3203.0, 150.0, 60.0))
             redeclarationComputer.calculate();
 
         assertEquals(redeclarationComputer.getTora(), 2393, 0.00001);
@@ -119,12 +111,11 @@ public class RedeclarationComputerTester {
     }
 
     @Test
-    public void test7()
-    {
+    public void test7() {
         runway = new Runway("09L", reciprocal, 3902.0, 3902.0, 3902.0, 3596.0, 306.0);
         redeclarationComputer.setRunway(runway);
         redeclarationComputer.setObstacleDetails(3546.0, 50.0, 20.0, 20.0);
-        if(redeclarationComputer.needsRecalculation(3546.0, 50.0, 20.0))
+        if (redeclarationComputer.needsRecalculation(3546.0, 50.0, 20.0))
             redeclarationComputer.calculate();
 
         assertEquals(redeclarationComputer.getTora(), 2792, 0.00001);
@@ -134,12 +125,11 @@ public class RedeclarationComputerTester {
     }
 
     @Test
-    public void test8()
-    {
+    public void test8() {
         runway = new Runway("27R", reciprocal, 3884.0, 3962.0, 3884.0, 3884.0, 0.0);
         redeclarationComputer.setRunway(runway);
         redeclarationComputer.setObstacleDetails(3546.0, 50.0, 20.0, 20.0);
-        if(redeclarationComputer.needsRecalculation(3546.0, 50.0, 20.0))
+        if (redeclarationComputer.needsRecalculation(3546.0, 50.0, 20.0))
             redeclarationComputer.calculate();
 
         assertEquals(redeclarationComputer.getTora(), 3534, 0.00001);
