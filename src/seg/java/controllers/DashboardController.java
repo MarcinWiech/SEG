@@ -380,14 +380,13 @@ public class DashboardController {
 
     public void runButtonPressed(){
 
-
-        //maybe something such as using top down pane and adding a new canvas there
-        Button btn = new Button("ClickMe");
+        //set up the image
         ImageView imageView = new ImageView("/seg/resources/images/side-view-plane.png");
         imageView.setPreserveRatio(true);
         imageView.setFitHeight(25);
         imageView.setY(100);
-        imageView.setRotate(180);
+
+        //check that the method was invoked
         System.out.println("run Pressed");
 
 //        Rectangle rectPath = new Rectangle (0, 0, 40, 40);
@@ -409,8 +408,19 @@ public class DashboardController {
 //        pathTransition.setAutoReverse(true);
 //        pathTransition.play();
 //        System.out.println(path.getTranslateX());
+        double toraStart = 0;
+        double toraLength = 0;
+
+        //declare variables for path;
+        double horizontalLineStartX = toraStart;
+        double horizontalLineStartY = 0;
+        double horizontalLineEndX = toraStart + toraLength;
+        double horizontalLineEndY = 0; // the same as horizontalLineStartY
+        double diagonalLineEndX = 0; //end of the canvas
+        double diagonalLineEndY = 0; // height of the obstacle * 1.5
 
 
+        //declare path of the plane
         Path path = new Path();
 
         MoveTo moveTo = new MoveTo();
@@ -420,63 +430,22 @@ public class DashboardController {
         HLineTo hLineTo = new HLineTo();
         hLineTo.setX(300);
 
-//        QuadCurveTo quadCurveTo = new QuadCurveTo();
-//        quadCurveTo.setX(120.0f);
-//        quadCurveTo.setY(60.0f);
-//        quadCurveTo.setControlX(100.0f);
-//        quadCurveTo.setControlY(0.0f);
-
         LineTo lineTo = new LineTo();
         lineTo.setX(400);
         lineTo.setY(150);
 
-//        ArcTo arcTo = new ArcTo();
-//        arcTo.setX(50.0f);
-//        arcTo.setY(50.0f);
-//        arcTo.setRadiusX(50.0f);
-//        arcTo.setRadiusY(50.0f);
-
         path.getElements().add(moveTo);
         path.getElements().add(hLineTo);
-//        path.getElements().add(quadCurveTo);
         path.getElements().add(lineTo);
-//        path.getElements().add(arcTo);
 
+        //transition settings
         PathTransition pathTransition = new PathTransition();
-        pathTransition.setDuration(Duration.millis(4000));
+        pathTransition.setDuration(Duration.millis(2000));
         pathTransition.setPath(path);
         pathTransition.setNode(imageView);
         pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
-//        pathTransition.setCycleCount(Timeline.INDEFINITE);
-//        pathTransition.setAutoReverse(true);
-        pathTransition.play();
 
-//        //Duration = 2.5 seconds
-//        Duration duration = Duration.millis(2500);
-//        //Create new translate transition
-//        TranslateTransition transition = new TranslateTransition(duration, imageView);
-//
-//        //Move in X axis by +200
-//        transition.setByX(200);
-//        //Move in Y axis by +100
-//        transition.setByY(0);
-//
-//        //Move in X axis by +200
-//        transition.setByX(50);
-//        //Move in Y axis by +100
-//        transition.setByY(-20);
-//
-//        transition.play();
-
-        //Go back to previous position after 2.5 seconds
-//        transition.setAutoReverse(true);
-        //Repeat animation twice
-//        transition.setCycleCount(2);
-
-        // works only on one pane
         topDownPane.getChildren().add(imageView);
-//        topDownPaneCopy.getChildren().add(btn);
-
     }
 
 }

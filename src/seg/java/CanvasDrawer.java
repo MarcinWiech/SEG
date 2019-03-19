@@ -266,73 +266,6 @@ public class CanvasDrawer {
             imageY = canvasHeight * 0.5 - 0.5 * image1.getHeight() + canvasHeight * 0.1 * ((redeclarationComputer.getObstacleY() / 30)) + yOffset;
             gc.drawImage(image1, imageX, imageY);
         }
-//        draw(gc, 10,10,200,image1);
-//        animate(canvas);
-
-
-    }
-
-    public void draw(GraphicsContext gc, int x, int y, int r, Image image) {
-
-
-        gc.save();
-        gc.translate(x, y);
-        gc.rotate(r);
-        gc.translate(-x, -y);
-        gc.drawImage(image, x, y);
-        gc.restore();
-    }
-
-    private void animate(Canvas canvas){
-
-        gc = canvas.getGraphicsContext2D();
-
-        Rectangle rec = new Rectangle (0, 0, 40, 40);
-        rec.setArcHeight(10);
-        rec.setArcWidth(10);
-        rec.setFill(Color.ORANGE);
-
-
-        DoubleProperty x1  = new SimpleDoubleProperty();
-        DoubleProperty y  = new SimpleDoubleProperty();
-
-        final double W = 200; // canvas dimensions.
-        final double H = 200;
-
-        final double D = 20;
-
-        Timeline timeline = new Timeline(
-                new KeyFrame(Duration.seconds(0),
-                        new KeyValue(x1, 0),
-                        new KeyValue(y, 0)
-                ),
-                new KeyFrame(Duration.seconds(3),
-                        new KeyValue(x1, W - D),
-                        new KeyValue(y, H - D)
-                )
-        );
-        timeline.setAutoReverse(true);
-        timeline.setCycleCount(Timeline.INDEFINITE);
-
-        AnimationTimer timer = new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                GraphicsContext gc = canvas.getGraphicsContext2D();
-
-                gc.setFill(Color.FORESTGREEN);
-                gc.fillOval(
-                        x1.doubleValue(),
-                        y.doubleValue(),
-                        D,
-                        D
-                );
-            }
-        };
-
-
-        timer.start();
-        timeline.play();
-
     }
 
     private void drawSideOnObstacle(Canvas canvas) {
@@ -950,5 +883,22 @@ public class CanvasDrawer {
 
     public void setRedeclarationComputer(RedeclarationComputer redeclarationComputer) {
         this.redeclarationComputer = redeclarationComputer;
+    }
+
+/*==================================================================================================================================
+//  Getters
+//================================================================================================================================*/
+
+    //needs to be accessed by the plane animation
+    public RedeclarationComputer getRedeclarationComputer() {
+        return redeclarationComputer;
+    }
+
+    public double getCanvasWidth() {
+        return canvasWidth;
+    }
+
+    public double getCanvasHeight() {
+        return canvasHeight;
     }
 }
