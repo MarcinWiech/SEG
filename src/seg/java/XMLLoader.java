@@ -20,7 +20,7 @@ public class XMLLoader {
     private ArrayList<Airport> airportList;
 
     private XMLLoader() {
-        String filePath = "./src/airportsXML.xml";
+        String filePath = "./src/airports.xml";
         File xmlFile = new File(filePath);
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder;
