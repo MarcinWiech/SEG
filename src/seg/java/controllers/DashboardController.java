@@ -450,8 +450,7 @@ public class DashboardController {
     }
 
     public void matchHeadingButtonPressed() {
-
-        //get runway direction
+                //get runway direction
         try {
 
             if(currentRunway == null){
@@ -462,11 +461,34 @@ public class DashboardController {
             return;
         }
 
+        //normal binding
+        topDownCanvas.widthProperty().bind(topDownPane.widthProperty());
+        topDownCanvas.heightProperty().bind(topDownPane.heightProperty());
+
+
         System.out.println(currentRunway.getName());
         int runwayDirection = Integer.parseInt(currentRunway.getName().substring(0,2));
         System.out.println(runwayDirection*10);
 
         topDownCanvas.setRotate(runwayDirection*10-90);
+        if(topDownCanvas.getRotate() == 90){
+            System.out.println("Change binding");
+            topDownCanvas.widthProperty().bind(topDownPane.heightProperty());
+            topDownCanvas.heightProperty().bind(topDownPane.widthProperty());
+
+            //somewhere associations of height and width must be changed
+
+            Double tempCanvasHeight = canvasDrawer.getCanvasHeight();
+            canvasDrawer.setCanvasHeight(canvasDrawer.getCanvasWidth());
+            canvasDrawer.setCanvasWidth(tempCanvasHeight);
+            canvasDrawer.drawTopDownCanvas(topDownCanvas);
+
+            System.out.println(canvasDrawer.getCanvasHeight());
+
+        }
+        System.out.println(topDownCanvas.getHeight());
+        System.out.println(topDownCanvas.getWidth());
+        System.out.println();
     }
 
 

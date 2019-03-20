@@ -858,7 +858,15 @@ public class CanvasDrawer {
         this.redeclarationComputer = redeclarationComputer;
     }
 
-/*==================================================================================================================================
+    public void setCanvasWidth(double canvasWidth) {
+        this.canvasWidth = canvasWidth;
+    }
+
+    public void setCanvasHeight(double canvasHeight) {
+        this.canvasHeight = canvasHeight;
+    }
+
+    /*==================================================================================================================================
 //  Getters
 //================================================================================================================================*/
 
@@ -874,4 +882,5 @@ public class CanvasDrawer {
     public double getCanvasHeight() {
         return canvasHeight;
     }
+
 }
