@@ -444,9 +444,31 @@ public class DashboardController {
         pathTransition.setPath(path);
         pathTransition.setNode(imageView);
         pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+        pathTransition.play();
 
         topDownPane.getChildren().add(imageView);
     }
+
+    public void matchHeadingButtonPressed() {
+
+        //get runway direction
+        try {
+
+            if(currentRunway == null){
+                throw new IllegalValueException("noRunway");
+            }
+        }
+        catch (Exception e){
+            return;
+        }
+
+        System.out.println(currentRunway.getName());
+        int runwayDirection = Integer.parseInt(currentRunway.getName().substring(0,2));
+        System.out.println(runwayDirection*10);
+
+        topDownCanvas.setRotate(runwayDirection*10-90);
+    }
+
 
 }
 

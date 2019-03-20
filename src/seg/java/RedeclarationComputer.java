@@ -97,7 +97,7 @@ public class RedeclarationComputer {
     private int determineCalculationCase() {
         System.out.println("Runway direction = " + runwayDirection);
 
-        if (runwayDirection == 'R')       // for this one you might want to consider the R dispTresh
+        if (runwayDirection == 'R' || runwayDirection == 'C')       // for this one you might want to consider the R dispTresh
         {
             if (obstacleXR < tora / 2)
                 calculationCase = 1;

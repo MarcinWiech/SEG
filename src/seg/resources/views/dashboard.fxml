@@ -234,7 +234,12 @@
                                     </tooltip>
                                 </ComboBox>
                                 <Label layoutX="13.0" layoutY="424.0" text="Predefined obstacle:" />
-                        <Button fx:id="runButton" layoutX="14.0" layoutY="622.0" mnemonicParsing="false" onAction="#runButtonPressed" prefHeight="25.0" prefWidth="158.0" text="Run">
+                        <Button fx:id="runButton" layoutX="13.0" layoutY="622.0" mnemonicParsing="false" onAction="#runButtonPressed" prefHeight="25.0" prefWidth="158.0" text="Run">
+                           <tooltip>
+                              <Tooltip text="Click this to redeclare the runway." />
+                           </tooltip>
+                        </Button>
+                        <Button layoutX="12.0" layoutY="658.0" mnemonicParsing="false" onAction="#matchHeadingButtonPressed" prefHeight="25.0" prefWidth="159.0" text="Match the heading">
                            <tooltip>
                               <Tooltip text="Click this to redeclare the runway." />
                            </tooltip>
