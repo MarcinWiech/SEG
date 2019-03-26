@@ -234,12 +234,17 @@
                                     </tooltip>
                                 </ComboBox>
                                 <Label layoutX="13.0" layoutY="424.0" text="Predefined obstacle:" />
-                        <Button fx:id="runButton" layoutX="13.0" layoutY="622.0" mnemonicParsing="false" onAction="#runButtonPressed" prefHeight="25.0" prefWidth="158.0" text="Run">
+                        <Button fx:id="landingButton" layoutX="13.0" layoutY="622.0" mnemonicParsing="false" onAction="#simulateLandingButtonPressed" prefHeight="25.0" prefWidth="158.0" text="Simulate Landing">
                            <tooltip>
                               <Tooltip text="Click this to redeclare the runway." />
                            </tooltip>
                         </Button>
-                        <Button layoutX="12.0" layoutY="658.0" mnemonicParsing="false" onAction="#matchHeadingButtonPressed" prefHeight="25.0" prefWidth="159.0" text="Match the heading">
+                        <Button layoutX="12.0" layoutY="658.0" mnemonicParsing="false" onAction="#simulateTakeOffButtonPressed" prefHeight="25.0" prefWidth="159.0" text="Simulate Take Off">
+                           <tooltip>
+                              <Tooltip text="Click this to redeclare the runway." />
+                           </tooltip>
+                        </Button>
+                        <Button layoutX="13.0" layoutY="691.0" mnemonicParsing="false" onAction="#clearSimulation" prefHeight="25.0" prefWidth="159.0" text="Clear Simulation">
                            <tooltip>
                               <Tooltip text="Click this to redeclare the runway." />
                            </tooltip>
@@ -256,7 +261,7 @@
                                     <content>
                                         <Pane fx:id="topDownPane" prefHeight="632.0" prefWidth="1029.0">
                                             <children>
-                                                <Canvas fx:id="topDownCanvas" height="634.0" layoutX="8.0" width="1024.0" />
+                                                <Canvas fx:id="topDownCanvas" height="696.0" layoutX="8.0" width="1000.0" />
                                             </children>
                                         </Pane>
                                     </content>
