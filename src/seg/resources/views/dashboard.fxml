@@ -1,280 +1,267 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.canvas.Canvas?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.shape.Line?>
-<?import javafx.scene.text.*?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="655.0" prefWidth="1196.0" xmlns="http://javafx.com/javafx/8"
-            fx:controller="seg.java.controllers.DashboardController">
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="750.0" prefWidth="1196.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seg.java.controllers.DashboardController">
     <children>
-        <MenuBar prefHeight="655.0" prefWidth="1196.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                 AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <MenuBar prefHeight="655.0" prefWidth="1196.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <menus>
                 <Menu mnemonicParsing="false" text="File">
                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#switchAirport" text="Switch airport"/>
-                        <MenuItem disable="true" mnemonicParsing="false" text="Import obstacle from XML file"/>
-                        <MenuItem disable="true" mnemonicParsing="false" text="Export to XML file"/>
+                        <MenuItem mnemonicParsing="false" onAction="#switchAirport" text="Switch airport" />
+                        <MenuItem disable="true" mnemonicParsing="false" text="Import obstacle from XML file" />
+                        <MenuItem disable="true" mnemonicParsing="false" text="Export to XML file" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Configure">
                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#configureAirports"
-                                  text="Configure Airports / Runways"/>
-                        <MenuItem disable="true" mnemonicParsing="false" text="Configure Obstacles"/>
+                        <MenuItem mnemonicParsing="false" onAction="#configureAirports" text="Configure Airports / Runways" />
+                        <MenuItem disable="true" mnemonicParsing="false" text="Configure Obstacles" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Help">
                     <items>
-                        <MenuItem disable="true" mnemonicParsing="false" text="FAQ"/>
+                        <MenuItem disable="true" mnemonicParsing="false" text="FAQ" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="About">
                     <items>
-                        <MenuItem disable="true" mnemonicParsing="false" text="About this program "/>
+                        <MenuItem disable="true" mnemonicParsing="false" text="About this program " />
                     </items>
                 </Menu>
             </menus>
         </MenuBar>
-        <SplitPane dividerPositions="0.15577889447236182" layoutY="23.0" prefHeight="632.0" prefWidth="1196.0"
-                   AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                   AnchorPane.topAnchor="23.0">
+        <SplitPane dividerPositions="0.15577889447236182" layoutY="23.0" prefHeight="632.0" prefWidth="1196.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="23.0">
             <items>
                 <ScrollPane maxWidth="180.0" prefHeight="630.0" prefWidth="157.0">
                     <content>
-                        <AnchorPane maxWidth="175.0" minHeight="0.0" minWidth="0.0" prefHeight="618.0"
-                                    prefWidth="175.0">
+                        <AnchorPane maxWidth="175.0" minHeight="0.0" minWidth="0.0" prefHeight="724.0" prefWidth="175.0">
                             <children>
-                                <Label layoutX="10.0" layoutY="103.0" prefHeight="20.0" prefWidth="166.0"
-                                       text="Initial values (meters)">
+                                <Label layoutX="10.0" layoutY="103.0" prefHeight="20.0" prefWidth="166.0" text="Initial values (meters)">
                                     <font>
-                                        <Font name="System Bold" size="14.0"/>
+                                        <Font name="System Bold" size="14.0" />
                                     </font>
                                 </Label>
-                                <TextField fx:id="todaNewTextbox" editable="false" layoutX="86.0" layoutY="321.0"
-                                           prefHeight="23.0" prefWidth="84.0">
+                                <TextField fx:id="todaNewTextbox" editable="false" layoutX="86.0" layoutY="321.0" prefHeight="23.0" prefWidth="84.0">
                                     <font>
-                                        <Font size="10.0"/>
+                                        <Font size="10.0" />
                                     </font>
                                 </TextField>
-                                <TextField fx:id="asdaNewTextbox" editable="false" layoutX="86.0" layoutY="347.0"
-                                           prefHeight="1.0" prefWidth="84.0">
+                                <TextField fx:id="asdaNewTextbox" editable="false" layoutX="86.0" layoutY="347.0" prefHeight="1.0" prefWidth="84.0">
                                     <font>
-                                        <Font size="10.0"/>
+                                        <Font size="10.0" />
                                     </font>
                                 </TextField>
-                                <TextField fx:id="ldaNewTextbox" editable="false" layoutX="86.0" layoutY="373.0"
-                                           prefHeight="1.0" prefWidth="84.0">
+                                <TextField fx:id="ldaNewTextbox" editable="false" layoutX="86.0" layoutY="373.0" prefHeight="1.0" prefWidth="84.0">
                                     <font>
-                                        <Font size="10.0"/>
+                                        <Font size="10.0" />
                                     </font>
                                 </TextField>
-                                <TextField fx:id="toraNewTextbox" editable="false" layoutX="86.0" layoutY="295.0"
-                                           prefHeight="2.0" prefWidth="84.0">
+                                <TextField fx:id="toraNewTextbox" editable="false" layoutX="86.0" layoutY="295.0" prefHeight="2.0" prefWidth="84.0">
                                     <font>
-                                        <Font size="10.0"/>
+                                        <Font size="10.0" />
                                     </font>
                                 </TextField>
-                                <Label layoutX="10.0" layoutY="272.0" prefHeight="20.0" prefWidth="160.0"
-                                       text="New values (meters)">
+                                <Label layoutX="10.0" layoutY="272.0" prefHeight="20.0" prefWidth="160.0" text="New values (meters)">
                                     <font>
-                                        <Font name="System Bold" size="14.0"/>
+                                        <Font name="System Bold" size="14.0" />
                                     </font>
                                     <tooltip>
-                                        <Tooltip text="The values after redeclaration. "/>
+                                        <Tooltip text="The values after redeclaration. " />
                                     </tooltip>
                                 </Label>
-                                <TextField fx:id="toraInitialTextbox" editable="false" layoutX="87.0" layoutY="128.0"
-                                           prefHeight="23.0" prefWidth="84.0">
+                                <TextField fx:id="toraInitialTextbox" editable="false" layoutX="87.0" layoutY="128.0" prefHeight="23.0" prefWidth="84.0">
                                     <font>
-                                        <Font size="10.0"/>
+                                        <Font size="10.0" />
                                     </font>
                                 </TextField>
-                                <TextField fx:id="asdaInitialTextbox" editable="false" layoutX="87.0" layoutY="180.0"
-                                           prefHeight="0.0" prefWidth="84.0">
+                                <TextField fx:id="asdaInitialTextbox" editable="false" layoutX="87.0" layoutY="180.0" prefHeight="0.0" prefWidth="84.0">
                                     <font>
-                                        <Font size="10.0"/>
+                                        <Font size="10.0" />
                                     </font>
                                 </TextField>
                                 <Label layoutX="40.0" layoutY="298.0" prefHeight="21.0" prefWidth="48.0" text="TORA:">
                                     <tooltip>
-                                        <Tooltip contentDisplay="RIGHT"
-                                                 text="Take-Off Run Available (TORA) - the length of the runway available for take-off. (metres)"/>
+                                        <Tooltip contentDisplay="RIGHT" text="Take-Off Run Available (TORA) - the length of the runway available for take-off. (metres)" />
                                     </tooltip>
                                 </Label>
                                 <Label layoutX="38.0" layoutY="324.0" prefHeight="17.0" prefWidth="43.0" text="TODA:">
                                     <tooltip>
-                                        <Tooltip
-                                                text="Take-Off Distance Available (TODA) - the length of the runway (TORA) plus any Clearway (area beyond the runway that is considered free from obstructions). (metres)"/>
+                                        <Tooltip text="Take-Off Distance Available (TODA) - the length of the runway (TORA) plus any Clearway (area beyond the runway that is considered free from obstructions). (metres)" />
                                     </tooltip>
                                 </Label>
                                 <Label layoutX="39.0" layoutY="350.0" text="ASDA:">
                                     <tooltip>
-                                        <Tooltip
-                                                text="Accelerate-Stop Distance Available (ASDA) - the length of the runway (TORA) plus any Stopway (area that is not part of the TORA, but that can be used to safely stop an aircraft in an emergency). (metres)"/>
+                                        <Tooltip text="Accelerate-Stop Distance Available (ASDA) - the length of the runway (TORA) plus any Stopway (area that is not part of the TORA, but that can be used to safely stop an aircraft in an emergency). (metres)" />
                                     </tooltip>
                                 </Label>
                                 <Label layoutX="46.0" layoutY="376.0" text="LDA:">
                                     <tooltip>
-                                        <Tooltip
-                                                text="Landing Distance Available (LDA) - the length of the runway available for landing. (metres)"/>
+                                        <Tooltip text="Landing Distance Available (LDA) - the length of the runway available for landing. (metres)" />
                                     </tooltip>
                                 </Label>
-                                <TextField fx:id="todaInitialTextbox" editable="false" layoutX="87.0" layoutY="154.0"
-                                           prefHeight="5.0" prefWidth="84.0">
+                                <TextField fx:id="todaInitialTextbox" editable="false" layoutX="87.0" layoutY="154.0" prefHeight="5.0" prefWidth="84.0">
                                     <font>
-                                        <Font size="10.0"/>
+                                        <Font size="10.0" />
                                     </font>
                                 </TextField>
-                                <TextField fx:id="ldaInitialTextbox" editable="false" layoutX="87.0" layoutY="206.0"
-                                           prefHeight="0.0" prefWidth="84.0">
+                                <TextField fx:id="ldaInitialTextbox" editable="false" layoutX="87.0" layoutY="206.0" prefHeight="0.0" prefWidth="84.0">
                                     <font>
-                                        <Font size="10.0"/>
+                                        <Font size="10.0" />
                                     </font>
                                 </TextField>
-                                <TextField fx:id="thresholdInitialTextbox" editable="false" layoutX="87.0"
-                                           layoutY="233.0" prefHeight="0.0" prefWidth="84.0">
+                                <TextField fx:id="thresholdInitialTextbox" editable="false" layoutX="87.0" layoutY="233.0" prefHeight="0.0" prefWidth="84.0">
                                     <font>
-                                        <Font size="10.0"/>
+                                        <Font size="10.0" />
                                     </font>
                                 </TextField>
                                 <Label layoutX="39.0" layoutY="131.0" prefHeight="21.0" prefWidth="48.0" text="TORA:">
                                     <tooltip>
-                                        <Tooltip contentDisplay="RIGHT"
-                                                 text="Take-Off Run Available (TORA) - the length of the runway available for take-off. (metres)"/>
+                                        <Tooltip contentDisplay="RIGHT" text="Take-Off Run Available (TORA) - the length of the runway available for take-off. (metres)" />
                                     </tooltip>
                                 </Label>
                                 <Label layoutX="38.0" layoutY="157.0" prefHeight="17.0" prefWidth="43.0" text="TODA:">
                                     <tooltip>
-                                        <Tooltip
-                                                text="Take-Off Distance Available (TODA) - the length of the runway (TORA) plus any Clearway (area beyond the runway that is considered free from obstructions). (metres)"/>
+                                        <Tooltip text="Take-Off Distance Available (TODA) - the length of the runway (TORA) plus any Clearway (area beyond the runway that is considered free from obstructions). (metres)" />
                                     </tooltip>
                                 </Label>
                                 <Label layoutX="39.0" layoutY="183.0" text="ASDA:">
                                     <tooltip>
-                                        <Tooltip
-                                                text="Accelerate-Stop Distance Available (ASDA) - the length of the runway (TORA) plus any Stopway (area that is not part of the TORA, but that can be used to safely stop an aircraft in an emergency). (metres)"/>
+                                        <Tooltip text="Accelerate-Stop Distance Available (ASDA) - the length of the runway (TORA) plus any Stopway (area that is not part of the TORA, but that can be used to safely stop an aircraft in an emergency). (metres)" />
                                     </tooltip>
                                 </Label>
                                 <Label layoutX="46.0" layoutY="209.0" text="LDA:">
                                     <tooltip>
-                                        <Tooltip
-                                                text="Landing Distance Available (LDA) - the length of the runway available for landing. (metres)"/>
+                                        <Tooltip text="Landing Distance Available (LDA) - the length of the runway available for landing. (metres)" />
                                     </tooltip>
                                 </Label>
-                                <Label layoutX="16.0" layoutY="226.0" prefHeight="36.0" prefWidth="75.0"
-                                       text="Threshold:" textAlignment="RIGHT" wrapText="true">
+                                <Label layoutX="16.0" layoutY="226.0" prefHeight="36.0" prefWidth="75.0" text="Threshold:" textAlignment="RIGHT" wrapText="true">
                                     <tooltip>
-                                        <Tooltip
-                                                text="Displaced Threshold - A runway threshold located at a point other than the physical beginning or the end of the runway. (metres)"/>
+                                        <Tooltip text="Displaced Threshold - A runway threshold located at a point other than the physical beginning or the end of the runway. (metres)" />
                                     </tooltip>
                                 </Label>
-                                <Button fx:id="redeclareButton" layoutX="12.0" layoutY="587.0" mnemonicParsing="false"
-                                        onAction="#redeclareButtonPressed" prefHeight="25.0" prefWidth="158.0"
-                                        text="Redeclare">
+                                <Button fx:id="redeclareButton" layoutX="12.0" layoutY="587.0" mnemonicParsing="false" onAction="#redeclareButtonPressed" prefHeight="25.0" prefWidth="158.0" text="Redeclare">
                                     <tooltip>
-                                        <Tooltip text="Click this to redeclare the runway."/>
+                                        <Tooltip text="Click this to redeclare the runway." />
                                     </tooltip>
                                 </Button>
-                                <Label layoutX="14.0" layoutY="554.0" prefHeight="21.0" prefWidth="75.0"
-                                       text="Y Position:">
+                                <Label layoutX="14.0" layoutY="554.0" prefHeight="21.0" prefWidth="75.0" text="Y Position:">
                                     <tooltip>
-                                        <Tooltip
-                                                text="Positive values are to the north of the centerline and negative values are to the south. (metres)"/>
+                                        <Tooltip text="Positive values are to the north of the centerline and negative values are to the south. (metres)" />
                                     </tooltip>
                                 </Label>
-                                <Label layoutX="7.0" layoutY="503.0" prefHeight="21.0" prefWidth="83.0"
-                                       text="XL Position:">
+                                <Label layoutX="7.0" layoutY="503.0" prefHeight="21.0" prefWidth="83.0" text="XL Position:">
                                     <tooltip>
-                                        <Tooltip
-                                                text="Distance from obstacle to XXL threshold (where XXL is any runway ending in 'L'). (metres)"/>
+                                        <Tooltip text="Distance from obstacle to XXL threshold (where XXL is any runway ending in 'L'). (metres)" />
                                     </tooltip>
                                 </Label>
                                 <Label layoutX="33.0" layoutY="479.0" text="Height:">
                                     <tooltip>
-                                        <Tooltip text="The height of the obstacle on the runway. (metres)"/>
+                                        <Tooltip text="The height of the obstacle on the runway. (metres)" />
                                     </tooltip>
                                 </Label>
-                                <Label layoutX="12.0" layoutY="402.0" prefHeight="20.0" prefWidth="146.0"
-                                       text="Obstacle (meters)">
+                                <Label layoutX="12.0" layoutY="402.0" prefHeight="20.0" prefWidth="146.0" text="Obstacle (meters)">
                                     <font>
-                                        <Font name="System Bold" size="14.0"/>
+                                        <Font name="System Bold" size="14.0" />
                                     </font>
                                 </Label>
-                                <Line endX="85.0" layoutX="98.0" layoutY="265.0" startX="-100.0"/>
-                                <ChoiceBox fx:id="runwayDroplist" layoutX="16.0" layoutY="32.0" onAction="#selectRunway"
-                                           prefHeight="25.0" prefWidth="154.0">
+                                <Line endX="85.0" layoutX="98.0" layoutY="265.0" startX="-100.0" />
+                                <ChoiceBox fx:id="runwayDroplist" layoutX="16.0" layoutY="32.0" onAction="#selectRunway" prefHeight="25.0" prefWidth="154.0">
                                     <tooltip>
-                                        <Tooltip text="Select a runway to view."/>
+                                        <Tooltip text="Select a runway to view." />
                                     </tooltip>
                                 </ChoiceBox>
                                 <Label layoutX="16.0" layoutY="8.0" text="RUNWAY:">
                                     <font>
-                                        <Font name="System Bold" size="14.0"/>
+                                        <Font name="System Bold" size="14.0" />
                                     </font>
                                 </Label>
-                                <TextField fx:id="heightTextbox" layoutX="86.0" layoutY="476.0" prefHeight="23.0"
-                                           prefWidth="84.0">
+                                <TextField fx:id="heightTextbox" layoutX="86.0" layoutY="476.0" prefHeight="23.0" prefWidth="84.0">
                                     <font>
-                                        <Font size="10.0"/>
+                                        <Font size="10.0" />
                                     </font>
                                 </TextField>
-                                <TextField layoutX="86.0" layoutY="502.0" prefHeight="1.0" prefWidth="84.0"
-                                           fx:id="xLTextbox">
+                                <TextField layoutX="86.0" layoutY="502.0" prefHeight="1.0" prefWidth="84.0" fx:id="xLTextbox">
                                     <font>
-                                        <Font size="10.0"/>
+                                        <Font size="10.0" />
                                     </font>
                                 </TextField>
-                                <TextField layoutX="86.0" layoutY="528.0" prefHeight="23.0" prefWidth="84.0"
-                                           fx:id="xRTextbox">
+                                <TextField layoutX="86.0" layoutY="528.0" prefHeight="23.0" prefWidth="84.0" fx:id="xRTextbox">
                                     <font>
-                                        <Font size="10.0"/>
+                                        <Font size="10.0" />
                                     </font>
                                 </TextField>
-                                <Label layoutX="7.0" layoutY="528.0" prefHeight="21.0" prefWidth="83.0"
-                                       text="XR Position:">
+                                <Label layoutX="7.0" layoutY="528.0" prefHeight="21.0" prefWidth="83.0" text="XR Position:">
                                     <tooltip>
-                                        <Tooltip
-                                                text="Distance from obstacle to XXR displaced threshold (where XXR is any runway ending in 'R').  (metres)"/>
+                                        <Tooltip text="Distance from obstacle to XXR displaced threshold (where XXR is any runway ending in 'R').  (metres)" />
                                     </tooltip>
                                 </Label>
-                                <TextField fx:id="yTextbox" layoutX="86.0" layoutY="554.0" prefHeight="23.0"
-                                           prefWidth="84.0">
+                                <TextField fx:id="yTextbox" layoutX="86.0" layoutY="554.0" prefHeight="23.0" prefWidth="84.0">
                                     <font>
-                                        <Font size="10.0"/>
+                                        <Font size="10.0" />
                                     </font>
                                 </TextField>
-                                <Button fx:id="switchButton" layoutX="16.0" layoutY="69.0" mnemonicParsing="false"
-                                        onAction="#switchButtonPressed" prefHeight="25.0" prefWidth="154.0"
-                                        text="Switch to reciprocal">
+                                <Button fx:id="switchButton" layoutX="16.0" layoutY="69.0" mnemonicParsing="false" onAction="#switchButtonPressed" prefHeight="25.0" prefWidth="154.0" text="Switch to reciprocal">
                                     <tooltip>
-                                        <Tooltip text="Click this to view the reciprocal runway. "/>
+                                        <Tooltip text="Click this to view the reciprocal runway. " />
                                     </tooltip>
                                 </Button>
                                 <ComboBox layoutX="13.0" layoutY="442.0" prefHeight="25.0" prefWidth="158.0">
                                     <tooltip>
-                                        <Tooltip text="Pick an obstacle from the list of predefined obstacles."/>
+                                        <Tooltip text="Pick an obstacle from the list of predefined obstacles." />
                                     </tooltip>
                                 </ComboBox>
-                                <Label layoutX="13.0" layoutY="424.0" text="Predefined obstacle:"/>
+                                <Label layoutX="13.0" layoutY="424.0" text="Predefined obstacle:" />
+                        <Button fx:id="landingButton" layoutX="13.0" layoutY="622.0" mnemonicParsing="false" onAction="#simulateLandingButtonPressed" prefHeight="25.0" prefWidth="158.0" text="Simulate Landing">
+                           <tooltip>
+                              <Tooltip text="Click this to redeclare the runway." />
+                           </tooltip>
+                        </Button>
+                        <Button layoutX="12.0" layoutY="658.0" mnemonicParsing="false" onAction="#simulateTakeOffButtonPressed" prefHeight="25.0" prefWidth="159.0" text="Simulate Take Off">
+                           <tooltip>
+                              <Tooltip text="Click this to redeclare the runway." />
+                           </tooltip>
+                        </Button>
+                        <Button layoutX="13.0" layoutY="691.0" mnemonicParsing="false" onAction="#clearSimulation" prefHeight="25.0" prefWidth="159.0" text="Clear Simulation">
+                           <tooltip>
+                              <Tooltip text="Click this to redeclare the runway." />
+                           </tooltip>
+                        </Button>
                             </children>
                         </AnchorPane>
                     </content>
                 </ScrollPane>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                     <children>
-                        <TabPane layoutX="-8.0" layoutY="-7.0" prefHeight="663.0" prefWidth="1029.0"
-                                 tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0"
-                                 AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <TabPane layoutX="-8.0" layoutY="-7.0" prefHeight="663.0" prefWidth="1029.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <tabs>
                                 <Tab text="Top-down view">
                                     <content>
                                         <Pane fx:id="topDownPane" prefHeight="632.0" prefWidth="1029.0">
                                             <children>
-                                                <Canvas fx:id="topDownCanvas" height="634.0" layoutX="8.0"
-                                                        width="1024.0"/>
+                                                <Canvas fx:id="topDownCanvas" height="696.0" layoutX="8.0" width="1000.0" />
                                             </children>
                                         </Pane>
                                     </content>
@@ -283,7 +270,7 @@
                                     <content>
                                         <Pane fx:id="sideOnPane" prefHeight="200.0" prefWidth="0.0">
                                             <children>
-                                                <Canvas fx:id="sideOnCanvas" height="634.0" width="1028.0"/>
+                                                <Canvas fx:id="sideOnCanvas" height="634.0" width="1028.0" />
                                             </children>
                                         </Pane>
                                     </content>
@@ -292,36 +279,34 @@
                                     <content>
                                         <GridPane>
                                             <columnConstraints>
-                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                             </columnConstraints>
                                             <rowConstraints>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                         </GridPane>
                                     </content>
                                     <content>
                                         <GridPane>
                                             <columnConstraints>
-                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                             </columnConstraints>
                                             <rowConstraints>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                             <children>
                                                 <Pane fx:id="topDownPaneCopy" prefHeight="200.0" prefWidth="200.0">
                                                     <children>
-                                                        <Canvas fx:id="topDownCanvasCopy" height="312.0" layoutY="3.0"
-                                                                width="1018.0"/>
+                                                        <Canvas fx:id="topDownCanvasCopy" height="345.0" layoutY="3.0" width="1018.0" />
                                                     </children>
                                                 </Pane>
-                                                <Pane fx:id="sideOnPaneCopy" prefHeight="225.0" prefWidth="1029.0"
-                                                      GridPane.rowIndex="1">
+                                                <Pane fx:id="sideOnPaneCopy" prefHeight="225.0" prefWidth="1029.0" GridPane.rowIndex="1">
                                                     <children>
-                                                        <Canvas fx:id="sideOnCanvasCopy" height="314.0" width="1018.0"/>
+                                                        <Canvas fx:id="sideOnCanvasCopy" height="349.0" width="1018.0" />
                                                     </children>
                                                 </Pane>
                                             </children>
@@ -332,62 +317,54 @@
                                     <content>
                                         <GridPane>
                                             <columnConstraints>
-                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="116.0" minWidth="116.0"
-                                                                   prefWidth="116.0"/>
-                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="902.0"/>
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="116.0" minWidth="116.0" prefWidth="116.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="902.0" />
                                             </columnConstraints>
                                             <rowConstraints>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                             <children>
-                                                <TextArea fx:id="toraBDTextArea" editable="false" prefHeight="61.0"
-                                                          prefWidth="861.0" GridPane.columnIndex="1">
+                                                <TextArea fx:id="toraBDTextArea" editable="false" prefHeight="61.0" prefWidth="861.0" GridPane.columnIndex="1">
                                                     <GridPane.margin>
-                                                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0"/>
+                                                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                                                     </GridPane.margin>
                                                 </TextArea>
-                                                <TextArea fx:id="todaBDTextArea" editable="false" prefHeight="200.0"
-                                                          prefWidth="200.0" GridPane.columnIndex="1"
-                                                          GridPane.rowIndex="1">
+                                                <TextArea fx:id="todaBDTextArea" editable="false" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                                     <GridPane.margin>
-                                                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0"/>
+                                                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                                                     </GridPane.margin>
                                                 </TextArea>
-                                                <TextArea fx:id="asdaBDTextArea" editable="false" prefHeight="200.0"
-                                                          prefWidth="200.0" GridPane.columnIndex="1"
-                                                          GridPane.rowIndex="2">
+                                                <TextArea fx:id="asdaBDTextArea" editable="false" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                                     <GridPane.margin>
-                                                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0"/>
+                                                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                                                     </GridPane.margin>
                                                 </TextArea>
-                                                <TextArea fx:id="ldaBDTextArea" editable="false" prefHeight="200.0"
-                                                          prefWidth="200.0" GridPane.columnIndex="1"
-                                                          GridPane.rowIndex="3">
+                                                <TextArea fx:id="ldaBDTextArea" editable="false" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                                     <GridPane.margin>
-                                                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0"/>
+                                                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                                                     </GridPane.margin>
                                                 </TextArea>
                                                 <AnchorPane prefHeight="200.0" prefWidth="200.0">
                                                     <children>
-                                                        <Label layoutX="43.0" layoutY="67.0" text="TORA"/>
+                                                        <Label layoutX="43.0" layoutY="67.0" text="TORA" />
                                                     </children>
                                                 </AnchorPane>
                                                 <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
                                                     <children>
-                                                        <Label layoutX="42.0" layoutY="67.0" text="TODA"/>
+                                                        <Label layoutX="42.0" layoutY="67.0" text="TODA" />
                                                     </children>
                                                 </AnchorPane>
                                                 <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
                                                     <children>
-                                                        <Label layoutX="43.0" layoutY="67.0" text="ASDA"/>
+                                                        <Label layoutX="43.0" layoutY="67.0" text="ASDA" />
                                                     </children>
                                                 </AnchorPane>
                                                 <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="3">
                                                     <children>
-                                                        <Label layoutX="47.0" layoutY="67.0" text="LDA"/>
+                                                        <Label layoutX="47.0" layoutY="67.0" text="LDA" />
                                                     </children>
                                                 </AnchorPane>
                                             </children>
@@ -400,7 +377,7 @@
                 </AnchorPane>
             </items>
             <opaqueInsets>
-                <Insets/>
+                <Insets />
             </opaqueInsets>
         </SplitPane>
     </children>

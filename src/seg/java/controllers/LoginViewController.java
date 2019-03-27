@@ -99,7 +99,7 @@ public class LoginViewController implements Initializable {
 
                 } catch (Exception e) {
 
-                    System.out.println(e);
+                    e.printStackTrace();
                     new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong :(").showAndWait();
                 }
 

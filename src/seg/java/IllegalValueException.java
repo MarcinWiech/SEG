@@ -20,9 +20,14 @@ public class IllegalValueException extends IllegalArgumentException {
             new Alert(Alert.AlertType.ERROR, "TODA can't be smaller than TORA").showAndWait();
         } else if (s.equals("smallasda")) {
             new Alert(Alert.AlertType.ERROR, "ASDA can't be smaller than TORA").showAndWait();
+        } else if (s.equals("noRedeclaration")) {
+            new Alert(Alert.AlertType.ERROR, "Simulation can be performed only if redeclaration has taken place").showAndWait();
         } else if (s.equals("largeclearway")) {
             new Alert(Alert.AlertType.ERROR, "The clearway can't be larger than half of the runway. Input a smaller TODA or a larger TORA").showAndWait();
-        }
+        } else if (s.equals("noRunway")) {
+        new Alert(Alert.AlertType.ERROR, "The runway has not been selected").showAndWait();
+    }
+
 
     }
 
