@@ -301,12 +301,12 @@
                                             <children>
                                                 <Pane fx:id="topDownPaneCopy" prefHeight="200.0" prefWidth="200.0">
                                                     <children>
-                                                        <Canvas fx:id="topDownCanvasCopy" height="312.0" layoutY="3.0" width="1018.0" />
+                                                        <Canvas fx:id="topDownCanvasCopy" height="345.0" layoutY="3.0" width="1018.0" />
                                                     </children>
                                                 </Pane>
                                                 <Pane fx:id="sideOnPaneCopy" prefHeight="225.0" prefWidth="1029.0" GridPane.rowIndex="1">
                                                     <children>
-                                                        <Canvas fx:id="sideOnCanvasCopy" height="314.0" width="1018.0" />
+                                                        <Canvas fx:id="sideOnCanvasCopy" height="349.0" width="1018.0" />
                                                     </children>
                                                 </Pane>
                                             </children>

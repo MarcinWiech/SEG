@@ -787,7 +787,6 @@ public class CanvasDrawer {
 
             //update values
             horizontalLines.clear();
-
             //array (0,1) leftmost flat point, (2,3) closest point for taking off away, (4,5) start of landing over, scenario, X of the landing over point on the asphalt
             horizontalLines.put("13", new double[]{toraX * canvasWidth + xOffset, 0.55 * canvasHeight, toraLength * canvasWidth, 0.005 * canvasHeight, (resaMinTX + resaMinTLength) * canvasWidth + xOffset , 1.005 * imageY, 1, ldaLength * canvasWidth});
 

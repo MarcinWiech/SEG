@@ -1,14 +1,10 @@
 package seg.java.controllers;
 
-import com.sun.org.apache.xpath.internal.SourceTree;
 import javafx.animation.PathTransition;
-import javafx.animation.Timeline;
-import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -16,7 +12,6 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
@@ -382,62 +377,54 @@ public class DashboardController {
 
     public void simulateLandingButtonPressed(){
 
-        while(sideOnPane.getChildren().size() > 1)
-            sideOnPane.getChildren().remove(sideOnPane.getChildren().size()-1);
-
-
-
-        //set up the image
-        ImageView imageView = new ImageView("/seg/resources/images/side-view-plane.png");
-        imageView.setPreserveRatio(true);
-        imageView.setFitHeight(sideOnCanvas.getHeight()*0.03);
-        Rotate flipRotationX = new Rotate(180, Rotate.X_AXIS);
-        Rotate flipRotationY = new Rotate(180, Rotate.Y_AXIS);
-        imageView.getTransforms().addAll(flipRotationX, flipRotationY);
-
-        Path path = new Path();
-
-        if(canvasDrawer.getHorizontalLines().containsKey("13")) {
-            path = landingOverSimulation(imageView,path);
-        }
-
-
-        if(canvasDrawer.getHorizontalLines().containsKey("24")) {
-            path = landingTowardsSimulation(imageView,path);
-        }
-
-        //transition settings
-        PathTransition pathTransition = new PathTransition();
-        pathTransition.setDuration(Duration.millis(2000));
-        pathTransition.setPath(path);
-        pathTransition.setNode(imageView);
-        pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
-        pathTransition.play();
-
-        sideOnPane.getChildren().add(imageView);
-    }
-
-    public void simulateTakeOffButtonPressed() {
-                //get runway direction
         try {
-
             if(currentRunway == null){
                 throw new IllegalValueException("noRunway");
+            }
+            if(toraBDTextArea.getText() == null || toraBDTextArea.getText().length() == 0){
+                throw new IllegalValueException("noRedeclaration");
             }
         }
         catch (Exception e){
             return;
         }
 
-        while(sideOnPane.getChildren().size() > 1)
-            sideOnPane.getChildren().remove(sideOnPane.getChildren().size()-1);
+        canvasDrawer.drawSideOnCanvas(sideOnCanvasCopy);
+        simulateLandingInner(sideOnPaneCopy, sideOnCanvasCopy);
+        canvasDrawer.drawSideOnCanvas(sideOnCanvas);
+        simulateLandingInner(sideOnPane, sideOnCanvas);
 
+    }
 
+    public void simulateTakeOffButtonPressed() {
+        try {
+            if(currentRunway == null){
+                throw new IllegalValueException("noRunway");
+            }
+            if(ldaBDTextArea.getText() == null || ldaBDTextArea.getText().length() == 0){
+                throw new IllegalValueException("noRedeclaration");
+            }
+        }
+        catch (Exception e){
+            return;
+        }
+
+        canvasDrawer.drawSideOnCanvas(sideOnCanvas);
+        simulateTakeOffInner(sideOnPane, sideOnCanvas);
+        canvasDrawer.drawSideOnCanvas(sideOnCanvasCopy);
+        simulateTakeOffInner(sideOnPaneCopy, sideOnCanvasCopy);
+    }
+
+    private void simulateLandingInner(Pane pane, Canvas canvas){
+
+        while(pane.getChildren().size() > 1){
+            pane.getChildren().remove(pane.getChildren().size()-1);
+        }
 
         //set up the image
         ImageView imageView = new ImageView("/seg/resources/images/side-view-plane.png");
         imageView.setPreserveRatio(true);
-        imageView.setFitHeight(sideOnCanvas.getHeight()*0.03);
+        imageView.setFitHeight(canvas.getHeight()*0.03);
         Rotate flipRotationX = new Rotate(180, Rotate.X_AXIS);
         Rotate flipRotationY = new Rotate(180, Rotate.Y_AXIS);
         imageView.getTransforms().addAll(flipRotationX, flipRotationY);
@@ -445,12 +432,12 @@ public class DashboardController {
         Path path = new Path();
 
         if(canvasDrawer.getHorizontalLines().containsKey("13")) {
-            path = takeOffAwaySimulation(imageView,path);
+            path = landingOverSimulation(imageView,path, pane, canvas);
         }
 
 
         if(canvasDrawer.getHorizontalLines().containsKey("24")) {
-            path = takeOffTowardsSimulation(imageView,path);
+            path = landingTowardsSimulation(imageView,path, pane, canvas);
         }
 
         //transition settings
@@ -461,30 +448,85 @@ public class DashboardController {
         pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
         pathTransition.play();
 
-        sideOnPane.getChildren().add(imageView);
+        pane.getChildren().add(imageView);
+    }
+
+    private void simulateTakeOffInner(Pane pane, Canvas canvas){
+
+        while(pane.getChildren().size() > 1){
+            pane.getChildren().remove(pane.getChildren().size()-1);
+        }
+
+        //set up the image
+        ImageView imageView = new ImageView("/seg/resources/images/side-view-plane.png");
+        imageView = transformImageView(imageView,canvas);
+
+
+        Path path = new Path();
+
+        if(canvasDrawer.getHorizontalLines().containsKey("13")) {
+            path = takeOffAwaySimulation(imageView,path, pane, canvas);
+        }
+
+
+        if(canvasDrawer.getHorizontalLines().containsKey("24")) {
+            path = takeOffTowardsSimulation(imageView,path, pane, canvas);
+        }
+
+        //transition settings
+        PathTransition pathTransition = new PathTransition();
+        pathTransition.setDuration(Duration.millis(2000));
+        pathTransition.setPath(path);
+        pathTransition.setNode(imageView);
+        pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+        pathTransition.play();
+
+        pane.getChildren().add(imageView);
+    }
+
+    private ImageView transformImageView(ImageView imageView, Canvas canvas){
+
+        imageView.setPreserveRatio(true);
+        imageView.setFitHeight(canvas.getHeight()*0.03);
+        Rotate flipRotationX = new Rotate(180, Rotate.X_AXIS);
+        Rotate flipRotationY = new Rotate(180, Rotate.Y_AXIS);
+        imageView.getTransforms().addAll(flipRotationX, flipRotationY);
+        return imageView;
     }
 
     public void clearSimulation(){
         while(sideOnPane.getChildren().size() > 1)
             sideOnPane.getChildren().remove(sideOnPane.getChildren().size()-1);
+            sideOnPaneCopy.getChildren().remove(sideOnPaneCopy.getChildren().size()-1);
     }
 
-    private Path landingTowardsSimulation(ImageView imageView, Path path){
+    private Path landingTowardsSimulation(ImageView imageView, Path path, Pane pane, Canvas canvas){
 
         double[] case24 = canvasDrawer.getHorizontalLines().get("24");
 
         //points from left to right starting with the top one
+        double ldaEndY;
+        MoveTo moveTo = new MoveTo();
+
+
+
+        if(pane.equals(sideOnPane)){
+            ldaEndY = case24[3] + (pane.getHeight() - canvasDrawer.getCanvasHeight()) / 2;
+            moveTo.setX(canvas.getWidth() - (pane.getWidth() - canvasDrawer.getCanvasWidth()) / 2);
+        }
+        else{
+            ldaEndY = case24[3] + (pane.getHeight() - canvas.getHeight()) / 2;
+            moveTo.setX(canvas.getWidth());
+        }
+
         double upperPointX = case24[0];
         double upperPointY = case24[1];
         double ldaEndX = case24[2];
-        double ldaEndY = case24[3] + (sideOnPane.getHeight() - canvasDrawer.getCanvasHeight()) / 2; //gitara
         double toraEndX = case24[4];
         double ldaStartX = case24[5] + ldaEndX;
         double toraStartX = case24[6] + toraEndX;
 
         // landing towards
-        MoveTo moveTo = new MoveTo();
-        moveTo.setX(sideOnCanvas.getWidth() - (sideOnPane.getWidth() - canvasDrawer.getCanvasWidth()) / 2);
         moveTo.setY(ldaEndY - 2*imageView.getBoundsInParent().getHeight());
 
         LineTo lineTo = new LineTo();
@@ -502,15 +544,25 @@ public class DashboardController {
         return path;
     }
 
-    private Path takeOffTowardsSimulation(ImageView imageView, Path path){
+    private Path takeOffTowardsSimulation(ImageView imageView, Path path, Pane pane, Canvas canvas){
 
         double[] case24 = canvasDrawer.getHorizontalLines().get("24");
 
         // points from left to right starting with the top one
+        double ldaEndX;
+        double ldaEndY;
+        if(pane.equals(sideOnPane)){
+            ldaEndX = case24[2];
+            ldaEndY = case24[3] + (pane.getHeight() - canvasDrawer.getCanvasHeight()) / 2;
+        }
+        else{
+            ldaEndX = case24[2];
+            ldaEndY = case24[3];
+        }
+
+
         double upperPointX = case24[0];
         double upperPointY = case24[1];
-        double ldaEndX = case24[2];
-        double ldaEndY = case24[3] + (sideOnPane.getHeight() - canvasDrawer.getCanvasHeight()) / 2;
         double toraEndX = case24[4];
         double ldaStartX = case24[5] + ldaEndX;
         double toraStartX = case24[6] + toraEndX;
@@ -529,7 +581,8 @@ public class DashboardController {
         hLineTo.setY(upperPointY - 2.5*imageView.getBoundsInParent().getHeight());
 
         LineTo flyToTheEnd = new LineTo();
-        flyToTheEnd.setX(0);
+
+        flyToTheEnd.setX(upperPointX- 4*imageView.getBoundsInParent().getWidth());
         flyToTheEnd.setY(upperPointY - 2.5*imageView.getBoundsInParent().getHeight());
 
         path.getElements().add(moveTo);
@@ -540,17 +593,23 @@ public class DashboardController {
         return path;
     }
 
-    private Path takeOffAwaySimulation(ImageView imageView, Path path){
+    private Path takeOffAwaySimulation(ImageView imageView, Path path, Pane pane, Canvas canvas){
 
         double[] toraData = canvasDrawer.getHorizontalLines().get("13");
 
-        //declare variables for path;
-        double horizontalLineStartX = toraData[0] - (sideOnPane.getWidth() - canvasDrawer.getCanvasWidth()) / 2;
-        double horizontalLineStartY = toraData[1] + (sideOnPane.getHeight() - canvasDrawer.getCanvasHeight()) / 2;
+        double horizontalLineStartX;
+        double horizontalLineStartY;
+        double landingOverFirstPointX;
+
+        if(canvas.equals(sideOnCanvas)){
+            horizontalLineStartX = toraData[0]  - (sideOnPane.getWidth() - canvasDrawer.getCanvasWidth())/2;
+            horizontalLineStartY = toraData[1]  + (sideOnPane.getHeight() - canvasDrawer.getCanvasHeight())/2;
+        }
+        else{
+            horizontalLineStartX = toraData[0];
+            horizontalLineStartY = toraData[1];
+        }
         double horizontalLineEndX = toraData[0] + toraData[2];
-        double landingOverFirstPointX = toraData[4] - (sideOnPane.getWidth() - canvasDrawer.getCanvasWidth()) / 2; //end of the canvas
-        double landingOverFirstPointY = toraData[5];
-        double landingOverFirstAsphaltPointX = toraData[7] + toraData[0];
 
         //take off away
         MoveTo moveTo = new MoveTo();
@@ -567,18 +626,35 @@ public class DashboardController {
         return path;
     }
 
-    private Path landingOverSimulation(ImageView imageView, Path path){
+    private Path landingOverSimulation(ImageView imageView, Path path, Pane pane, Canvas canvas){
 
         double[] toraData = canvasDrawer.getHorizontalLines().get("13");
 
-
         //declare variables for path;
-        double horizontalLineStartX = toraData[0] - (sideOnPane.getWidth() - canvasDrawer.getCanvasWidth()) / 2;
-        double horizontalLineStartY = toraData[1] + (sideOnPane.getHeight() - canvasDrawer.getCanvasHeight()) / 2;
+
+        double horizontalLineStartX;
+        double horizontalLineStartY;
+        double landingOverFirstPointX;
+
+        if(canvas.equals(sideOnCanvas)){
+            horizontalLineStartX = toraData[0]  - (sideOnPane.getWidth() - canvasDrawer.getCanvasWidth())/2;
+            horizontalLineStartY = toraData[1]  + (sideOnPane.getHeight() - canvasDrawer.getCanvasHeight())/2;
+            landingOverFirstPointX = toraData[4] - (sideOnPane.getWidth() - canvasDrawer.getCanvasWidth())/2;
+        }
+        else{
+            horizontalLineStartX = toraData[0];
+            horizontalLineStartY = toraData[1];
+            landingOverFirstPointX = toraData[4];
+        }
         double horizontalLineEndX = toraData[0] + toraData[2];
-        double landingOverFirstPointX = toraData[4] - (sideOnPane.getWidth() - canvasDrawer.getCanvasWidth()) / 2; //end of the canvas
         double landingOverFirstPointY = toraData[5]; // height of the obstacle * 1.5
         double landingOverFirstAsphaltPointX = toraData[7] + toraData[0];
+
+        Circle circle = new Circle();
+        circle.setCenterX(horizontalLineStartX);
+        circle.setCenterY(horizontalLineStartY);
+        circle.setRadius(5);
+        pane.getChildren().add(circle);
 
 //        landing over
         MoveTo moveTo = new MoveTo();
