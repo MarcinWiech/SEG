@@ -650,12 +650,6 @@ public class DashboardController {
         double landingOverFirstPointY = toraData[5]; // height of the obstacle * 1.5
         double landingOverFirstAsphaltPointX = toraData[7] + toraData[0];
 
-        Circle circle = new Circle();
-        circle.setCenterX(horizontalLineStartX);
-        circle.setCenterY(horizontalLineStartY);
-        circle.setRadius(5);
-        pane.getChildren().add(circle);
-
 //        landing over
         MoveTo moveTo = new MoveTo();
         moveTo.setX(landingOverFirstPointX);
