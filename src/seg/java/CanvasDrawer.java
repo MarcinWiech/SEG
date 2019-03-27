@@ -843,21 +843,6 @@ public class CanvasDrawer {
         fillRect(new Rectangle(x,y,width,height));
     }
 
-    private void getRunData(){
-
-        int calculationCase = redeclarationComputer.getCalculationCase();
-
-        //TAKE OFF AWAY/LANDING OVER 1 3
-        if(calculationCase == 1 || calculationCase == 3){
-
-        }
-
-        //TAKE OFF TOWARDS/LANDING TOWARDS 2 4
-
-
-
-    }
-
 /*==================================================================================================================================
 //  Setters
 //================================================================================================================================*/
@@ -870,15 +855,7 @@ public class CanvasDrawer {
         this.redeclarationComputer = redeclarationComputer;
     }
 
-    public void setCanvasWidth(double canvasWidth) {
-        this.canvasWidth = canvasWidth;
-    }
-
-    public void setCanvasHeight(double canvasHeight) {
-        this.canvasHeight = canvasHeight;
-    }
-
-    /*==================================================================================================================================
+/*==================================================================================================================================
 //  Getters
 //================================================================================================================================*/
 
