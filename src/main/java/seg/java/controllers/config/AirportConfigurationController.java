@@ -74,7 +74,7 @@ public class AirportConfigurationController implements Initializable {
         try {
             Stage stage = (Stage) backButton.getScene().getWindow();
             stage.close();
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/dashboard.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/dashboard.fxml"));
             Parent root1 = fxmlLoader.load();
             stage = new Stage();
             stage.setTitle("Dashboard");
@@ -93,7 +93,7 @@ public class AirportConfigurationController implements Initializable {
         try {
             Stage stage = (Stage) backButton.getScene().getWindow();
             stage.close();
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/config/runwayConfig.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/config/runwayConfig.fxml"));
             Parent root1 = fxmlLoader.load();
 
             RunwayConfigurationController controller = fxmlLoader.getController();
@@ -117,7 +117,7 @@ public class AirportConfigurationController implements Initializable {
             try {
                 Stage stage = (Stage) backButton.getScene().getWindow();
                 stage.close();
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/config/runwayConfig.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/config/runwayConfig.fxml"));
                 Parent root1 = fxmlLoader.load();
 
                 RunwayConfigurationController controller = fxmlLoader.getController();

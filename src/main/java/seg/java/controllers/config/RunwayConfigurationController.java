@@ -37,7 +37,7 @@ public class RunwayConfigurationController {
         try {
             Stage stage = (Stage) asdaTextbox.getScene().getWindow();
             stage.close();
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/config/airportConfig.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/config/airportConfig.fxml"));
             Parent root1 = fxmlLoader.load();
             stage = new Stage();
             stage.setTitle("Configure Airport");
@@ -243,7 +243,7 @@ public class RunwayConfigurationController {
         try {
             Stage stage = (Stage) asdaTextbox.getScene().getWindow();
             stage.close();
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/config/airportConfig.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/config/airportConfig.fxml"));
             Parent root1 = fxmlLoader.load();
             stage = new Stage();
             stage.setTitle("Aiport Configuration");

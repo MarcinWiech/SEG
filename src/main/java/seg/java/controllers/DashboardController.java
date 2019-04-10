@@ -129,9 +129,9 @@ public class DashboardController {
         sideOnCanvasCopy.widthProperty().addListener(event -> canvasDrawer.drawSideOnCanvas(sideOnCanvasCopy));
         sideOnCanvasCopy.heightProperty().addListener(event -> canvasDrawer.drawSideOnCanvas(sideOnCanvasCopy));
 
-        greentickIcon = new Image("/seg/resources/images/greentick.png");
-        warningIcon = new Image("/seg/resources/images/alert-triangle-yellow.png");
-        switchIcon = new Image("/seg/resources/images/switch.png");
+        greentickIcon = new Image("/images/greentick.png");
+        warningIcon = new Image("/images/alert-triangle-yellow.png");
+        switchIcon = new Image("/images/switch.png");
     }
 
 /*==================================================================================================================================
@@ -293,7 +293,7 @@ public class DashboardController {
     public void switchAirport(ActionEvent actionEvent) {
         try {
             Stage stage = (Stage) yTextbox.getScene().getWindow();
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/airportSelection.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/airportSelection.fxml"));
             Parent root1 = fxmlLoader.load();
             stage = new Stage();
             stage.setTitle("Switch Airport");
@@ -310,7 +310,7 @@ public class DashboardController {
         try {
             Stage stage = (Stage) yTextbox.getScene().getWindow();
             stage.close();
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/config/airportConfig.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/config/airportConfig.fxml"));
 
 
             Parent root1 = fxmlLoader.load();
@@ -422,7 +422,7 @@ public class DashboardController {
         }
 
         //set up the image
-        ImageView imageView = new ImageView("/seg/resources/images/side-view-plane.png");
+        ImageView imageView = new ImageView("/images/side-view-plane.png");
         imageView.setPreserveRatio(true);
         imageView.setFitHeight(canvas.getHeight()*0.03);
         Rotate flipRotationX = new Rotate(180, Rotate.X_AXIS);
@@ -458,7 +458,7 @@ public class DashboardController {
         }
 
         //set up the image
-        ImageView imageView = new ImageView("/seg/resources/images/side-view-plane.png");
+        ImageView imageView = new ImageView("/images/side-view-plane.png");
         imageView = transformImageView(imageView,canvas);
 
 

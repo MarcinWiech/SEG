@@ -24,7 +24,7 @@ public class AirportCreationController {
             try {
                 Stage stage = (Stage) addAirportButton.getScene().getWindow();
                 stage.close();
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/config/airportConfig.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/config/airportConfig.fxml"));
                 Parent root1 = fxmlLoader.load();
 
                 AirportConfigurationController controller = fxmlLoader.getController();

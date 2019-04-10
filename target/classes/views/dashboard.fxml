@@ -53,11 +53,11 @@
                 </Menu>
             </menus>
         </MenuBar>
-        <SplitPane dividerPositions="0.17252931323283083" layoutY="23.0" prefHeight="632.0" prefWidth="1196.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="23.0">
+        <SplitPane dividerPositions="0.15577889447236182" layoutY="23.0" prefHeight="632.0" prefWidth="1196.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="23.0">
             <items>
-                <ScrollPane maxWidth="252.0" minWidth="0.0" prefHeight="725.0" prefWidth="190.0">
+                <ScrollPane maxWidth="180.0" prefHeight="630.0" prefWidth="157.0">
                     <content>
-                        <AnchorPane maxWidth="230.0" minHeight="0.0" minWidth="203.0" prefHeight="724.0" prefWidth="203.0">
+                        <AnchorPane maxWidth="175.0" minHeight="0.0" minWidth="0.0" prefHeight="724.0" prefWidth="175.0">
                             <children>
                                 <Label layoutX="10.0" layoutY="103.0" prefHeight="20.0" prefWidth="166.0" text="Initial values (meters)">
                                     <font>
@@ -187,7 +187,7 @@
                                         <Font name="System Bold" size="14.0" />
                                     </font>
                                 </Label>
-                                <Line endX="139.33331298828125" layoutX="98.0" layoutY="265.0" startX="-100.0" />
+                                <Line endX="85.0" layoutX="98.0" layoutY="265.0" startX="-100.0" />
                                 <ChoiceBox fx:id="runwayDroplist" layoutX="16.0" layoutY="32.0" onAction="#selectRunway" prefHeight="25.0" prefWidth="154.0">
                                     <tooltip>
                                         <Tooltip text="Select a runway to view." />

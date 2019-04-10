@@ -10,7 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
 public class CreatePDF {
-    public static final String DEST = "src/main/java/seg/outputs/pdfs/redeclared_runway.pdf";
+    public static final String DEST = "src/main/outputs/redeclared_runway.pdf";
 
     public static void main(String[] args) throws FileNotFoundException {
         File file = new File(DEST);
