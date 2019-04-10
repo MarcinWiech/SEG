@@ -24,7 +24,6 @@ import seg.java.IllegalValueException;
 import seg.java.RedeclarationComputer;
 import seg.java.models.Runway;
 
-
 public class DashboardController {
     Airport currentAirport;
     Runway currentRunway;
@@ -137,7 +136,9 @@ public class DashboardController {
 /*==================================================================================================================================
 //  Other methods
 //================================================================================================================================*/
-
+    /**
+     * DRAWING
+     **/
     public void redeclareButtonPressed(ActionEvent event) throws IllegalValueException {
         //  Obstacle details
         double obstacleX = 0;
@@ -225,31 +226,6 @@ public class DashboardController {
         makeNotification("Runway Redeclared", "The runway has now been redeclared.", greentickIcon);
     }
 
-    private void redeclare() {
-        //  We set the parameters and then calculate
-        redeclarationComputer.calculate();
-
-        //  New values are displayed
-        toraNewTextbox.setText(Double.toString(redeclarationComputer.getTora()));
-        todaNewTextbox.setText(Double.toString(redeclarationComputer.getToda()));
-        asdaNewTextbox.setText(Double.toString(redeclarationComputer.getAsda()));
-        ldaNewTextbox.setText(Double.toString(redeclarationComputer.getLda()));
-
-        //  Canvas drawing gets triggered here
-        canvasDrawer.setRunway(currentRunway);
-        canvasDrawer.drawTopDownCanvas(topDownCanvas);
-        canvasDrawer.drawSideOnCanvas(sideOnCanvas);
-        canvasDrawer.drawTopDownCanvas(topDownCanvasCopy);
-        canvasDrawer.drawSideOnCanvas(sideOnCanvasCopy);
-
-        //  Update the calculations breakdown
-        toraBDTextArea.setText(redeclarationComputer.getToraBD());
-        todaBDTextArea.setText(redeclarationComputer.getTodaBD());
-        asdaBDTextArea.setText(redeclarationComputer.getAsdaBD());
-        ldaBDTextArea.setText(redeclarationComputer.getLdaBD());
-
-    }
-
     public void switchButtonPressed() {
         //  Check special cases
         if (currentRunway == null) {
@@ -290,46 +266,47 @@ public class DashboardController {
         makeNotification("Switched runway", "The reciprocal runway is now being viewed", switchIcon);
     }
 
-    public void switchAirport(ActionEvent actionEvent) {
-        try {
-            Stage stage = (Stage) yTextbox.getScene().getWindow();
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/airportSelection.fxml"));
-            Parent root1 = fxmlLoader.load();
-            stage = new Stage();
-            stage.setTitle("Switch Airport");
-            stage.setScene(new Scene(root1));
-            stage.show();
-        } catch (Exception e) {
-            System.out.println(e);
-            new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong :(").showAndWait();
-        }
+    private ImageView transformImageView(ImageView imageView, Canvas canvas){
+
+        imageView.setPreserveRatio(true);
+        imageView.setFitHeight(canvas.getHeight()*0.03);
+        Rotate flipRotationX = new Rotate(180, Rotate.X_AXIS);
+        Rotate flipRotationY = new Rotate(180, Rotate.Y_AXIS);
+        imageView.getTransforms().addAll(flipRotationX, flipRotationY);
+        return imageView;
     }
 
-    public void configureAirports(ActionEvent actionEvent) {
+    /**
+     * REDECLARING CALCULATIONS
+     */
+    private void redeclare() {
+        //  We set the parameters and then calculate
+        redeclarationComputer.calculate();
 
-        try {
-            Stage stage = (Stage) yTextbox.getScene().getWindow();
-            stage.close();
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/config/airportConfig.fxml"));
+        //  New values are displayed
+        toraNewTextbox.setText(Double.toString(redeclarationComputer.getTora()));
+        todaNewTextbox.setText(Double.toString(redeclarationComputer.getToda()));
+        asdaNewTextbox.setText(Double.toString(redeclarationComputer.getAsda()));
+        ldaNewTextbox.setText(Double.toString(redeclarationComputer.getLda()));
 
+        //  Canvas drawing gets triggered here
+        canvasDrawer.setRunway(currentRunway);
+        canvasDrawer.drawTopDownCanvas(topDownCanvas);
+        canvasDrawer.drawSideOnCanvas(sideOnCanvas);
+        canvasDrawer.drawTopDownCanvas(topDownCanvasCopy);
+        canvasDrawer.drawSideOnCanvas(sideOnCanvasCopy);
 
-            Parent root1 = fxmlLoader.load();
-            AirportConfigurationController acc = fxmlLoader.getController();
-            acc.setAirport(currentAirport);
+        //  Update the calculations breakdown
+        toraBDTextArea.setText(redeclarationComputer.getToraBD());
+        todaBDTextArea.setText(redeclarationComputer.getTodaBD());
+        asdaBDTextArea.setText(redeclarationComputer.getAsdaBD());
+        ldaBDTextArea.setText(redeclarationComputer.getLdaBD());
 
-            stage = new Stage();
-            stage.setTitle("Configure Airport");
-            stage.setScene(new Scene(root1));
-            stage.show();
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println(e);
-            new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong :(").showAndWait();
-        }
     }
 
+    /**
+     * FUNCTIONALITY
+     * **/
     public void setAirport(Airport airport) {
         currentAirport = airport;
         updateRunwayDropList();
@@ -362,6 +339,11 @@ public class DashboardController {
         runwayDroplist.setValue(runway.getName());
     }
 
+
+
+    /**
+     * NOTIFICATIONS
+     * **/
     private void makeNotification(String title, String text, Image icon) {
 
         Notifications notificationBuilder = Notifications.create()
@@ -374,7 +356,9 @@ public class DashboardController {
         notificationBuilder.darkStyle();
         notificationBuilder.show();
     }
-
+    /**
+     * SIMULATION
+     */
     public void simulateLandingButtonPressed(){
 
         try {
@@ -482,22 +466,6 @@ public class DashboardController {
         pathTransition.play();
 
         pane.getChildren().add(imageView);
-    }
-
-    private ImageView transformImageView(ImageView imageView, Canvas canvas){
-
-        imageView.setPreserveRatio(true);
-        imageView.setFitHeight(canvas.getHeight()*0.03);
-        Rotate flipRotationX = new Rotate(180, Rotate.X_AXIS);
-        Rotate flipRotationY = new Rotate(180, Rotate.Y_AXIS);
-        imageView.getTransforms().addAll(flipRotationX, flipRotationY);
-        return imageView;
-    }
-
-    public void clearSimulation(){
-        while(sideOnPane.getChildren().size() > 1)
-            sideOnPane.getChildren().remove(sideOnPane.getChildren().size()-1);
-            sideOnPaneCopy.getChildren().remove(sideOnPaneCopy.getChildren().size()-1);
     }
 
     private Path landingTowardsSimulation(ImageView imageView, Path path, Pane pane, Canvas canvas){
@@ -670,5 +638,46 @@ public class DashboardController {
         return path;
     }
 
+    public void clearSimulation(){
+        while(sideOnPane.getChildren().size() > 1)
+            sideOnPane.getChildren().remove(sideOnPane.getChildren().size()-1);
+        sideOnPaneCopy.getChildren().remove(sideOnPaneCopy.getChildren().size()-1);
+    }
+
+    /**
+     * OPENING AND CLOSING VIEWS
+     * **/
+    public void switchAirport(ActionEvent actionEvent) {
+        openFXML("/views/airportSelection.fxml","Switch Airport");
+    }
+
+    public void configureAirports(ActionEvent actionEvent) {
+        openFXML("/views/config/airportConfig.fxml","Configure Airport");
+    }
+
+    public void openEmailForm(ActionEvent actionEvent) {
+        openFXML("/views/emailForm.fxml", "Share");
+    }
+
+    public void openFXML(String path, String title) {
+        try {
+            Stage stage = (Stage) yTextbox.getScene().getWindow();
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource( path));
+            Parent root1 = fxmlLoader.load();
+
+            if (title == "Configure Airport") {
+                AirportConfigurationController acc = fxmlLoader.getController();
+                acc.setAirport(currentAirport);
+            }
+
+            stage = new Stage();
+            stage.setTitle(title);
+            stage.setScene(new Scene(root1));
+            stage.show();
+        } catch (Exception e) {
+            System.out.println(e);
+            new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong :(").showAndWait();
+        }
+    }
 }
 
