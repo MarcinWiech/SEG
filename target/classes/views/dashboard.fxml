@@ -34,6 +34,7 @@
                         <MenuItem disable="true" mnemonicParsing="false" text="Import obstacle from XML file" />
                         <MenuItem disable="true" mnemonicParsing="false" text="Export to XML file" />
                   <MenuItem mnemonicParsing="false" onAction="#openEmailForm" text="Share via Email" />
+                  <MenuItem mnemonicParsing="false" onAction="#exportPDF" text="Export as PDF" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Configure">

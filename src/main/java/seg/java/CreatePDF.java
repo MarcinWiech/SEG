@@ -86,7 +86,6 @@ public class CreatePDF {
         Paragraph paragraph = new Paragraph();
         paragraph.add(runwayText);
         paragraph.add(runwayNameText);
-        paragraph.add("\n");
 
         return paragraph;
     }
@@ -148,54 +147,4 @@ public class CreatePDF {
 
         return table;
     }
-
-
-
-    /**
-     public void sendEmail() throws MessagingException, IOException {
-     /** TO BE REPLACED WITH TEXTBOX EMAIL
-     String toEmail = "runwayredeclaration11@gmail.com";
-
-     Properties properties = new Properties();
-     properties.put("mail.smtp.auth", "true");
-     properties.put("mail.smtp.starttls.enable", "true");
-     properties.put("mail.smtp.host", "smtp.googlemail.com");
-     properties.put("mail.smtp.port", "587");
-
-     Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
-     protected PasswordAuthentication getPasswordAuthentication() {
-     return new PasswordAuthentication(username,password);
-     }
-     });
-
-     MimeMessage message = new MimeMessage(session);
-     try {
-     message.setFrom(new InternetAddress(username));
-     message.addRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
-     message.setSubject("A runway has been redeclared");
-
-     Multipart emailContent = new MimeMultipart();
-
-     /** Main message
-     MimeBodyPart text = new MimeBodyPart();
-     text.setText("Find all information about the redeclaration in the attachment.");
-
-     /** PDF attachment
-     MimeBodyPart pdfAttachment = new MimeBodyPart();
-     pdfAttachment.attachFile(DEST);
-
-     /** adding PDF and main message to email *
-     emailContent.addBodyPart(text);
-     emailContent.addBodyPart(pdfAttachment);
-
-     /** Attach multipart to message **
-     message.setContent(emailContent);
-
-     Transport.send(message);
-     } catch (MessagingException e) {
-     e.printStackTrace();
-     }
-
-     }
-     **/
 }

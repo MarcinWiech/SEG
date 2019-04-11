@@ -4,7 +4,6 @@ import javafx.animation.PathTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -21,11 +20,7 @@ import javafx.scene.shape.Path;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.controlsfx.control.Notifications;
-import seg.java.CanvasDrawer;
-import seg.java.CreatePDF;
-import seg.java.IllegalValueException;
-import seg.java.RedeclarationComputer;
+import seg.java.*;
 import seg.java.controllers.config.AirportConfigurationController;
 import seg.java.models.Airport;
 import seg.java.models.Runway;
@@ -93,12 +88,13 @@ public class DashboardController {
     private double obstacleXR = 0;
     private double toraInput, todaInput, asdaInput,ldaInput,dispThresholdInput  ;
     private Image greentickIcon,warningIcon ,switchIcon ;
-
+    private Notification notification;
 /*==================================================================================================================================
 //  Initialize
 //================================================================================================================================*/
 
     public void initialize() {
+        notification = new Notification();
         //  Main objects get initialized & related preparations
         redeclarationComputer = new RedeclarationComputer();
         reciprocalComputer = new RedeclarationComputer();
@@ -207,15 +203,15 @@ public class DashboardController {
             if (redeclarationComputer.needsRecalculation(redeclarationComputer.getObstacleXL(), redeclarationComputer.getObstacleXR(), redeclarationComputer.getObstacleY())) {
                 redeclare();
                 if (redeclarationComputer.getTora() > 5600) {
-                    makeNotification("Runway too large", "The redeclared runway is too large for operating", warningIcon);
+                    notification.makeNotification("Runway too large", "The redeclared runway is too large for operating", warningIcon);
                 } else if (redeclarationComputer.getTora() < 200) {
-                    makeNotification("Runway too small", "The redeclared runway is too small for operating", warningIcon);
+                    notification.makeNotification("Runway too small", "The redeclared runway is too small for operating", warningIcon);
                 } else if (redeclarationComputer.getTora() > redeclarationComputer.getToda()) {
-                    makeNotification("TODA smaller than TORA", "The recalculated TODA is too small for operating", warningIcon);
+                    notification.makeNotification("TODA smaller than TORA", "The recalculated TODA is too small for operating", warningIcon);
                 } else if (redeclarationComputer.getToda() < redeclarationComputer.getAsda()) {
-                    makeNotification("TODA smaller than ASDA ", "The recalculated TODA is too small for operating", warningIcon);
+                    notification.makeNotification("TODA smaller than ASDA ", "The recalculated TODA is too small for operating", warningIcon);
                 } else if (redeclarationComputer.calculateClearway() > redeclarationComputer.getTora() / 2) {
-                    makeNotification("Clearway too big", "The recalculated values indicated that clearway is larger than half of TORA", warningIcon);
+                    notification.makeNotification("Clearway too big", "The recalculated values indicated that clearway is larger than half of TORA", warningIcon);
                 }
             }
 
@@ -224,7 +220,7 @@ public class DashboardController {
             e.printStackTrace();
             return;
         }
-        makeNotification("Runway Redeclared", "The runway has now been redeclared.", greentickIcon);
+        notification.makeNotification("Runway Redeclared", "The runway has now been redeclared.", greentickIcon);
     }
 
     public void switchButtonPressed() {
@@ -264,7 +260,7 @@ public class DashboardController {
         asdaBDTextArea.setText(redeclarationComputer.getAsdaBD());
         ldaBDTextArea.setText(redeclarationComputer.getLdaBD());
 
-        makeNotification("Switched runway", "The reciprocal runway is now being viewed", switchIcon);
+        notification.makeNotification("Switched runway", "The reciprocal runway is now being viewed", switchIcon);
     }
 
     private ImageView transformImageView(ImageView imageView, Canvas canvas){
@@ -338,22 +334,6 @@ public class DashboardController {
 
         // Update selected box
         runwayDroplist.setValue(runway.getName());
-    }
-
-    /**
-     * NOTIFICATIONS
-     * **/
-    private void makeNotification(String title, String text, Image icon) {
-
-        Notifications notificationBuilder = Notifications.create()
-                .title(title)
-                .text(text)
-                .graphic(new ImageView(icon))
-                .hideAfter(Duration.seconds(5))
-                .position(Pos.BOTTOM_RIGHT);
-
-        notificationBuilder.darkStyle();
-        notificationBuilder.show();
     }
 
     /**
@@ -656,12 +636,17 @@ public class DashboardController {
     }
 
     public void openEmailForm(ActionEvent actionEvent) {
-         try {
+        exportPDF(actionEvent);
+        openFXML("/views/emailForm.fxml", "Share");
+    }
+
+    public void exportPDF(ActionEvent actionEvent) {
+        try {
             CreatePDF createPDF = new CreatePDF(redeclarationComputer, currentRunway);
+            notification.makeNotification("PDF successful", "PDF has been successfully made", greentickIcon);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        // openFXML("/views/emailForm.fxml", "Share"); **/
     }
 
     public void openFXML(String path, String title) {
@@ -673,6 +658,9 @@ public class DashboardController {
             if (title == "Configure Airport") {
                 AirportConfigurationController acc = fxmlLoader.getController();
                 acc.setAirport(currentAirport);
+            } else if (title == "Share"){
+                EmailController ec = fxmlLoader.getController();
+                ec.setRunway(currentRunway);
             }
 
             stage = new Stage();
@@ -682,14 +670,6 @@ public class DashboardController {
         } catch (Exception e) {
             System.out.println(e);
             new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong :(").showAndWait();
-        }
-    }
-
-    public void exportPDF(ActionEvent actionEvent) {
-        try {
-            CreatePDF createPDF = new CreatePDF(redeclarationComputer, currentRunway);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }
