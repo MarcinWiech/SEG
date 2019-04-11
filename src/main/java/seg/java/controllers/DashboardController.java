@@ -652,8 +652,10 @@ public class DashboardController {
         fileChooser.setSelectedExtensionFilter(pdfExtensionFilter);
         File file = fileChooser.showSaveDialog(stage);
 
-        CreatePDF createPDF = new CreatePDF(redeclarationComputer, currentRunway, file);
-        notification.makeNotification("PDF save successful", "PDF has been successfully saved", greentickIcon);
+        if (file != null) {
+            CreatePDF createPDF = new CreatePDF(redeclarationComputer, currentRunway, file);
+            notification.makeNotification("PDF save successful", "PDF has been successfully saved", greentickIcon);
+        }
     }
 
     public void openFXML(String path, String title) {
