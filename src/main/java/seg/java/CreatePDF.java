@@ -23,22 +23,33 @@ public class CreatePDF {
     private RedeclarationComputer redeclarationComputer;
     private Runway runway;
     PdfFont font = PdfFontFactory.createFont(FontConstants.HELVETICA_BOLD);
+    private File file;
 
-    public CreatePDF(RedeclarationComputer redeclarationComputer, Runway runway) throws IOException {
-        File file = new File(DEST);
-        file.getParentFile().mkdirs();
+    public CreatePDF(RedeclarationComputer redeclarationComputer, Runway runway, File file) throws IOException {
         this.redeclarationComputer = redeclarationComputer;
         this.runway = runway;
-        createPDF(DEST);
+
+        if (file == null) {
+            this.file = new File(DEST);
+        } else {
+            this.file = file;
+        }
+
+        this.file.getParentFile().mkdirs();
+        createPdf();
     }
 
-    public void createPDF(String DEST) throws IOException {
+    public void createPdf() throws IOException {
         //creating the PDF
-        FileOutputStream fos = new FileOutputStream(DEST);
+        FileOutputStream fos = new FileOutputStream(file);
         PdfWriter writer = new PdfWriter(fos);
         PdfDocument pdf = new PdfDocument(writer);
         Document document = new Document(pdf);
+        createDocument(document);
+    }
 
+
+    public void createDocument(Document document) {
         //adding all components to the page
         document.add(pdfTitle());
         document.add(redeclaredRunway());
@@ -54,7 +65,6 @@ public class CreatePDF {
         document.add(valuesTableTitle("Diagrams"));
         document.close();
     }
-
     public Paragraph calculationBreakdown(String name, String value) {
         Text runwayText = new Text(name);
         runwayText

@@ -18,6 +18,7 @@ import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.scene.transform.Rotate;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import seg.java.*;
@@ -25,6 +26,7 @@ import seg.java.controllers.config.AirportConfigurationController;
 import seg.java.models.Airport;
 import seg.java.models.Runway;
 
+import java.io.File;
 import java.io.IOException;
 
 public class DashboardController {
@@ -635,18 +637,22 @@ public class DashboardController {
         openFXML("/views/config/airportConfig.fxml","Configure Airport");
     }
 
-    public void openEmailForm(ActionEvent actionEvent) {
-        exportPDF(actionEvent);
+    public void openEmailForm(ActionEvent actionEvent) throws IOException {
         openFXML("/views/emailForm.fxml", "Share");
+        CreatePDF createPDF = new CreatePDF(redeclarationComputer, currentRunway, null);
     }
 
-    public void exportPDF(ActionEvent actionEvent) {
-        try {
-            CreatePDF createPDF = new CreatePDF(redeclarationComputer, currentRunway);
-            notification.makeNotification("PDF successful", "PDF has been successfully made", greentickIcon);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void exportPDF(ActionEvent actionEvent) throws IOException {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save Report");
+        Stage stage = (Stage) thresholdInitialTextbox.getScene().getWindow();
+        FileChooser.ExtensionFilter pdfExtensionFilter = new FileChooser.ExtensionFilter("PDF - Portable Document Format (.pdf)", "*.pdf");
+        fileChooser.getExtensionFilters().add(pdfExtensionFilter);
+        fileChooser.setSelectedExtensionFilter(pdfExtensionFilter);
+        File file = fileChooser.showSaveDialog(stage);
+
+        CreatePDF createPDF = new CreatePDF(redeclarationComputer, currentRunway, file);
+        notification.makeNotification("PDF save successful", "PDF has been successfully saved", greentickIcon);
     }
 
     public void openFXML(String path, String title) {
@@ -669,7 +675,7 @@ public class DashboardController {
             stage.show();
         } catch (Exception e) {
             System.out.println(e);
-            new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong :(").showAndWait();
+            new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong with loading the view :(").showAndWait();
         }
     }
 }

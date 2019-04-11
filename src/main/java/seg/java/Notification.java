@@ -13,9 +13,9 @@ public class Notification {
                 .text(text)
                 .graphic(new ImageView(icon))
                 .hideAfter(Duration.seconds(5))
-                .position(Pos.BOTTOM_RIGHT);
+                .position(Pos.BOTTOM_RIGHT)
+                .darkStyle();
 
-        notificationBuilder.darkStyle();
         notificationBuilder.show();
     }
 }

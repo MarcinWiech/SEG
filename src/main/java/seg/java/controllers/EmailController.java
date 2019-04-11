@@ -1,6 +1,7 @@
 package seg.java.controllers;
 
 import javafx.event.ActionEvent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
@@ -36,14 +37,12 @@ public class EmailController {
             createEmail();
             Stage stage = (Stage) emailTextbox.getScene().getWindow();
             stage.close();
-            notification.makeNotification("Email sent" , "Email has been successfully sent", emailIcon);
         } catch (AddressException e) {
-            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Please enter a valid email!").showAndWait();
         }
     }
 
-
-    public void createEmail() throws MessagingException, IOException {
+    public void createEmail() throws IOException {
         Properties properties = new Properties();
         properties.put("mail.smtp.auth", "true");
         properties.put("mail.smtp.starttls.enable", "true");
@@ -56,29 +55,36 @@ public class EmailController {
             }
         });
 
-        MimeMessage message = new MimeMessage(session);
-        message.setFrom(new InternetAddress(username));
-        message.addRecipient(Message.RecipientType.TO, toEmail);
-        String subject = "URGENT: Runway " + runway.getName() + " has been redeclared";
-        message.setSubject(subject);
-        Multipart content = new MimeMultipart();
+        try {
+            MimeMessage message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(username));
+            message.addRecipient(Message.RecipientType.TO, toEmail);
+            String subject = "URGENT: Runway " + runway.getName() + " has been redeclared";
+            message.setSubject(subject);
+            Multipart content = new MimeMultipart();
 
-        /** main message **/
-        MimeBodyPart text = new MimeBodyPart();
-        text.setText("Find all information about the redeclaration in the attachment.");
+            /** main message **/
+            MimeBodyPart text = new MimeBodyPart();
+            text.setText("Find all information about the redeclaration in the attachment.");
 
-        /** PDF attachment **/
-        MimeBodyPart pdfAttachment = new MimeBodyPart();
-        pdfAttachment.attachFile(DEST);
+            /** PDF attachment **/
+            MimeBodyPart pdfAttachment = new MimeBodyPart();
+            pdfAttachment.attachFile(DEST);
 
-        /** adding PDF and main message to email **/
-        content.addBodyPart(text);
-        content.addBodyPart(pdfAttachment);
+            /** adding PDF and main message to email **/
+            content.addBodyPart(text);
+            content.addBodyPart(pdfAttachment);
 
-        /** content added to message **/
-        message.setContent(content);
+            /** content added to message **/
+            message.setContent(content);
 
-        Transport.send(message);
+            Transport.send(message);
+
+            notification.makeNotification("Email sent" , "Email has been successfully sent", emailIcon);
+        } catch (MessagingException e) {
+            new Alert(Alert.AlertType.ERROR, "Email wasn't sent successfully. Please try again.").showAndWait();
+        }
+
     }
     public void setRunway(Runway runway) {
         this.runway = runway;
