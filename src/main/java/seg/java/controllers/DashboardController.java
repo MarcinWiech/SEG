@@ -8,21 +8,29 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.*;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
 import seg.java.CanvasDrawer;
-import seg.java.controllers.config.AirportConfigurationController;
-import seg.java.models.Airport;
+import seg.java.CreatePDF;
 import seg.java.IllegalValueException;
 import seg.java.RedeclarationComputer;
+import seg.java.controllers.config.AirportConfigurationController;
+import seg.java.models.Airport;
 import seg.java.models.Runway;
+
+import java.io.IOException;
 
 public class DashboardController {
     Airport currentAirport;
@@ -80,18 +88,11 @@ public class DashboardController {
     @FXML
     private TextArea ldaBDTextArea;
     private CanvasDrawer canvasDrawer;
-    private RedeclarationComputer redeclarationComputer;
-    private RedeclarationComputer reciprocalComputer;
+    private RedeclarationComputer redeclarationComputer, reciprocalComputer;
     private double obstacleXL = 0;
     private double obstacleXR = 0;
-    private double toraInput;
-    private double todaInput;
-    private double asdaInput;
-    private double ldaInput;
-    private double dispThresholdInput;
-    private Image greentickIcon;
-    private Image warningIcon;
-    private Image switchIcon;
+    private double toraInput, todaInput, asdaInput,ldaInput,dispThresholdInput  ;
+    private Image greentickIcon,warningIcon ,switchIcon ;
 
 /*==================================================================================================================================
 //  Initialize
@@ -339,8 +340,6 @@ public class DashboardController {
         runwayDroplist.setValue(runway.getName());
     }
 
-
-
     /**
      * NOTIFICATIONS
      * **/
@@ -356,6 +355,7 @@ public class DashboardController {
         notificationBuilder.darkStyle();
         notificationBuilder.show();
     }
+
     /**
      * SIMULATION
      */
@@ -656,7 +656,12 @@ public class DashboardController {
     }
 
     public void openEmailForm(ActionEvent actionEvent) {
-        openFXML("/views/emailForm.fxml", "Share");
+         try {
+            CreatePDF createPDF = new CreatePDF(redeclarationComputer, currentRunway);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // openFXML("/views/emailForm.fxml", "Share"); **/
     }
 
     public void openFXML(String path, String title) {
@@ -677,6 +682,14 @@ public class DashboardController {
         } catch (Exception e) {
             System.out.println(e);
             new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong :(").showAndWait();
+        }
+    }
+
+    public void exportPDF(ActionEvent actionEvent) {
+        try {
+            CreatePDF createPDF = new CreatePDF(redeclarationComputer, currentRunway);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

@@ -2,6 +2,7 @@ package seg.java.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.scene.control.TextField;
+import seg.java.CreatePDF;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
@@ -13,21 +14,19 @@ import java.util.Properties;
 
 public class EmailController {
     public TextField emailTextbox;
-    private String username;
-    private String password;
-    private String fromEmail;
     private String toEmail;
+    private static final String username = "runwayredeclaration11@gmail.com";
+    private static final String password = "runway123**";
+    private static final String DEST = "src/main/outputs/redeclared_runway.pdf";
+    private CreatePDF pdf;
 
     public void sendEmail(ActionEvent actionEvent) throws MessagingException, IOException {
-        username = "runwayredeclaration@yahoo.com";
-        password = "runway123";
-        fromEmail = "florence.marshall@outlook.com";
         toEmail = emailTextbox.getText();
 
         Properties properties = new Properties();
-        properties.put("mail.smtp.auth","true");
+        properties.put("mail.smtp.auth", "true");
         properties.put("mail.smtp.starttls.enable", "true");
-        properties.put("mail.smtp.host", "smtp.mail.yahoo.com");
+        properties.put("mail.smtp.host", "smtp.googlemail.com");
         properties.put("mail.smtp.port", "587");
 
         Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
@@ -36,31 +35,27 @@ public class EmailController {
             }
         });
 
-        MimeMessage msg = new MimeMessage(session);
+        MimeMessage message = new MimeMessage(session);
+        message.setFrom(new InternetAddress(username));
+        message.addRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
+        message.setSubject("A runway has been redeclared");
+        Multipart content = new MimeMultipart();
 
-        msg.setFrom(fromEmail);
-        msg.setFrom(new InternetAddress(fromEmail));
-        msg.addRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
-        msg.setSubject("Subject Line");
+        /** main message **/
+        MimeBodyPart text = new MimeBodyPart();
+        text.setText("Find all information about the redeclaration in the attachment.");
 
-        Multipart emailContent = new MimeMultipart();
-
-        //Text body part
-        MimeBodyPart textBodyPart = new MimeBodyPart();
-        textBodyPart.setText("My multipart text");
-
-        //Attachment body part.
+        /** PDF attachment **/
         MimeBodyPart pdfAttachment = new MimeBodyPart();
-        pdfAttachment.attachFile("/home/parallels/Documents/docs/javamail.pdf");
+        pdfAttachment.attachFile(DEST);
 
-        //Attach body parts
-        emailContent.addBodyPart(textBodyPart);
-        emailContent.addBodyPart(pdfAttachment);
+        /** adding PDF and main message to email **/
+        content.addBodyPart(text);
+        content.addBodyPart(pdfAttachment);
 
-        //Attach multipart to message
-        msg.setContent(emailContent);
+        /** content added to message **/
+        message.setContent(content);
 
-        Transport.send(msg);
-        System.out.println("Sent message");
+        Transport.send(message);
     }
 }
