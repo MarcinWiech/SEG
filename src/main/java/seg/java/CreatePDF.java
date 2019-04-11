@@ -20,9 +20,9 @@ public class CreatePDF {
     private static final String username = "runwayredeclaration11@gmail.com";
     private static final String password = "runway123**";
     public static final String DEST = "src/main/outputs/redeclared_runway.pdf";
+    private PdfFont font = PdfFontFactory.createFont(FontConstants.HELVETICA_BOLD);
     private RedeclarationComputer redeclarationComputer;
     private Runway runway;
-    PdfFont font = PdfFontFactory.createFont(FontConstants.HELVETICA_BOLD);
     private File file;
 
     public CreatePDF(RedeclarationComputer redeclarationComputer, Runway runway, File file) throws IOException {
@@ -48,11 +48,10 @@ public class CreatePDF {
         createDocument(document);
     }
 
-
     public void createDocument(Document document) {
         //adding all components to the page
         document.add(pdfTitle());
-        document.add(redeclaredRunway());
+        document.add(redeclaredRunwayText());
         document.add(valuesTableTitle("Runway Values"));
         document.add(createRunwayTable());
         document.add(valuesTableTitle("Obstacle Values"));
@@ -65,6 +64,7 @@ public class CreatePDF {
         document.add(valuesTableTitle("Diagrams"));
         document.close();
     }
+
     public Paragraph calculationBreakdown(String name, String value) {
         Text runwayText = new Text(name);
         runwayText
@@ -87,7 +87,7 @@ public class CreatePDF {
         return titleParagraph;
     }
 
-    public Paragraph redeclaredRunway() {
+    public Paragraph redeclaredRunwayText() {
         Text runwayText = new Text("Redeclared Runway: ");
         runwayText
                 .setFont(font)

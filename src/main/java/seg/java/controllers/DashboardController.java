@@ -91,6 +91,7 @@ public class DashboardController {
     private double toraInput, todaInput, asdaInput,ldaInput,dispThresholdInput  ;
     private Image greentickIcon,warningIcon ,switchIcon ;
     private Notification notification;
+
 /*==================================================================================================================================
 //  Initialize
 //================================================================================================================================*/
@@ -627,7 +628,7 @@ public class DashboardController {
     }
 
     /**
-     * OPENING AND CLOSING VIEWS
+     * OPENING VIEWS
      * **/
     public void switchAirport(ActionEvent actionEvent) {
         openFXML("/views/airportSelection.fxml","Switch Airport");

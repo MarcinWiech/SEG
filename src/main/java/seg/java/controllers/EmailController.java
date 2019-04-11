@@ -84,8 +84,8 @@ public class EmailController {
         } catch (MessagingException e) {
             new Alert(Alert.AlertType.ERROR, "Email wasn't sent successfully. Please try again.").showAndWait();
         }
-
     }
+
     public void setRunway(Runway runway) {
         this.runway = runway;
     }
