@@ -38,40 +38,75 @@ public class CanvasDrawer {
     private double[] middlePoint;
     private double[] topPint;
 
-/*==================================================================================================================================
-//  Constructors
-//================================================================================================================================*/
-
+    /**
+     * Contructor of the class
+     *
+     * @param redeclarationComputer
+     */
     public CanvasDrawer(RedeclarationComputer redeclarationComputer) {
         this.redeclarationComputer = redeclarationComputer;
         horizontalLines = new HashMap<>();
     }
 
-/*==================================================================================================================================
-//  Drawing methods
-//================================================================================================================================*/
+    /**
+     * COLOR DEFINITIONS
+     */
 
-    public void drawTopDownCanvas(Canvas canvas) {
+    Color brigthGreen = Color.web("rgba(36,255,36,1.0)");
+    Color deepGreen = Color.web("rgba(13,96,13,1.0)");
+    Color brigthPurple = Color.web("rgba(180,109,255,1.0)");
+    Color deepRed = Color.web("rgba(146,0,0,1.0)");
+    Color deepPurple = Color.web("rgba(73,0,146,1.0)");
+    Color brown = Color.web("rgba(146,73,0,1.0)");
+    Color brightYellow = Color.web("rgba(224,224,96,1.0)");
+    Color gray = Color.web("rgba(155,155,155,1.0)");
+    Color clear1 = Color.web("rgba(159, 181, 0,1.0)");
+    Color stop1 = Color.web("rgba(188, 91, 92,1.0)");
+    Color clear2 = Color.web("rgba(219, 109, 0,1.0)");
+    Color stop2 = Color.web("rgba(146,0,0,1.0)");
+    Color mediumBlue = Color.web("rgba(73,0,146,1.0)");
+    Color darkGray =Color.web("rgba(122,122,122,1.0)");
+
+    /**
+     * 224, 224, 96
+     * Top Down drawing method
+     *
+     * @param canvas
+     * @param pallete
+     */
+    public void drawTopDownCanvas(Canvas canvas, int pallete) {
         adjustDrawingSettings(canvas);
+        Color grass, gradedArea, clearArea, runwayColor;
+        if (pallete == 1) {
+            grass = Color.GREEN;
+            gradedArea = Color.MEDIUMPURPLE;
+            clearArea = Color.DARKBLUE;
+            runwayColor = Color.GRAY;
+        } else {
+            grass = deepGreen;
+            gradedArea = brightYellow;
+            clearArea = deepPurple;
+            runwayColor = gray;
+        }
 
         //  Grass area gets set
-        drawRectangle(0.02 * canvasWidth, 0.02 * canvasHeight, 0.96 * canvasWidth, 0.96 * canvasHeight, Color.GREEN);
+        drawRectangle(0.02 * canvasWidth, 0.02 * canvasHeight, 0.96 * canvasWidth, 0.96 * canvasHeight, grass);
 
         //  Purple area gets set
-        drawRectangle(0.07 * canvasWidth, 0.07 * canvasHeight, 0.86 * canvasWidth, 0.86 * canvasHeight, Color.MEDIUMPURPLE);
+        drawRectangle(0.07 * canvasWidth, 0.07 * canvasHeight, 0.86 * canvasWidth, 0.86 * canvasHeight, gradedArea);
 
         //  "Vertical dark blue are gets set
-        drawRectangle(0.22 * canvasWidth, 0.12 * canvasHeight, 0.56 * canvasWidth, 0.76 * canvasHeight, Color.DARKBLUE);
+        drawRectangle(0.22 * canvasWidth, 0.12 * canvasHeight, 0.56 * canvasWidth, 0.76 * canvasHeight, clearArea);
 
         //  "Horizontal" dark blue area gets set
-        drawRectangle(0.07 * canvasWidth, 0.23 * canvasHeight, 0.86 * canvasWidth, 0.56 * canvasHeight, Color.DARKBLUE);
+        drawRectangle(0.07 * canvasWidth, 0.23 * canvasHeight, 0.86 * canvasWidth, 0.56 * canvasHeight, clearArea);
 
         //  Asphalt area gets set
-        drawRectangle(0.1 * canvasWidth, 0.4 * canvasHeight, 0.8 * canvasWidth, 0.2 * canvasHeight, Color.GRAY);
+        drawRectangle(0.1 * canvasWidth, 0.4 * canvasHeight, 0.8 * canvasWidth, 0.2 * canvasHeight, runwayColor);
 
 
         //  The 4 blue triangles get drawn here
-        gc.setFill(Color.DARKBLUE);
+        gc.setFill(clearArea);
         gc.fillPolygon(new double[]{
                 0.17 * canvasWidth + xOffset,
                 0.22 * canvasWidth + 1 + xOffset,
@@ -152,51 +187,72 @@ public class CanvasDrawer {
         // Cleared and graded area label
         gc.setFill(Color.WHITE);
         text = "Cleared and Graded area";
-        font = Font.font("Arial", canvasWidth * 0.017);
+        font = Font.font("Arial", canvasWidth * 0.02);
         gc.setFont(font);
         gc.fillText(text, 0.4 * canvasWidth + xOffset, 0.3 * canvasHeight + yOffset);
 
         // Details get drawn here
         if (runway != null) {
-            drawTopDownRunwayDirection(canvas);
+            drawTopDownRunwayDirection(canvas,pallete);
             // Really important that the image gets drawn before details do
-            drawTopDownObstacle(canvas);
-            drawTopDownDetails(canvas);
+            drawTopDownObstacle(canvas,pallete);
+            drawTopDownDetails(canvas,pallete);
             // Second time drawn so that the image stays on top
-            drawTopDownObstacle(canvas);
+            drawTopDownObstacle(canvas,pallete);
         }
 
         // gc.scale(2,2); // can be used for zoom later on
     }
 
-    public void drawSideOnCanvas(Canvas canvas) {
 
+    /**
+     * Method for drawing th SIDE ON view
+     * @param canvas
+     * @param pallete = the color scheme
+     */
+    public void drawSideOnCanvas(Canvas canvas, int pallete) {
+        Color sky, grass, runwayColor;
+        if(pallete ==1 ){
+            sky = Color.SKYBLUE;
+            grass = Color.GREEN;
+            runwayColor = Color.GRAY;
+        }else{
+            sky = mediumBlue;
+            grass = brigthGreen;
+            runwayColor = darkGray;
+        }
         adjustDrawingSettings(canvas);
 
         //  Sky layer gets set
-        drawRectangle(0.02 * canvasWidth, 0.02 * canvasHeight, 0.96 * canvasWidth, 0.96 * canvasHeight, Color.SKYBLUE);
+        drawRectangle(0.02 * canvasWidth, 0.02 * canvasHeight, 0.96 * canvasWidth, 0.96 * canvasHeight, sky);
 
         //  Grass layer gets set
-        drawRectangle(0.02 * canvasWidth, 0.55 * canvasHeight, 0.96 * canvasWidth, 0.43 * canvasHeight, Color.GREEN);
+        drawRectangle(0.02 * canvasWidth, 0.55 * canvasHeight, 0.96 * canvasWidth, 0.43 * canvasHeight, grass);
 
         //  Asphalt layer gets set
-        drawRectangle(0.1 * canvasWidth, 0.55 * canvasHeight, 0.80 * canvasWidth, 0.03 * canvasHeight, Color.GRAY);
+        drawRectangle(0.1 * canvasWidth, 0.55 * canvasHeight, 0.80 * canvasWidth, 0.03 * canvasHeight, runwayColor);
         // Rectangle asphaltRect = new Rectangle(0.02 * canvasWidth, 0.55 * canvasHeight, 0.96 * canvasWidth, 0.03 * canvasHeight);
 
         if (runway != null) {
-            drawSideOnRunwayDirection(canvas);
+            drawSideOnRunwayDirection(canvas, pallete);
             // Really important that the image gets drawn before details do
-            drawSideOnObstacle(canvas);
-            drawSideOnDetails(canvas);
+            drawSideOnObstacle(canvas,pallete);
+            drawSideOnDetails(canvas,pallete);
             // Second time drawn so that the image stays on top
-            drawSideOnObstacle(canvas);
+            drawSideOnObstacle(canvas,pallete);
         }
     }
 
-    private void drawTopDownObstacle(Canvas canvas) {
+    private void drawTopDownObstacle(Canvas canvas, int pallete) {
         //  Draws the plane - the image needs to be in the assets folder
         gc = canvas.getGraphicsContext2D();
-        ImageView imageView = new ImageView("/images/top-down-plane.png");
+        ImageView imageView;
+        if(pallete == 1){
+            imageView = new ImageView("/images/top-down-plane.png");
+        }else{
+            imageView = new ImageView("/images/top-down-plane.png");
+        }
+
         imageView.setRotate(-90);
         imageView.setPreserveRatio(true);
         imageView.setFitHeight(canvasHeight * 0.2);
@@ -226,10 +282,21 @@ public class CanvasDrawer {
         }
     }
 
-    private void drawSideOnObstacle(Canvas canvas) {
+    /**
+     * Method that draws on the obstacle in the SIDE ON view
+     * @param canvas
+     * @param pallete
+     */
+    private void drawSideOnObstacle(Canvas canvas, int pallete) {
         //  Draws the plane - the image needs to be in the assets folder
         gc = canvas.getGraphicsContext2D();
-        ImageView imageView = new ImageView("/images/side-view-plane.png");
+        ImageView imageView;
+        if(pallete == 1){
+            imageView = new ImageView("/images/side-view-plane.png");
+        }else{
+            imageView = new ImageView("/images/side-view-plane.png");
+        }
+
         imageView.setPreserveRatio(true);
         imageView.setFitHeight(canvasHeight * 0.006 * redeclarationComputer.getObstacleHeight());
         if (redeclarationComputer.getCalculationCase() == 1 || redeclarationComputer.getCalculationCase() == 3) {
@@ -256,6 +323,16 @@ public class CanvasDrawer {
         }
     }
 
+    /**
+     * Core method to draw the arrows
+     * @param x
+     * @param y
+     * @param length
+     * @param leftArrowTipOn
+     * @param rightArrowTipOn
+     * @param text
+     * @param color
+     */
     private void drawHorizontalArrow(double x, double y, double length, boolean leftArrowTipOn, boolean rightArrowTipOn, String text, Color color) {
         double textOffset = 0;
 
@@ -343,12 +420,51 @@ public class CanvasDrawer {
         gc.fillRect((x - 0.0009) * canvasWidth + xOffset, y * canvasHeight + yOffset, 0.002 * canvasWidth, length * canvasHeight);
     }
 
-    private void drawTopDownRunwayDirection(Canvas canvas) {
+    /**
+     * Method to draw the arrow indicating the direction of the runway
+     * @param canvas
+     */
+    private void drawTopDownRunwayDirection(Canvas canvas, int pallete) {
         Rectangle backgroundRect = new Rectangle(0.025 * canvasWidth, 0.03 * canvasHeight, 0.342 * canvasWidth, 0.13 * canvasHeight);
-        gc.setFill(Color.rgb(0, 0, 0, 0.5));
+        if(pallete == 1){
+            gc.setFill(Color.rgb(0, 0, 0, 0.5));
+        }else{
+            gc.setFill(Color.rgb(0, 0, 0, 0.85));
+        }
         fillRect(backgroundRect);
 
         drawHorizontalArrow(0.03, 0.08, 0.33, true, false, runway.getName() + " - Landing and Take-off in this direction", Color.WHITE);
+        if (redeclarationComputer.getCalculationCase() == 2 || redeclarationComputer.getCalculationCase() == 4) {
+            drawHorizontalArrow(0.03, 0.13, 0.33, true, false, "Take Off Towards, Landing Towards", Color.WHITE);
+        } else {
+            drawHorizontalArrow(0.03, 0.13, 0.3, true, false, "Take Off Away, Landing Over", Color.WHITE);
+        }
+
+        backgroundRect = new Rectangle(0.77 * canvasWidth, 0.03 * canvasHeight, 0.205 * canvasWidth, 0.21 * canvasHeight);
+
+        if(pallete == 1){
+            gc.setFill(Color.rgb(0, 0, 0, 0.5));
+        }else{
+            gc.setFill(Color.rgb(0, 0, 0, 0.85));
+        }
+
+        fillRect(backgroundRect);
+
+        gc.setFill((Color.WHITE));
+        Font font = Font.font("Arial", canvasWidth * 0.015);
+        gc.setFont(font);
+        gc.fillText("RL = Landing RESA/Slope", 0.785 * canvasWidth + xOffset, 0.07 * canvasHeight + yOffset);
+        gc.fillText("RL = Take Off RESA/Slope", 0.785 * canvasWidth + xOffset, 0.12 * canvasHeight + yOffset);
+        gc.fillText("DT = Displaced Treshold", 0.785 * canvasWidth + xOffset, 0.17 * canvasHeight + yOffset);
+        gc.fillText("60 = Strip End", 0.785 * canvasWidth + xOffset, 0.22 * canvasHeight + yOffset);
+    }
+
+    private void drawSideOnRunwayDirection(Canvas canvas, int pallete) {
+        Rectangle backgroundRect = new Rectangle(0.025 * canvasWidth, 0.03 * canvasHeight, 0.342 * canvasWidth, 0.13 * canvasHeight);
+        gc.setFill(Color.rgb(0, 0, 0, 0.5));
+        fillRect(backgroundRect);
+            drawHorizontalArrow(0.03, 0.08, 0.33, true, false, runway.getName() + " - Landing and Take-off in this direction", Color.WHITE);
+
         if (redeclarationComputer.getCalculationCase() == 2 || redeclarationComputer.getCalculationCase() == 4) {
             drawHorizontalArrow(0.03, 0.13, 0.33, true, false, "Take Off Towards, Landing Towards", Color.WHITE);
         } else {
@@ -368,32 +484,7 @@ public class CanvasDrawer {
         gc.fillText("60 = Strip End", 0.785 * canvasWidth + xOffset, 0.22 * canvasHeight + yOffset);
     }
 
-    private void drawSideOnRunwayDirection(Canvas canvas) {
-        Rectangle backgroundRect = new Rectangle(0.025 * canvasWidth, 0.03 * canvasHeight, 0.342 * canvasWidth, 0.13 * canvasHeight);
-        gc.setFill(Color.rgb(0, 0, 0, 0.5));
-        fillRect(backgroundRect);
-
-        drawHorizontalArrow(0.03, 0.08, 0.33, true, false, runway.getName() + " - Landing and Take-off in this direction", Color.WHITE);
-        if (redeclarationComputer.getCalculationCase() == 2 || redeclarationComputer.getCalculationCase() == 4) {
-            drawHorizontalArrow(0.03, 0.13, 0.33, true, false, "Take Off Towards, Landing Towards", Color.WHITE);
-        } else {
-            drawHorizontalArrow(0.03, 0.13, 0.3, true, false, "Take Off Away, Landing Over", Color.WHITE);
-        }
-
-        backgroundRect = new Rectangle(0.77 * canvasWidth, 0.03 * canvasHeight, 0.205 * canvasWidth, 0.21 * canvasHeight);
-        gc.setFill(Color.rgb(0, 0, 0, 0.5));
-        fillRect(backgroundRect);
-
-        gc.setFill((Color.WHITE));
-        Font font = Font.font("Arial", canvasWidth * 0.015);
-        gc.setFont(font);
-        gc.fillText("RL = Landing RESA/Slope", 0.785 * canvasWidth + xOffset, 0.07 * canvasHeight + yOffset);
-        gc.fillText("RL = Take Off RESA/Slope", 0.785 * canvasWidth + xOffset, 0.12 * canvasHeight + yOffset);
-        gc.fillText("DT = Displaced Treshold", 0.785 * canvasWidth + xOffset, 0.17 * canvasHeight + yOffset);
-        gc.fillText("60 = Strip End", 0.785 * canvasWidth + xOffset, 0.22 * canvasHeight + yOffset);
-    }
-
-    private void drawTopDownDetails(Canvas canvas) {
+    private void drawTopDownDetails(Canvas canvas, int pallete) {
         // Rectangle asphaltRect = new Rectangle(0.1 * canvasWidth, 0.55 * canvasHeight, 0.80 * canvasWidth, 0.03 * canvasHeight);
         Double initialTora = runway.getTora();
         Double dispTresh = runway.getThreshold();
@@ -470,17 +561,41 @@ public class CanvasDrawer {
             todaLength = 0.8 * (toda / initialTora);
         }
 
+        /**
+         * Using this if we can easily add new palletes of colors
+         * And change the colors around all the rest of the code
+         */
+        Color clearwayColor, stopwayColor, verticalColor, pricipalArrows, secondaryArrows,specialArrow;
+        if(pallete == 1){
+            clearwayColor = clear1;
+            stopwayColor = stop1;
+            verticalColor = Color.DARKGRAY;
+            pricipalArrows = Color.WHITE;
+            secondaryArrows = Color.YELLOW;
+            specialArrow = Color.BLACK;
+        }else{
+            clearwayColor = clear2;
+            stopwayColor = stop2;
+            verticalColor = Color.DARKGRAY;
+            pricipalArrows = Color.WHITE;
+            secondaryArrows =  brigthGreen;
+            specialArrow = Color.BLACK;
+        }
         // Clearway gets drawn
         Rectangle clearwayRect = new Rectangle((toraX - 0.8 * (clearway / initialTora)) * canvasWidth, 0.35 * canvasHeight, 0.8 * (clearway / initialTora) * canvasWidth, 0.3 * canvasHeight);
-        gc.setFill(Color.rgb(159, 181, 0));
+        gc.setFill(clearwayColor);
         fillRect(clearwayRect);
 
         // Stopway gets drawn
         Rectangle stopwayRect = new Rectangle((toraX - 0.8 * (stopway / initialTora)) * canvasWidth, 0.4 * canvasHeight, 0.8 * (stopway / initialTora) * canvasWidth, 0.2 * canvasHeight);
-        gc.setFill(Color.rgb(188, 91, 92));
+        gc.setFill(stopwayColor);
         fillRect(stopwayRect);
 
-        // Reciprocal clearway and stopway get drawn
+        /**
+         * Reciprocal clearway and stopway get drawn
+         * We use the colors assignated to them by the pallete and draw them with a lower opacity
+         * Since we want to represent them clearly as the Secondary (reciprocal) STOPWAY and CLEARWAY
+         */
         if (runway.getReciprocalRunway() != null) {
             RedeclarationComputer recipComp = redeclarationComputer.getReciprocalComputer();
             clearway = recipComp.getToda() - recipComp.getTora();
@@ -488,24 +603,29 @@ public class CanvasDrawer {
             Double recipTora = recipComp.getTora();
             Double recipInitTora = runway.getReciprocalRunway().getTora();
 
+            Color fadedClearway = new Color(clearwayColor.getRed(),clearwayColor.getGreen(),clearwayColor.getBlue(),0.6);
+            Color fadedStopway = new Color(stopwayColor.getRed(),stopwayColor.getGreen(),stopwayColor.getBlue(),0.6);
             if (redeclarationComputer.getCalculationCase() == 1 || redeclarationComputer.getCalculationCase() == 3) {
+
+
                 // Reciprocal clearway gets drawn
-                drawRectangle((0.1 + 0.8 * (recipTora / recipInitTora)) * canvasWidth, 0.35 * canvasHeight, 0.8 * (clearway / recipInitTora) * canvasWidth, 0.3 * canvasHeight, Color.rgb(159, 181, 0, 0.6));
+                drawRectangle((0.1 + 0.8 * (recipTora / recipInitTora)) * canvasWidth, 0.35 * canvasHeight, 0.8 * (clearway / recipInitTora) * canvasWidth, 0.3 * canvasHeight, fadedClearway);
 
                 // Reciprocal stopway gets drawn
-                drawRectangle((0.1 + 0.8 * (recipTora / recipInitTora)) * canvasWidth, 0.4 * canvasHeight, 0.8 * (stopway / recipInitTora) * canvasWidth, 0.2 * canvasHeight, Color.rgb(188, 91, 92, 0.6));
+                drawRectangle((0.1 + 0.8 * (recipTora / recipInitTora)) * canvasWidth, 0.4 * canvasHeight, 0.8 * (stopway / recipInitTora) * canvasWidth, 0.2 * canvasHeight, fadedStopway);
             } else {
                 // Reciprocal clearway gets drawn
-                drawRectangle(0.9 * canvasWidth, 0.35 * canvasHeight, 0.8 * (clearway / recipInitTora) * canvasWidth, 0.3 * canvasHeight, Color.rgb(159, 181, 0, 0.6));
+                drawRectangle(0.9 * canvasWidth, 0.35 * canvasHeight, 0.8 * (clearway / recipInitTora) * canvasWidth, 0.3 * canvasHeight, fadedClearway);
 
                 // Reciprocal stopway gets drawn
-                drawRectangle(0.9 * canvasWidth, 0.4 * canvasHeight, 0.8 * (stopway / recipInitTora) * canvasWidth, 0.2 * canvasHeight, Color.rgb(188, 91, 92, 0.6));
+                drawRectangle(0.9 * canvasWidth, 0.4 * canvasHeight, 0.8 * (stopway / recipInitTora) * canvasWidth, 0.2 * canvasHeight, fadedStopway);
             }
         }
 
         // Vertical lines get drawn here
         double vertPercent = 0.001;
-        gc.setFill(Color.DARKGRAY);
+
+        gc.setFill(verticalColor);
 
         // LDA vertical lines
         Rectangle lineRect = new Rectangle(ldaX * canvasWidth, 0.6 * canvasHeight, vertPercent * canvasWidth, (0.65 - 0.6) * canvasHeight);
@@ -564,20 +684,20 @@ public class CanvasDrawer {
         fillRect(lineRect);
 
         // Arrows get drawn here
-        drawHorizontalArrow(ldaX, 0.65, ldaLength, true, true, "LDA = " + lda, Color.WHITE);
+        drawHorizontalArrow(ldaX, 0.65, ldaLength, true, true, "LDA = " + lda, pricipalArrows);
         if ((redeclarationComputer.getCalculationCase() == 2 || redeclarationComputer.getCalculationCase() == 4) && dispTresh != 0)
-            drawHorizontalArrow(dispTreshX, 0.65, dispTreshLength, true, true, "DT", Color.YELLOW);
-        drawHorizontalArrow(stripEndLX, 0.65, stripEndLLength, false, false, "60", Color.YELLOW);
-        drawHorizontalArrow(resaMinLX, 0.65, resaMinLLength, true, true, "RL", Color.YELLOW);
-        drawHorizontalArrow(toraX, 0.75, toraLength, true, true, "TORA = " + tora, Color.WHITE);
-        drawHorizontalArrow(stripEndTX, 0.75, stripEndTLength, false, false, "60", Color.YELLOW);
-        drawHorizontalArrow(resaMinTX, 0.75, resaMinTLength, true, true, "RT", Color.YELLOW);
-        drawHorizontalArrow(asdaX, 0.85, asdaLength, true, true, "ASDA = " + asda, Color.WHITE);
-        drawHorizontalArrow(todaX, 0.95, todaLength, true, true, "TODA = " + toda, Color.WHITE);
+            drawHorizontalArrow(dispTreshX, 0.65, dispTreshLength, true, true, "DT", secondaryArrows);
+        drawHorizontalArrow(stripEndLX, 0.65, stripEndLLength, false, false, "60", secondaryArrows);
+        drawHorizontalArrow(resaMinLX, 0.65, resaMinLLength, true, true, "RL", secondaryArrows);
+        drawHorizontalArrow(toraX, 0.75, toraLength, true, true, "TORA = " + tora, pricipalArrows);
+        drawHorizontalArrow(stripEndTX, 0.75, stripEndTLength, false, false, "60", secondaryArrows);
+        drawHorizontalArrow(resaMinTX, 0.75, resaMinTLength, true, true, "RT", secondaryArrows);
+        drawHorizontalArrow(asdaX, 0.85, asdaLength, true, true, "ASDA = " + asda, pricipalArrows);
+        drawHorizontalArrow(todaX, 0.95, todaLength, true, true, "TODA = " + toda, specialArrow);
 
     }
 
-    private void drawSideOnDetails(Canvas canvas) {
+    private void drawSideOnDetails(Canvas canvas, int pallete) {
         // Rectangle asphaltRect = new Rectangle(0.1 * canvasWidth, 0.55 * canvasHeight, 0.80 * canvasWidth, 0.03 * canvasHeight);
         Double initialTora = runway.getTora();
         Double dispTresh = runway.getThreshold();
@@ -654,14 +774,35 @@ public class CanvasDrawer {
             todaLength = 0.8 * (toda / initialTora);
         }
 
+        /**
+         * Using this if we can easily add new palletes of colors
+         * And change the colors around all the rest of the code
+         */
+        Color clearwayColor, stopwayColor, verticalColor, pricipalArrows, secondaryArrows, pinkArrows;
+        if(pallete == 1){
+            clearwayColor = clear1;
+            stopwayColor = stop1;
+            verticalColor = Color.DARKGRAY;
+            pricipalArrows = Color.WHITE;
+            secondaryArrows = Color.BLACK;
+            pinkArrows = Color.PINK;
+        }else{
+            clearwayColor = clear2;
+            stopwayColor = stop2;
+            verticalColor = deepRed;
+            pricipalArrows = Color.BLACK;
+            secondaryArrows =  deepRed;
+            pinkArrows = deepRed;
+        }
+
         // Clearway gets drawn
         Rectangle clearwayRect = new Rectangle((toraX - 0.8 * (clearway / initialTora)) * canvasWidth, 0.55 * canvasHeight, 0.8 * (clearway / initialTora) * canvasWidth, 0.05 * canvasHeight);
-        gc.setFill(Color.rgb(159, 181, 0));
+        gc.setFill(clearwayColor);
         fillRect(clearwayRect);
 
         // Stopway gets drawn
         Rectangle stopwayRect = new Rectangle((toraX - 0.8 * (stopway / initialTora)) * canvasWidth, 0.55 * canvasHeight, 0.8 * (stopway / initialTora) * canvasWidth, 0.03 * canvasHeight);
-        gc.setFill(Color.rgb(188, 91, 92));
+        gc.setFill(stopwayColor);
         fillRect(stopwayRect);
 
         // Reciprocal clearway and stopway get drawn
@@ -671,33 +812,35 @@ public class CanvasDrawer {
             stopway = recipComp.getAsda() - recipComp.getTora();
             Double recipTora = recipComp.getTora();
             Double recipInitTora = runway.getReciprocalRunway().getTora();
+            Color fadedClearway = new Color(clearwayColor.getRed(),clearwayColor.getGreen(),clearwayColor.getBlue(),0.6);
+            Color fadedStopway = new Color(stopwayColor.getRed(),stopwayColor.getGreen(),stopwayColor.getBlue(),0.6);
 
             if (redeclarationComputer.getCalculationCase() == 1 || redeclarationComputer.getCalculationCase() == 3) {
                 // Reciprocal clearway gets drawn
                 clearwayRect = new Rectangle((0.1 + 0.8 * (recipTora / recipInitTora)) * canvasWidth, 0.55 * canvasHeight, 0.8 * (clearway / recipInitTora) * canvasWidth, 0.05 * canvasHeight);
-                gc.setFill(Color.rgb(159, 181, 0, 0.6));
+                gc.setFill(fadedClearway);
                 fillRect(clearwayRect);
 
                 // Reciprocal stopway gets drawn
                 stopwayRect = new Rectangle((0.1 + 0.8 * (recipTora / recipInitTora)) * canvasWidth, 0.55 * canvasHeight, 0.8 * (stopway / recipInitTora) * canvasWidth, 0.03 * canvasHeight);
-                gc.setFill(Color.rgb(188, 91, 92, 0.6));
+                gc.setFill(fadedStopway);
                 fillRect(stopwayRect);
             } else {
                 // Reciprocal clearway gets drawn
                 clearwayRect = new Rectangle(0.9 * canvasWidth, 0.55 * canvasHeight, 0.8 * (clearway / recipInitTora) * canvasWidth, 0.05 * canvasHeight);
-                gc.setFill(Color.rgb(159, 181, 0, 0.6));
+                gc.setFill(fadedClearway);
                 fillRect(clearwayRect);
 
                 // Reciprocal stopway gets drawn
                 stopwayRect = new Rectangle(0.9 * canvasWidth, 0.55 * canvasHeight, 0.8 * (stopway / recipInitTora) * canvasWidth, 0.03 * canvasHeight);
-                gc.setFill(Color.rgb(188, 91, 92, 0.6));
+                gc.setFill(fadedStopway);
                 fillRect(stopwayRect);
             }
         }
 
         // Vertical lines get drawn here
         double vertPercent = 0.001;
-        gc.setFill(Color.DARKGRAY);
+        gc.setFill(verticalColor);
 
         // LDA vertical lines
         Rectangle lineRect = new Rectangle(ldaX * canvasWidth, 0.58 * canvasHeight, vertPercent * canvasWidth, (0.65 - 0.58) * canvasHeight);
@@ -756,22 +899,22 @@ public class CanvasDrawer {
         fillRect(lineRect);
 
         // Arrows get drawn here
-        drawHorizontalArrow(ldaX, 0.65, ldaLength, true, true, "LDA = " + lda, Color.WHITE);
+        drawHorizontalArrow(ldaX, 0.65, ldaLength, true, true, "LDA = " + lda, pricipalArrows);
         if ((redeclarationComputer.getCalculationCase() == 2 || redeclarationComputer.getCalculationCase() == 4) && dispTresh != 0)
-            drawHorizontalArrow(dispTreshX, 0.65, dispTreshLength, true, true, "DT", Color.BLACK);
-        drawHorizontalArrow(stripEndLX, 0.65, stripEndLLength, false, false, "60", Color.BLACK);
-        drawHorizontalArrow(resaMinLX, 0.65, resaMinLLength, true, true, "RL", Color.BLACK);
-        drawHorizontalArrow(toraX, 0.75, toraLength, true, true, "TORA = " + tora, Color.PINK);
-        drawHorizontalArrow(stripEndTX, 0.75, stripEndTLength, false, false, "60", Color.BLACK);
-        drawHorizontalArrow(resaMinTX, 0.75, resaMinTLength, true, true, "RT", Color.BLACK);
-        drawHorizontalArrow(asdaX, 0.85, asdaLength, true, true, "ASDA = " + asda, Color.WHITE);
-        drawHorizontalArrow(todaX, 0.95, todaLength, true, true, "TODA = " + toda, Color.WHITE);
+            drawHorizontalArrow(dispTreshX, 0.65, dispTreshLength, true, true, "DT", secondaryArrows);
+        drawHorizontalArrow(stripEndLX, 0.65, stripEndLLength, false, false, "60", secondaryArrows);
+        drawHorizontalArrow(resaMinLX, 0.65, resaMinLLength, true, true, "RL", secondaryArrows);
+        drawHorizontalArrow(toraX, 0.75, toraLength, true, true, "TORA = " + tora, pricipalArrows);
+        drawHorizontalArrow(stripEndTX, 0.75, stripEndTLength, false, false, "60", secondaryArrows);
+        drawHorizontalArrow(resaMinTX, 0.75, resaMinTLength, true, true, "RT", secondaryArrows);
+        drawHorizontalArrow(asdaX, 0.85, asdaLength, true, true, "ASDA = " + asda, pricipalArrows);
+        drawHorizontalArrow(todaX, 0.95, todaLength, true, true, "TODA = " + toda, pricipalArrows);
 
 //        horizontalLines.put("LDA", new double[] {ldaX, 0.58, ldaLength});
 
         // Slopes get drawn here
-        gc.setStroke((Color.BLACK));
-        gc.setFill(Color.BLACK);
+        gc.setStroke((secondaryArrows));
+        gc.setFill(secondaryArrows);
         if (redeclarationComputer.getCalculationCase() == 1 || redeclarationComputer.getCalculationCase() == 3) {
             gc.setLineWidth(0.005 * canvasHeight);
             gc.strokeLine(resaMinLX * canvasWidth + xOffset, 0.55 * canvasHeight + yOffset, (resaMinLX + resaMinLLength) * canvasWidth + xOffset, 1.005 * imageY);
@@ -807,9 +950,11 @@ public class CanvasDrawer {
 
     }
 
-/*==================================================================================================================================
-//  Helper methods
-//================================================================================================================================*/
+
+    /**
+     * HELPER METHODS
+     */
+
 
     private void adjustDrawingSettings(Canvas canvas) {
         gc = canvas.getGraphicsContext2D();
@@ -841,9 +986,10 @@ public class CanvasDrawer {
         fillRect(new Rectangle(x,y,width,height));
     }
 
-/*==================================================================================================================================
-//  Setters
-//================================================================================================================================*/
+
+    /**
+     * GETTERS AND SETTERS
+     */
 
     public void setRunway(Runway runway) {
         this.runway = runway;
@@ -853,11 +999,11 @@ public class CanvasDrawer {
         this.redeclarationComputer = redeclarationComputer;
     }
 
-/*==================================================================================================================================
-//  Getters
-//================================================================================================================================*/
 
-    //needs to be accessed by the plane animation
+    /**
+     * Needs to be accessed by the plane animation
+     * @return redeclaration Computer
+     */
     public RedeclarationComputer getRedeclarationComputer() {
         return redeclarationComputer;
     }
