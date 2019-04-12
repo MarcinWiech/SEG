@@ -66,7 +66,7 @@ public class LoginViewController implements Initializable {
 
                     Stage stage = (Stage) passwordTextField.getScene().getWindow();
                     stage.close();
-                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/dashboard.fxml"));
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/dashboard.fxml"));
                     Parent root1 = fxmlLoader.load();
                     stage = new Stage();
                     stage.setTitle("Dashboard");
@@ -90,7 +90,7 @@ public class LoginViewController implements Initializable {
                     Stage stage = (Stage) passwordTextField.getScene().getWindow();
                     stage.close();
 
-                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/airportSelection.fxml"));
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/airportSelection.fxml"));
                     Parent root1 = fxmlLoader.load();
                     stage = new Stage();
                     stage.setTitle("Select Airport");

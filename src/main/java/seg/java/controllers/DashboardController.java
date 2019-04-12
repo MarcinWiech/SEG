@@ -4,26 +4,30 @@ import javafx.animation.PathTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.*;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 import javafx.scene.transform.Rotate;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.controlsfx.control.Notifications;
-import seg.java.CanvasDrawer;
+import seg.java.*;
 import seg.java.controllers.config.AirportConfigurationController;
 import seg.java.models.Airport;
-import seg.java.IllegalValueException;
-import seg.java.RedeclarationComputer;
 import seg.java.models.Runway;
 
+import java.io.File;
+import java.io.IOException;
 
 public class DashboardController {
     Airport currentAirport;
@@ -81,24 +85,19 @@ public class DashboardController {
     @FXML
     private TextArea ldaBDTextArea;
     private CanvasDrawer canvasDrawer;
-    private RedeclarationComputer redeclarationComputer;
-    private RedeclarationComputer reciprocalComputer;
+    private RedeclarationComputer redeclarationComputer, reciprocalComputer;
     private double obstacleXL = 0;
     private double obstacleXR = 0;
-    private double toraInput;
-    private double todaInput;
-    private double asdaInput;
-    private double ldaInput;
-    private double dispThresholdInput;
-    private Image greentickIcon;
-    private Image warningIcon;
-    private Image switchIcon;
+    private double toraInput, todaInput, asdaInput,ldaInput,dispThresholdInput  ;
+    private Image greentickIcon,warningIcon ,switchIcon ;
+    private Notification notification;
 
 /*==================================================================================================================================
 //  Initialize
 //================================================================================================================================*/
 
     public void initialize() {
+        notification = new Notification();
         //  Main objects get initialized & related preparations
         redeclarationComputer = new RedeclarationComputer();
         reciprocalComputer = new RedeclarationComputer();
@@ -129,15 +128,17 @@ public class DashboardController {
         sideOnCanvasCopy.widthProperty().addListener(event -> canvasDrawer.drawSideOnCanvas(sideOnCanvasCopy));
         sideOnCanvasCopy.heightProperty().addListener(event -> canvasDrawer.drawSideOnCanvas(sideOnCanvasCopy));
 
-        greentickIcon = new Image("/seg/resources/images/greentick.png");
-        warningIcon = new Image("/seg/resources/images/alert-triangle-yellow.png");
-        switchIcon = new Image("/seg/resources/images/switch.png");
+        greentickIcon = new Image("/images/greentick.png");
+        warningIcon = new Image("/images/alert-triangle-yellow.png");
+        switchIcon = new Image("/images/switch.png");
     }
 
 /*==================================================================================================================================
 //  Other methods
 //================================================================================================================================*/
-
+    /**
+     * DRAWING
+     **/
     public void redeclareButtonPressed(ActionEvent event) throws IllegalValueException {
         //  Obstacle details
         double obstacleX = 0;
@@ -205,15 +206,15 @@ public class DashboardController {
             if (redeclarationComputer.needsRecalculation(redeclarationComputer.getObstacleXL(), redeclarationComputer.getObstacleXR(), redeclarationComputer.getObstacleY())) {
                 redeclare();
                 if (redeclarationComputer.getTora() > 5600) {
-                    makeNotification("Runway too large", "The redeclared runway is too large for operating", warningIcon);
+                    notification.makeNotification("Runway too large", "The redeclared runway is too large for operating", warningIcon);
                 } else if (redeclarationComputer.getTora() < 200) {
-                    makeNotification("Runway too small", "The redeclared runway is too small for operating", warningIcon);
+                    notification.makeNotification("Runway too small", "The redeclared runway is too small for operating", warningIcon);
                 } else if (redeclarationComputer.getTora() > redeclarationComputer.getToda()) {
-                    makeNotification("TODA smaller than TORA", "The recalculated TODA is too small for operating", warningIcon);
+                    notification.makeNotification("TODA smaller than TORA", "The recalculated TODA is too small for operating", warningIcon);
                 } else if (redeclarationComputer.getToda() < redeclarationComputer.getAsda()) {
-                    makeNotification("TODA smaller than ASDA ", "The recalculated TODA is too small for operating", warningIcon);
+                    notification.makeNotification("TODA smaller than ASDA ", "The recalculated TODA is too small for operating", warningIcon);
                 } else if (redeclarationComputer.calculateClearway() > redeclarationComputer.getTora() / 2) {
-                    makeNotification("Clearway too big", "The recalculated values indicated that clearway is larger than half of TORA", warningIcon);
+                    notification.makeNotification("Clearway too big", "The recalculated values indicated that clearway is larger than half of TORA", warningIcon);
                 }
             }
 
@@ -222,32 +223,7 @@ public class DashboardController {
             e.printStackTrace();
             return;
         }
-        makeNotification("Runway Redeclared", "The runway has now been redeclared.", greentickIcon);
-    }
-
-    private void redeclare() {
-        //  We set the parameters and then calculate
-        redeclarationComputer.calculate();
-
-        //  New values are displayed
-        toraNewTextbox.setText(Double.toString(redeclarationComputer.getTora()));
-        todaNewTextbox.setText(Double.toString(redeclarationComputer.getToda()));
-        asdaNewTextbox.setText(Double.toString(redeclarationComputer.getAsda()));
-        ldaNewTextbox.setText(Double.toString(redeclarationComputer.getLda()));
-
-        //  Canvas drawing gets triggered here
-        canvasDrawer.setRunway(currentRunway);
-        canvasDrawer.drawTopDownCanvas(topDownCanvas);
-        canvasDrawer.drawSideOnCanvas(sideOnCanvas);
-        canvasDrawer.drawTopDownCanvas(topDownCanvasCopy);
-        canvasDrawer.drawSideOnCanvas(sideOnCanvasCopy);
-
-        //  Update the calculations breakdown
-        toraBDTextArea.setText(redeclarationComputer.getToraBD());
-        todaBDTextArea.setText(redeclarationComputer.getTodaBD());
-        asdaBDTextArea.setText(redeclarationComputer.getAsdaBD());
-        ldaBDTextArea.setText(redeclarationComputer.getLdaBD());
-
+        notification.makeNotification("Runway Redeclared", "The runway has now been redeclared.", greentickIcon);
     }
 
     public void switchButtonPressed() {
@@ -287,49 +263,50 @@ public class DashboardController {
         asdaBDTextArea.setText(redeclarationComputer.getAsdaBD());
         ldaBDTextArea.setText(redeclarationComputer.getLdaBD());
 
-        makeNotification("Switched runway", "The reciprocal runway is now being viewed", switchIcon);
+        notification.makeNotification("Switched runway", "The reciprocal runway is now being viewed", switchIcon);
     }
 
-    public void switchAirport(ActionEvent actionEvent) {
-        try {
-            Stage stage = (Stage) yTextbox.getScene().getWindow();
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/airportSelection.fxml"));
-            Parent root1 = fxmlLoader.load();
-            stage = new Stage();
-            stage.setTitle("Switch Airport");
-            stage.setScene(new Scene(root1));
-            stage.show();
-        } catch (Exception e) {
-            System.out.println(e);
-            new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong :(").showAndWait();
-        }
+    private ImageView transformImageView(ImageView imageView, Canvas canvas){
+
+        imageView.setPreserveRatio(true);
+        imageView.setFitHeight(canvas.getHeight()*0.03);
+        Rotate flipRotationX = new Rotate(180, Rotate.X_AXIS);
+        Rotate flipRotationY = new Rotate(180, Rotate.Y_AXIS);
+        imageView.getTransforms().addAll(flipRotationX, flipRotationY);
+        return imageView;
     }
 
-    public void configureAirports(ActionEvent actionEvent) {
+    /**
+     * REDECLARING CALCULATIONS
+     */
+    private void redeclare() {
+        //  We set the parameters and then calculate
+        redeclarationComputer.calculate();
 
-        try {
-            Stage stage = (Stage) yTextbox.getScene().getWindow();
-            stage.close();
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/config/airportConfig.fxml"));
+        //  New values are displayed
+        toraNewTextbox.setText(Double.toString(redeclarationComputer.getTora()));
+        todaNewTextbox.setText(Double.toString(redeclarationComputer.getToda()));
+        asdaNewTextbox.setText(Double.toString(redeclarationComputer.getAsda()));
+        ldaNewTextbox.setText(Double.toString(redeclarationComputer.getLda()));
 
+        //  Canvas drawing gets triggered here
+        canvasDrawer.setRunway(currentRunway);
+        canvasDrawer.drawTopDownCanvas(topDownCanvas);
+        canvasDrawer.drawSideOnCanvas(sideOnCanvas);
+        canvasDrawer.drawTopDownCanvas(topDownCanvasCopy);
+        canvasDrawer.drawSideOnCanvas(sideOnCanvasCopy);
 
-            Parent root1 = fxmlLoader.load();
-            AirportConfigurationController acc = fxmlLoader.getController();
-            acc.setAirport(currentAirport);
+        //  Update the calculations breakdown
+        toraBDTextArea.setText(redeclarationComputer.getToraBD());
+        todaBDTextArea.setText(redeclarationComputer.getTodaBD());
+        asdaBDTextArea.setText(redeclarationComputer.getAsdaBD());
+        ldaBDTextArea.setText(redeclarationComputer.getLdaBD());
 
-            stage = new Stage();
-            stage.setTitle("Configure Airport");
-            stage.setScene(new Scene(root1));
-            stage.show();
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println(e);
-            new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong :(").showAndWait();
-        }
     }
 
+    /**
+     * FUNCTIONALITY
+     * **/
     public void setAirport(Airport airport) {
         currentAirport = airport;
         updateRunwayDropList();
@@ -362,19 +339,9 @@ public class DashboardController {
         runwayDroplist.setValue(runway.getName());
     }
 
-    private void makeNotification(String title, String text, Image icon) {
-
-        Notifications notificationBuilder = Notifications.create()
-                .title(title)
-                .text(text)
-                .graphic(new ImageView(icon))
-                .hideAfter(Duration.seconds(5))
-                .position(Pos.BOTTOM_RIGHT);
-
-        notificationBuilder.darkStyle();
-        notificationBuilder.show();
-    }
-
+    /**
+     * SIMULATION
+     */
     public void simulateLandingButtonPressed(){
 
         try {
@@ -422,7 +389,7 @@ public class DashboardController {
         }
 
         //set up the image
-        ImageView imageView = new ImageView("/seg/resources/images/side-view-plane.png");
+        ImageView imageView = new ImageView("/images/side-view-plane.png");
         imageView.setPreserveRatio(true);
         imageView.setFitHeight(canvas.getHeight()*0.03);
         Rotate flipRotationX = new Rotate(180, Rotate.X_AXIS);
@@ -458,7 +425,7 @@ public class DashboardController {
         }
 
         //set up the image
-        ImageView imageView = new ImageView("/seg/resources/images/side-view-plane.png");
+        ImageView imageView = new ImageView("/images/side-view-plane.png");
         imageView = transformImageView(imageView,canvas);
 
 
@@ -482,22 +449,6 @@ public class DashboardController {
         pathTransition.play();
 
         pane.getChildren().add(imageView);
-    }
-
-    private ImageView transformImageView(ImageView imageView, Canvas canvas){
-
-        imageView.setPreserveRatio(true);
-        imageView.setFitHeight(canvas.getHeight()*0.03);
-        Rotate flipRotationX = new Rotate(180, Rotate.X_AXIS);
-        Rotate flipRotationY = new Rotate(180, Rotate.Y_AXIS);
-        imageView.getTransforms().addAll(flipRotationX, flipRotationY);
-        return imageView;
-    }
-
-    public void clearSimulation(){
-        while(sideOnPane.getChildren().size() > 1)
-            sideOnPane.getChildren().remove(sideOnPane.getChildren().size()-1);
-            sideOnPaneCopy.getChildren().remove(sideOnPaneCopy.getChildren().size()-1);
     }
 
     private Path landingTowardsSimulation(ImageView imageView, Path path, Pane pane, Canvas canvas){
@@ -670,5 +621,65 @@ public class DashboardController {
         return path;
     }
 
+    public void clearSimulation(){
+        while(sideOnPane.getChildren().size() > 1)
+            sideOnPane.getChildren().remove(sideOnPane.getChildren().size()-1);
+        sideOnPaneCopy.getChildren().remove(sideOnPaneCopy.getChildren().size()-1);
+    }
+
+    /**
+     * OPENING VIEWS
+     * **/
+    public void switchAirport(ActionEvent actionEvent) {
+        openFXML("/views/airportSelection.fxml","Switch Airport");
+    }
+
+    public void configureAirports(ActionEvent actionEvent) {
+        openFXML("/views/config/airportConfig.fxml","Configure Airport");
+    }
+
+    public void openEmailForm(ActionEvent actionEvent) throws IOException {
+        openFXML("/views/emailForm.fxml", "Share");
+        CreatePDF createPDF = new CreatePDF(redeclarationComputer, currentRunway, null);
+    }
+
+    public void exportPDF(ActionEvent actionEvent) throws IOException {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save Report");
+        Stage stage = (Stage) thresholdInitialTextbox.getScene().getWindow();
+        FileChooser.ExtensionFilter pdfExtensionFilter = new FileChooser.ExtensionFilter("PDF - Portable Document Format (.pdf)", "*.pdf");
+        fileChooser.getExtensionFilters().add(pdfExtensionFilter);
+        fileChooser.setSelectedExtensionFilter(pdfExtensionFilter);
+        File file = fileChooser.showSaveDialog(stage);
+
+        if (file != null) {
+            CreatePDF createPDF = new CreatePDF(redeclarationComputer, currentRunway, file);
+            notification.makeNotification("PDF save successful", "PDF has been successfully saved", greentickIcon);
+        }
+    }
+
+    public void openFXML(String path, String title) {
+        try {
+            Stage stage = (Stage) yTextbox.getScene().getWindow();
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource( path));
+            Parent root1 = fxmlLoader.load();
+
+            if (title == "Configure Airport") {
+                AirportConfigurationController acc = fxmlLoader.getController();
+                acc.setAirport(currentAirport);
+            } else if (title == "Share"){
+                EmailController ec = fxmlLoader.getController();
+                ec.setRunway(currentRunway);
+            }
+
+            stage = new Stage();
+            stage.setTitle(title);
+            stage.setScene(new Scene(root1));
+            stage.show();
+        } catch (Exception e) {
+            System.out.println(e);
+            new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong with loading the view :(").showAndWait();
+        }
+    }
 }
 

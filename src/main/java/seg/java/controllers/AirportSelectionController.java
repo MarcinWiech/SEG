@@ -41,7 +41,7 @@ public class AirportSelectionController implements Initializable {
         try {
             Stage stage = (Stage) addAirportLabel.getScene().getWindow();
             stage.close();
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/config/airportCreate.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/config/airportCreate.fxml"));
             Parent root1 = fxmlLoader.load();
             stage = new Stage();
             stage.setTitle("Airport Configuration");
@@ -67,7 +67,7 @@ public class AirportSelectionController implements Initializable {
             try {
                 Stage stage = (Stage) selectButton.getScene().getWindow();
                 stage.close();
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/dashboard.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/dashboard.fxml"));
                 Parent root1 = fxmlLoader.load();
                 stage = new Stage();
                 stage.setTitle("Dashboard");
@@ -91,7 +91,7 @@ public class AirportSelectionController implements Initializable {
         try {
             Stage stage = (Stage) addAirportLabel.getScene().getWindow();
             stage.close();
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/seg/resources/views/config/airportConfig.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/config/airportConfig.fxml"));
             Parent root1 = fxmlLoader.load();
             stage = new Stage();
             stage.setTitle("Configure Airports");

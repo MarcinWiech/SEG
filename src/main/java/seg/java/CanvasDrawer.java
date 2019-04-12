@@ -14,8 +14,6 @@ import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 import seg.java.models.Runway;
 
-import java.awt.*;
-import java.awt.geom.Point2D;
 import java.util.HashMap;
 
 
@@ -198,7 +196,7 @@ public class CanvasDrawer {
     private void drawTopDownObstacle(Canvas canvas) {
         //  Draws the plane - the image needs to be in the assets folder
         gc = canvas.getGraphicsContext2D();
-        ImageView imageView = new ImageView("/seg/resources/images/top-down-plane.png");
+        ImageView imageView = new ImageView("/images/top-down-plane.png");
         imageView.setRotate(-90);
         imageView.setPreserveRatio(true);
         imageView.setFitHeight(canvasHeight * 0.2);
@@ -231,7 +229,7 @@ public class CanvasDrawer {
     private void drawSideOnObstacle(Canvas canvas) {
         //  Draws the plane - the image needs to be in the assets folder
         gc = canvas.getGraphicsContext2D();
-        ImageView imageView = new ImageView("/seg/resources/images/side-view-plane.png");
+        ImageView imageView = new ImageView("/images/side-view-plane.png");
         imageView.setPreserveRatio(true);
         imageView.setFitHeight(canvasHeight * 0.006 * redeclarationComputer.getObstacleHeight());
         if (redeclarationComputer.getCalculationCase() == 1 || redeclarationComputer.getCalculationCase() == 3) {
