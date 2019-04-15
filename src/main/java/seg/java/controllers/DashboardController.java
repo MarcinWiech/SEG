@@ -1,6 +1,7 @@
 package seg.java.controllers;
 
 import javafx.animation.PathTransition;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,6 +14,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
@@ -26,8 +28,12 @@ import seg.java.controllers.config.AirportConfigurationController;
 import seg.java.models.Airport;
 import seg.java.models.Runway;
 
+import javax.imageio.ImageIO;
+import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DashboardController {
     Airport currentAirport;
@@ -92,6 +98,8 @@ public class DashboardController {
     private Image greentickIcon,warningIcon ,switchIcon ;
     private Notification notification;
 
+    public int pallete = 1;
+
 /*==================================================================================================================================
 //  Initialize
 //================================================================================================================================*/
@@ -109,24 +117,24 @@ public class DashboardController {
         //  REALLY IMPORTANT: canvases get resizable by binding them to their parents
         topDownCanvas.widthProperty().bind(topDownPane.widthProperty());
         topDownCanvas.heightProperty().bind(topDownPane.heightProperty());
-        topDownCanvas.widthProperty().addListener(event -> canvasDrawer.drawTopDownCanvas(topDownCanvas));
-        topDownCanvas.heightProperty().addListener(event -> canvasDrawer.drawTopDownCanvas(topDownCanvas));
+        topDownCanvas.widthProperty().addListener(event -> canvasDrawer.drawTopDownCanvas(topDownCanvas,getPallete()));
+        topDownCanvas.heightProperty().addListener(event -> canvasDrawer.drawTopDownCanvas(topDownCanvas,getPallete()));
 
         sideOnCanvas.widthProperty().bind(sideOnPane.widthProperty());
         sideOnCanvas.heightProperty().bind(sideOnPane.heightProperty());
-        sideOnCanvas.widthProperty().addListener(event -> canvasDrawer.drawSideOnCanvas(sideOnCanvas));
-        sideOnCanvas.heightProperty().addListener(event -> canvasDrawer.drawSideOnCanvas(sideOnCanvas));
+        sideOnCanvas.widthProperty().addListener(event -> canvasDrawer.drawSideOnCanvas(sideOnCanvas,getPallete()));
+        sideOnCanvas.heightProperty().addListener(event -> canvasDrawer.drawSideOnCanvas(sideOnCanvas,getPallete()));
 
         topDownCanvasCopy.widthProperty().bind(topDownPaneCopy.widthProperty());
         topDownCanvasCopy.heightProperty().bind(topDownPaneCopy.heightProperty());
-        topDownCanvasCopy.widthProperty().addListener(event -> canvasDrawer.drawTopDownCanvas(topDownCanvasCopy));
-        topDownCanvasCopy.heightProperty().addListener(event -> canvasDrawer.drawTopDownCanvas(topDownCanvasCopy));
+        topDownCanvasCopy.widthProperty().addListener(event -> canvasDrawer.drawTopDownCanvas(topDownCanvasCopy,getPallete()));
+        topDownCanvasCopy.heightProperty().addListener(event -> canvasDrawer.drawTopDownCanvas(topDownCanvasCopy,getPallete()));
 
 
         sideOnCanvasCopy.widthProperty().bind(sideOnPaneCopy.widthProperty());
         sideOnCanvasCopy.heightProperty().bind(sideOnPaneCopy.heightProperty());
-        sideOnCanvasCopy.widthProperty().addListener(event -> canvasDrawer.drawSideOnCanvas(sideOnCanvasCopy));
-        sideOnCanvasCopy.heightProperty().addListener(event -> canvasDrawer.drawSideOnCanvas(sideOnCanvasCopy));
+        sideOnCanvasCopy.widthProperty().addListener(event -> canvasDrawer.drawSideOnCanvas(sideOnCanvasCopy,getPallete()));
+        sideOnCanvasCopy.heightProperty().addListener(event -> canvasDrawer.drawSideOnCanvas(sideOnCanvasCopy,getPallete()));
 
         greentickIcon = new Image("/images/greentick.png");
         warningIcon = new Image("/images/alert-triangle-yellow.png");
@@ -204,6 +212,7 @@ public class DashboardController {
 
             // We check to see whether we need to recalculate
             if (redeclarationComputer.needsRecalculation(redeclarationComputer.getObstacleXL(), redeclarationComputer.getObstacleXR(), redeclarationComputer.getObstacleY())) {
+                notification.makeNotification("Runway Redeclared", "The runway has now been redeclared.", greentickIcon);
                 redeclare();
                 if (redeclarationComputer.getTora() > 5600) {
                     notification.makeNotification("Runway too large", "The redeclared runway is too large for operating", warningIcon);
@@ -216,6 +225,9 @@ public class DashboardController {
                 } else if (redeclarationComputer.calculateClearway() > redeclarationComputer.getTora() / 2) {
                     notification.makeNotification("Clearway too big", "The recalculated values indicated that clearway is larger than half of TORA", warningIcon);
                 }
+            }else{
+                notification.makeNotification("Runway Wasn't redeclared", "The values imputed cannot lead to a redeclaration", warningIcon);
+
             }
 
         } catch (Exception e) {
@@ -223,7 +235,7 @@ public class DashboardController {
             e.printStackTrace();
             return;
         }
-        notification.makeNotification("Runway Redeclared", "The runway has now been redeclared.", greentickIcon);
+
     }
 
     public void switchButtonPressed() {
@@ -252,10 +264,10 @@ public class DashboardController {
         //  Canvas drawing gets triggered here
         canvasDrawer.setRedeclarationComputer(redeclarationComputer);
         canvasDrawer.setRunway(currentRunway);
-        canvasDrawer.drawTopDownCanvas(topDownCanvas);
-        canvasDrawer.drawSideOnCanvas(sideOnCanvas);
-        canvasDrawer.drawTopDownCanvas(topDownCanvasCopy);
-        canvasDrawer.drawSideOnCanvas(sideOnCanvasCopy);
+        canvasDrawer.drawTopDownCanvas(topDownCanvas,getPallete());
+        canvasDrawer.drawSideOnCanvas(sideOnCanvas,getPallete());
+        canvasDrawer.drawTopDownCanvas(topDownCanvasCopy,getPallete());
+        canvasDrawer.drawSideOnCanvas(sideOnCanvasCopy,getPallete());
 
         //  Update the calculations breakdown
         toraBDTextArea.setText(redeclarationComputer.getToraBD());
@@ -291,10 +303,10 @@ public class DashboardController {
 
         //  Canvas drawing gets triggered here
         canvasDrawer.setRunway(currentRunway);
-        canvasDrawer.drawTopDownCanvas(topDownCanvas);
-        canvasDrawer.drawSideOnCanvas(sideOnCanvas);
-        canvasDrawer.drawTopDownCanvas(topDownCanvasCopy);
-        canvasDrawer.drawSideOnCanvas(sideOnCanvasCopy);
+        canvasDrawer.drawTopDownCanvas(topDownCanvas,getPallete());
+        canvasDrawer.drawSideOnCanvas(sideOnCanvas,getPallete());
+        canvasDrawer.drawTopDownCanvas(topDownCanvasCopy,getPallete());
+        canvasDrawer.drawSideOnCanvas(sideOnCanvasCopy,getPallete());
 
         //  Update the calculations breakdown
         toraBDTextArea.setText(redeclarationComputer.getToraBD());
@@ -356,9 +368,9 @@ public class DashboardController {
             return;
         }
 
-        canvasDrawer.drawSideOnCanvas(sideOnCanvasCopy);
+        canvasDrawer.drawSideOnCanvas(sideOnCanvasCopy,getPallete());
         simulateLandingInner(sideOnPaneCopy, sideOnCanvasCopy);
-        canvasDrawer.drawSideOnCanvas(sideOnCanvas);
+        canvasDrawer.drawSideOnCanvas(sideOnCanvas,getPallete());
         simulateLandingInner(sideOnPane, sideOnCanvas);
 
     }
@@ -376,9 +388,9 @@ public class DashboardController {
             return;
         }
 
-        canvasDrawer.drawSideOnCanvas(sideOnCanvas);
+        canvasDrawer.drawSideOnCanvas(sideOnCanvas , getPallete());
         simulateTakeOffInner(sideOnPane, sideOnCanvas);
-        canvasDrawer.drawSideOnCanvas(sideOnCanvasCopy);
+        canvasDrawer.drawSideOnCanvas(sideOnCanvasCopy,getPallete());
         simulateTakeOffInner(sideOnPaneCopy, sideOnCanvasCopy);
     }
 
@@ -681,5 +693,104 @@ public class DashboardController {
             new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong with loading the view :(").showAndWait();
         }
     }
+
+    public void changeColorScheme(ActionEvent actionEvent) {
+        if(pallete == 1){
+            pallete = 2;
+        }else{
+            pallete = 1;
+        }
+        //  Canvas drawing gets triggered here
+        canvasDrawer.setRunway(currentRunway);
+        canvasDrawer.drawTopDownCanvas(topDownCanvas,getPallete());
+        canvasDrawer.drawSideOnCanvas(sideOnCanvas,getPallete());
+        canvasDrawer.drawTopDownCanvas(topDownCanvasCopy,getPallete());
+        canvasDrawer.drawSideOnCanvas(sideOnCanvasCopy,getPallete());
+    }
+
+    public int getPallete(){
+        return pallete;
+    }
+
+    public void setPallete(int pallete){
+        this.pallete = pallete;
+    }
+
+
+    /**
+     * Action to save the TOP DOWN view as an image
+     * @param actionEvent
+     * @throws IOException
+     */
+    public void saveTopDown(ActionEvent actionEvent) throws IOException {
+
+
+
+        /**
+         * Setting up the extension
+         */
+        FileChooser.ExtensionFilter e1 = new FileChooser.ExtensionFilter("png files (*.png)", "*.png");
+        FileChooser.ExtensionFilter e2 = new FileChooser.ExtensionFilter("jpg files (*.jpg)", "*.jpg");
+        FileChooser.ExtensionFilter e3 = new FileChooser.ExtensionFilter("jpeg files (*.jpeg)", "*.jpeg");
+
+
+        FileChooser f= new FileChooser();
+        Stage stage = (Stage) topDownCanvas.getScene().getWindow();
+        f.getExtensionFilters().add(e1);
+        f.getExtensionFilters().add(e2);
+        f.getExtensionFilters().add(e3);
+
+
+        File file = f.showSaveDialog(stage);
+
+        if(file != null){
+
+                WritableImage img = new WritableImage((int)topDownCanvas.getWidth(), (int)topDownCanvas.getHeight());
+                topDownCanvas.snapshot(null,img);
+                RenderedImage renderedImage = SwingFXUtils.fromFXImage(img, null);
+                ImageIO.write(renderedImage,"jpg",file);
+
+        }
+
+        notification.makeNotification("Top Down view saved", "The view has been saved as image", greentickIcon);
+
+    }
+
+
+    /**
+     * Action to save the SIDE ON view as an image
+     * @param actionEvent
+     * @throws IOException
+     */
+    public void saveSideOn(ActionEvent actionEvent) throws IOException {
+
+
+        /**
+         * Setting up the extension
+         */
+        FileChooser.ExtensionFilter e1 = new FileChooser.ExtensionFilter("png files (*.png)", "*.png");
+        FileChooser.ExtensionFilter e2 = new FileChooser.ExtensionFilter("jpg files (*.jpg)", "*.jpg");
+        FileChooser.ExtensionFilter e3 = new FileChooser.ExtensionFilter("jpeg files (*.jpeg)", "*.jpeg");
+
+        FileChooser f = new FileChooser();
+        Stage stage = (Stage) sideOnCanvas.getScene().getWindow();
+        f.getExtensionFilters().add(e1);
+        f.getExtensionFilters().add(e2);
+        f.getExtensionFilters().add(e3);
+
+        File file = f.showSaveDialog(stage);
+
+        if(file != null){
+
+                WritableImage img = new WritableImage((int)topDownCanvas.getWidth(), (int)topDownCanvas.getHeight());
+                sideOnCanvas.snapshot(null, img);
+                RenderedImage renderedImage = SwingFXUtils.fromFXImage(img, null);
+                ImageIO.write(renderedImage, "jpg", file);
+
+        }
+        notification.makeNotification("Side on view saved", "The view has been saved as image", greentickIcon);
+
+    }
+
 }
 
