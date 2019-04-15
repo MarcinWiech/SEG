@@ -53,11 +53,13 @@ public class CanvasDrawer {
      */
 
     Color brigthGreen = Color.web("rgba(36,255,36,1.0)");
+
     Color deepGreen = Color.web("rgba(13,96,13,1.0)");
     Color brigthPurple = Color.web("rgba(180,109,255,1.0)");
     Color deepRed = Color.web("rgba(146,0,0,1.0)");
     Color deepPurple = Color.web("rgba(73,0,146,1.0)");
     Color brown = Color.web("rgba(146,73,0,1.0)");
+    Color brightBrown = Color.web("rgba(206, 117, 30,1.0)");
     Color brightYellow = Color.web("rgba(224,224,96,1.0)");
     Color gray = Color.web("rgba(155,155,155,1.0)");
     Color clear1 = Color.web("rgba(159, 181, 0,1.0)");
@@ -65,7 +67,7 @@ public class CanvasDrawer {
     Color clear2 = Color.web("rgba(219, 109, 0,1.0)");
     Color stop2 = Color.web("rgba(146,0,0,1.0)");
     Color mediumBlue = Color.web("rgba(73,0,146,1.0)");
-    Color darkGray =Color.web("rgba(122,122,122,1.0)");
+    Color darkGray =Color.web("rgba(111,111,111,1.0)");
 
     /**
      * 224, 224, 96
@@ -250,7 +252,7 @@ public class CanvasDrawer {
         if(pallete == 1){
             imageView = new ImageView("/images/top-down-plane.png");
         }else{
-            imageView = new ImageView("/images/top-down-plane.png");
+            imageView = new ImageView("/images/top-down-plane2.png");
         }
 
         imageView.setRotate(-90);
@@ -294,7 +296,7 @@ public class CanvasDrawer {
         if(pallete == 1){
             imageView = new ImageView("/images/side-view-plane.png");
         }else{
-            imageView = new ImageView("/images/side-view-plane.png");
+            imageView = new ImageView("/images/side-view-plane2.png");
         }
 
         imageView.setPreserveRatio(true);
@@ -778,7 +780,7 @@ public class CanvasDrawer {
          * Using this if we can easily add new palletes of colors
          * And change the colors around all the rest of the code
          */
-        Color clearwayColor, stopwayColor, verticalColor, pricipalArrows, secondaryArrows, pinkArrows;
+        Color clearwayColor, stopwayColor, verticalColor, pricipalArrows, secondaryArrows, pinkArrows,slopeColor;
         if(pallete == 1){
             clearwayColor = clear1;
             stopwayColor = stop1;
@@ -786,13 +788,15 @@ public class CanvasDrawer {
             pricipalArrows = Color.WHITE;
             secondaryArrows = Color.BLACK;
             pinkArrows = Color.PINK;
+            slopeColor = Color.BLACK;
         }else{
             clearwayColor = clear2;
             stopwayColor = stop2;
             verticalColor = deepRed;
             pricipalArrows = Color.BLACK;
-            secondaryArrows =  deepRed;
+            secondaryArrows =  brown;
             pinkArrows = deepRed;
+            slopeColor = Color.PINK;
         }
 
         // Clearway gets drawn
@@ -913,14 +917,14 @@ public class CanvasDrawer {
 //        horizontalLines.put("LDA", new double[] {ldaX, 0.58, ldaLength});
 
         // Slopes get drawn here
-        gc.setStroke((secondaryArrows));
-        gc.setFill(secondaryArrows);
+        gc.setStroke((slopeColor));
+        gc.setFill(slopeColor);
         if (redeclarationComputer.getCalculationCase() == 1 || redeclarationComputer.getCalculationCase() == 3) {
             gc.setLineWidth(0.005 * canvasHeight);
             gc.strokeLine(resaMinLX * canvasWidth + xOffset, 0.55 * canvasHeight + yOffset, (resaMinLX + resaMinLLength) * canvasWidth + xOffset, 1.005 * imageY);
             gc.strokeLine(resaMinTX * canvasWidth + xOffset, 0.55 * canvasHeight + yOffset, (resaMinTX + resaMinTLength) * canvasWidth + xOffset, 1.005 * imageY);
-            gc.setStroke((Color.BLUEVIOLET));
-            gc.setFill((Color.BLUEVIOLET));
+            gc.setStroke((slopeColor));
+            gc.setFill((slopeColor));
             gc.strokeLine((resaMinTX + resaMinTLength) * canvasWidth + xOffset, 0.55 * canvasHeight + yOffset, (resaMinTX + resaMinTLength) * canvasWidth + xOffset, 1.005 * imageY);
             Font font = Font.font("Arial", canvasWidth * 0.015);
             gc.setFont(font);
@@ -935,8 +939,8 @@ public class CanvasDrawer {
             gc.setLineWidth(0.005 * canvasHeight);
             gc.strokeLine((resaMinLX + resaMinLLength) * canvasWidth + xOffset, 0.55 * canvasHeight + yOffset, resaMinLX * canvasWidth + xOffset, 1.005 * imageY);
             gc.strokeLine((resaMinTX + resaMinTLength) * canvasWidth + xOffset, 0.55 * canvasHeight + yOffset, resaMinTX * canvasWidth + xOffset, 1.005 * imageY);
-            gc.setStroke((Color.BLUEVIOLET));
-            gc.setFill((Color.BLUEVIOLET));
+            gc.setStroke((slopeColor));
+            gc.setFill((slopeColor));
             gc.strokeLine(resaMinTX * canvasWidth + xOffset, 0.55 * canvasHeight + yOffset, resaMinTX * canvasWidth + xOffset, 1.005 * imageY);
             Font font = Font.font("Arial", canvasWidth * 0.015);
             gc.setFont(font);
@@ -1015,6 +1019,7 @@ public class CanvasDrawer {
     public double getCanvasHeight() {
         return canvasHeight;
     }
+
 
     public HashMap<String, double[]> getHorizontalLines() {
         return horizontalLines;

@@ -35,6 +35,8 @@
                         <MenuItem disable="true" mnemonicParsing="false" text="Export to XML file" />
                   <MenuItem mnemonicParsing="false" onAction="#openEmailForm" text="Share via Email" />
                   <MenuItem mnemonicParsing="false" onAction="#exportPDF" text="Export as PDF" />
+                  <MenuItem mnemonicParsing="false" onAction="#saveTopDown" text="Save Top Down view" />
+                  <MenuItem mnemonicParsing="false" onAction="#saveSideOn" text="Save Side On view " />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Configure">
