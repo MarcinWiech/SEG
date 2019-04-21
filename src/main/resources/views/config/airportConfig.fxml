@@ -23,9 +23,9 @@
                 text="Delete"/>
         <Button layoutX="495.0" layoutY="190.0" mnemonicParsing="false" onAction="#newRunwayButtonPressed"
                 prefHeight="25.0" prefWidth="91.0" text="Add New"/>
-        <Button disable="true" layoutX="495.0" layoutY="331.0" mnemonicParsing="false" prefHeight="25.0"
+        <Button layoutX="495.0" layoutY="331.0" mnemonicParsing="false" onAction="#saveButtonPressed" prefHeight="25.0"
                 prefWidth="91.0" text="Save"/>
-        <Button disable="true" layoutX="495.0" layoutY="373.0" mnemonicParsing="false" prefHeight="25.0"
+        <Button layoutX="495.0" layoutY="373.0" mnemonicParsing="false" onAction="#saveAsButtonPressed" prefHeight="25.0"
                 prefWidth="91.0" text="Save As"/>
         <Separator layoutX="477.0" layoutY="299.0" prefHeight="4.0" prefWidth="122.0"/>
         <Text fx:id="airportName" layoutX="14.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0"
