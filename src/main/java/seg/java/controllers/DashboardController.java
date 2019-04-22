@@ -8,10 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
@@ -26,6 +23,7 @@ import javafx.util.Duration;
 import seg.java.*;
 import seg.java.controllers.config.AirportConfigurationController;
 import seg.java.models.Airport;
+import seg.java.models.Obstacle;
 import seg.java.models.Runway;
 
 import javax.imageio.ImageIO;
@@ -88,6 +86,10 @@ public class DashboardController {
     private TextArea asdaBDTextArea;
     @FXML
     private TextArea ldaBDTextArea;
+    @FXML
+    private ComboBox obstacleSelector;
+
+
     private CanvasDrawer canvasDrawer;
     private RedeclarationComputer redeclarationComputer, reciprocalComputer;
     private double obstacleXL = 0;
@@ -111,6 +113,11 @@ public class DashboardController {
         redeclarationComputer.setReciprocalComputer(reciprocalComputer);
         reciprocalComputer.setReciprocalComputer(redeclarationComputer);
         canvasDrawer = new CanvasDrawer(redeclarationComputer);
+
+        XMLLoader loader = XMLLoader.getInstance();
+        for(Obstacle ob : loader.getObstacleArrayList()){
+            obstacleSelector.getItems().add(ob);
+        }
 
 
         //  REALLY IMPORTANT: canvases get resizable by binding them to their parents
@@ -360,6 +367,14 @@ public class DashboardController {
 
         // Update selected box
         runwayDroplist.setValue(runway.getName());
+    }
+
+    public void obstacleSelected(){
+        Obstacle curr = (Obstacle) obstacleSelector.getValue();
+        xLTextbox.setText(Float.toString(curr.getXl()));
+        xRTextbox.setText(Float.toString(curr.getXr()));
+        heightTextbox.setText(Float.toString(curr.getHeight()));
+        yTextbox.setText(Float.toString(curr.getY()));
     }
 
     /**

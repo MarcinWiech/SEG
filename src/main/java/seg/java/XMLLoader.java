@@ -7,6 +7,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import seg.java.models.Airport;
 import seg.java.models.Runway;
+import seg.java.models.Obstacle;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -18,17 +19,19 @@ import java.util.ArrayList;
 public class XMLLoader {
     private static XMLLoader instance = null;
     private ArrayList<Airport> airportList;
+    private ArrayList<Obstacle> obstacleArrayList;
 
     private XMLLoader() {
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-        InputStream file = classloader.getResourceAsStream("airports.xml");
+        InputStream airportFile = classloader.getResourceAsStream("airports.xml");
+        InputStream obstacleFile = classloader.getResourceAsStream("obstacles.xml");
 
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder;
 
         try {
             dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(file);
+            Document doc = dBuilder.parse(airportFile);
             doc.getDocumentElement().normalize();
 
             NodeList airportNodeList = doc.getElementsByTagName("Airport");
@@ -54,6 +57,33 @@ public class XMLLoader {
         } catch (SAXException | ParserConfigurationException | IOException e1) {
             e1.printStackTrace();
         }
+
+        try {
+            dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(obstacleFile);
+            doc.getDocumentElement().normalize();
+
+            NodeList obstacleNodeList = doc.getElementsByTagName("obstacle");
+            obstacleArrayList = new ArrayList<>();
+
+            for (int i = 0; i < obstacleNodeList.getLength(); i++){
+                Obstacle obstacle = getObstacleFromNode(obstacleNodeList.item(i));
+                obstacleArrayList.add(obstacle);
+            }
+
+        } catch (SAXException | ParserConfigurationException | IOException e1) {
+            e1.printStackTrace();
+        }
+    }
+
+    private static Obstacle getObstacleFromNode(Node node){
+        Element element = (Element) node;
+        String name = element.getAttribute("name");
+        float xl = Float.valueOf(element.getAttribute("xl"));
+        float xr = Float.valueOf(element.getAttribute("xr"));
+        float height = Float.valueOf(element.getAttribute("height"));
+        float y = Float.valueOf(element.getAttribute("y"));
+        return new Obstacle(name, xl, xr, height, y);
     }
 
     private static Airport getAirportFromNode(Node node) {
@@ -119,6 +149,10 @@ public class XMLLoader {
 
     public ArrayList<Airport> getAirportList() {
         return airportList;
+    }
+
+    public ArrayList<Obstacle> getObstacleArrayList() {
+        return obstacleArrayList;
     }
 
     public Airport getAirportByName(String name) throws Exception {

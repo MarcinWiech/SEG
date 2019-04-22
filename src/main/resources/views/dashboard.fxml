@@ -242,7 +242,7 @@
                                         <Tooltip text="Click this to view the reciprocal runway. " />
                                     </tooltip>
                                 </Button>
-                                <ComboBox layoutX="13.0" layoutY="442.0" prefHeight="25.0" prefWidth="158.0" promptText="Select Obstacle">
+                                <ComboBox fx:id="obstacleSelector" layoutX="13.0" layoutY="442.0" prefHeight="25.0" prefWidth="158.0" promptText="Select Obstacle" onAction="#obstacleSelected">
                                     <tooltip>
                                         <Tooltip text="Pick an obstacle from the list of predefined obstacles." />
                                     </tooltip>
