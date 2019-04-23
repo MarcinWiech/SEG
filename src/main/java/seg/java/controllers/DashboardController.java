@@ -99,6 +99,7 @@ public class DashboardController {
     private Notification notification;
 
     public int pallete = 1;
+    private boolean runwayRotationEnabled = true;
 
 /*==================================================================================================================================
 //  Initialize
@@ -118,12 +119,12 @@ public class DashboardController {
         topDownCanvas.widthProperty().bind(topDownPane.widthProperty());
         topDownCanvas.heightProperty().bind(topDownPane.heightProperty());
         topDownCanvas.widthProperty().addListener(event -> {
-            canvasDrawer.setTopDownRotation(true);
+            canvasDrawer.setTopDownRotation(runwayRotationEnabled);
             canvasDrawer.drawTopDownCanvas(topDownCanvas,getPallete());
             canvasDrawer.setTopDownRotation(false);
         });
         topDownCanvas.heightProperty().addListener(event -> {
-            canvasDrawer.setTopDownRotation(true);
+            canvasDrawer.setTopDownRotation(runwayRotationEnabled);
             canvasDrawer.drawTopDownCanvas(topDownCanvas,getPallete());
             canvasDrawer.setTopDownRotation(false);
         });
@@ -272,7 +273,7 @@ public class DashboardController {
         //  Canvas drawing gets triggered here
         canvasDrawer.setRedeclarationComputer(redeclarationComputer);
         canvasDrawer.setRunway(currentRunway);
-        canvasDrawer.setTopDownRotation(true);
+        canvasDrawer.setTopDownRotation(runwayRotationEnabled);
         canvasDrawer.drawTopDownCanvas(topDownCanvas,getPallete());
         canvasDrawer.setTopDownRotation(false);
         canvasDrawer.drawSideOnCanvas(sideOnCanvas,getPallete());
@@ -313,7 +314,7 @@ public class DashboardController {
 
         //  Canvas drawing gets triggered here
         canvasDrawer.setRunway(currentRunway);
-        canvasDrawer.setTopDownRotation(true);
+        canvasDrawer.setTopDownRotation(runwayRotationEnabled);
         canvasDrawer.drawTopDownCanvas(topDownCanvas,getPallete());
         canvasDrawer.setTopDownRotation(false);
         canvasDrawer.drawSideOnCanvas(sideOnCanvas,getPallete());
@@ -802,6 +803,23 @@ public class DashboardController {
         }
         notification.makeNotification("Side on view saved", "The view has been saved as image", greentickIcon);
 
+    }
+
+    public void enableDisableRunwayRotation()
+    {
+        runwayRotationEnabled = !runwayRotationEnabled;
+
+        //  Canvas drawing gets triggered here
+        if(currentRunway != null && redeclarationComputer != null && redeclarationComputer.getRunway() != null) {
+            canvasDrawer.setRedeclarationComputer(redeclarationComputer);
+            canvasDrawer.setRunway(currentRunway);
+            canvasDrawer.setTopDownRotation(runwayRotationEnabled);
+            canvasDrawer.drawTopDownCanvas(topDownCanvas, getPallete());
+            canvasDrawer.setTopDownRotation(false);
+            canvasDrawer.drawSideOnCanvas(sideOnCanvas, getPallete());
+            canvasDrawer.drawTopDownCanvas(topDownCanvasCopy, getPallete());
+            canvasDrawer.drawSideOnCanvas(sideOnCanvasCopy, getPallete());
+        }
     }
 
 }
