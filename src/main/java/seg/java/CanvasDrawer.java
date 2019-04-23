@@ -38,6 +38,22 @@ public class CanvasDrawer {
     private double[] middlePoint;
     private double[] topPint;
 
+    private Affine rotate;
+    private boolean topDownRotation = false;
+    private int rotationAngle = 0;
+    private double scaleFactor = 1;
+
+    private double topDownZoom = 1;
+
+    private double newWidth;
+    private double newHeight;
+
+    private double xZoomOffset = -1;
+    private double yZoomOffset = -1;
+
+    private double transX;
+    private double transY;
+
     /**
      * Contructor of the class
      *
@@ -45,6 +61,7 @@ public class CanvasDrawer {
      */
     public CanvasDrawer(RedeclarationComputer redeclarationComputer) {
         this.redeclarationComputer = redeclarationComputer;
+        rotate = new Affine();
         horizontalLines = new HashMap<>();
     }
 
@@ -89,6 +106,26 @@ public class CanvasDrawer {
             gradedArea = brightYellow;
             clearArea = deepPurple;
             runwayColor = gray;
+        }
+
+        if(topDownRotation != false && runway != null)
+        {
+            gc.save();
+
+            if(xZoomOffset != -1 && yZoomOffset != -1)
+            {
+                transX = (canvas.getWidth() - newWidth * scaleFactor * 1) / 2 - xZoomOffset;
+                transY = (canvas.getHeight() - newHeight * scaleFactor * 1) / 2 - yZoomOffset;
+                rotate.appendTranslation(transX, transY);
+                //gc.setTransform(rotate);
+            }
+
+            //rotate.appendTranslation(-(canvas.getWidth() / scaleFactor * (1 - topDownZoom) / 2), -(canvas.getHeight() / scaleFactor * (1 - topDownZoom) / 2));
+            rotate.appendRotation(rotationAngle, canvas.getWidth() / 2, canvas.getHeight() / 2);
+            rotate.appendScale(scaleFactor, scaleFactor, canvas.getWidth() / 2, canvas.getHeight() / 2);
+
+            gc.setTransform(rotate);
+            //gc.restore();
         }
 
         //  Grass area gets set
@@ -180,18 +217,27 @@ public class CanvasDrawer {
         Font font = Font.font("Arial", canvasWidth * 0.03);
         gc.setFont(font);
         gc.save();
-        Affine rotate = new Affine();
-        rotate.appendRotation(-90, 0.5 * canvasWidth + xOffset, 0.5 * canvasHeight + yOffset);
+        rotate.appendRotation(-90, canvas.getWidth() / 2, canvas.getHeight() / 2);
         gc.setTransform(rotate);
         gc.fillText(text, 0.473 * canvasWidth + xOffset, 1.133 * canvasHeight + yOffset);
         gc.restore();
+        rotate.appendRotation(90, canvas.getWidth() / 2,  canvas.getHeight() / 2);
 
         // Cleared and graded area label
         gc.setFill(Color.WHITE);
         text = "Cleared and Graded area";
         font = Font.font("Arial", canvasWidth * 0.02);
         gc.setFont(font);
-        gc.fillText(text, 0.4 * canvasWidth + xOffset, 0.3 * canvasHeight + yOffset);
+        if(topDownRotation && runway != null && rotationAngle >= 90 && rotationAngle < 270) {
+            gc.save();
+            rotate.appendRotation(180, canvas.getWidth() / 2, canvas.getHeight() / 2);
+            gc.setTransform(rotate);
+            gc.fillText(text, 0.4 * canvasWidth + xOffset, 0.75 * canvasHeight + yOffset);
+            gc.restore();
+            rotate.appendRotation(-180, canvas.getWidth() / 2, 0.5 * canvasHeight + yOffset);
+        }
+        else if(runway != null)
+            gc.fillText(text, 0.4 * canvasWidth + xOffset, 0.28 * canvasHeight + yOffset);
 
         // Details get drawn here
         if (runway != null) {
@@ -203,7 +249,15 @@ public class CanvasDrawer {
             drawTopDownObstacle(canvas,pallete);
         }
 
-        // gc.scale(2,2); // can be used for zoom later on
+        if(topDownRotation != false && runway != null)
+        {
+            gc.restore();
+            rotate.appendScale(1 / scaleFactor, 1 / scaleFactor, canvas.getWidth() / 2, canvas.getHeight() / 2);
+            rotate.appendRotation(-rotationAngle, canvas.getWidth() / 2, canvas.getHeight() / 2);
+            //rotate.appendTranslation((canvas.getWidth() / scaleFactor * (1 - topDownZoom) / 2), (canvas.getHeight() / scaleFactor * (1 - topDownZoom) / 2));
+            if(xZoomOffset != -1 && yZoomOffset != -1)
+                rotate.appendTranslation(-transX, -transY);
+        }
     }
 
 
@@ -335,7 +389,7 @@ public class CanvasDrawer {
      * @param text
      * @param color
      */
-    private void drawHorizontalArrow(double x, double y, double length, boolean leftArrowTipOn, boolean rightArrowTipOn, String text, Color color) {
+    private void drawHorizontalArrow(double x, double y, double length, boolean leftArrowTipOn, boolean rightArrowTipOn, String text, Color color, Boolean textUpsideDown) {
         double textOffset = 0;
 
         if (leftArrowTipOn && !rightArrowTipOn) {
@@ -353,7 +407,17 @@ public class CanvasDrawer {
         double textWidth = textObject.getBoundsInLocal().getWidth();
 
         //  Text gets drawn
-        gc.fillText(text, (x + textOffset + length / 2) * canvasWidth - 0.5 * textWidth + xOffset, (y - 0.01) * canvasHeight + yOffset);
+        if(textUpsideDown)
+        {
+            gc.save();
+            rotate.appendRotation(180, 0.5 * canvasWidth + xOffset, 0.5 * canvasHeight + yOffset);
+            gc.setTransform(rotate);
+            gc.fillText(text, canvasWidth -((x + textOffset + length / 2) * canvasWidth) - 0.5 * textWidth + xOffset, canvasHeight - (y - 0.036) * canvasHeight + yOffset);
+            gc.restore();
+            rotate.appendRotation(-180, 0.5 * canvasWidth + xOffset, 0.5 * canvasHeight + yOffset);
+        }
+        else
+            gc.fillText(text, (x + textOffset + length / 2) * canvasWidth - 0.5 * textWidth + xOffset, (y - 0.01) * canvasHeight + yOffset);
 
         //  Left arrow tip gets drawn
         if (leftArrowTipOn) {
@@ -435,11 +499,28 @@ public class CanvasDrawer {
         }
         fillRect(backgroundRect);
 
-        drawHorizontalArrow(0.03, 0.08, 0.33, true, false, runway.getName() + " - Landing and Take-off in this direction", Color.WHITE);
-        if (redeclarationComputer.getCalculationCase() == 2 || redeclarationComputer.getCalculationCase() == 4) {
-            drawHorizontalArrow(0.03, 0.13, 0.33, true, false, "Take Off Towards, Landing Towards", Color.WHITE);
-        } else {
-            drawHorizontalArrow(0.03, 0.13, 0.3, true, false, "Take Off Away, Landing Over", Color.WHITE);
+        if(topDownRotation != false && runway != null && rotationAngle >= 90 && rotationAngle < 270)
+        {
+            gc.save();
+            rotate.appendRotation(180, 0.5 * canvasWidth + xOffset, 0.5 * canvasHeight + yOffset);
+            gc.setTransform(rotate);
+            drawHorizontalArrow(0.638, 0.893, 0.33, true, false, runway.getName() + " - Landing and Take-off in this direction", Color.WHITE, false);
+            if (redeclarationComputer.getCalculationCase() == 2 || redeclarationComputer.getCalculationCase() == 4) {
+                drawHorizontalArrow(0.638, 0.943, 0.33, true, false, "Take Off Towards, Landing Towards", Color.WHITE, false);
+            } else {
+                drawHorizontalArrow(0.638, 0.943, 0.3, true, false, "Take Off Away, Landing Over", Color.WHITE, false);
+            }
+            gc.restore();
+            rotate.appendRotation(-180, 0.5 * canvasWidth + xOffset, 0.5 * canvasHeight + yOffset);
+        }
+        else
+        {
+            drawHorizontalArrow(0.03, 0.08, 0.33, true, false, runway.getName() + " - Landing and Take-off in this direction", Color.WHITE, false);
+            if (redeclarationComputer.getCalculationCase() == 2 || redeclarationComputer.getCalculationCase() == 4) {
+                drawHorizontalArrow(0.03, 0.13, 0.33, true, false, "Take Off Towards, Landing Towards", Color.WHITE, false);
+            } else {
+                drawHorizontalArrow(0.03, 0.13, 0.3, true, false, "Take Off Away, Landing Over", Color.WHITE, false);
+            }
         }
 
         backgroundRect = new Rectangle(0.77 * canvasWidth, 0.03 * canvasHeight, 0.205 * canvasWidth, 0.21 * canvasHeight);
@@ -455,22 +536,37 @@ public class CanvasDrawer {
         gc.setFill((Color.WHITE));
         Font font = Font.font("Arial", canvasWidth * 0.015);
         gc.setFont(font);
-        gc.fillText("RL = Landing RESA/Slope", 0.785 * canvasWidth + xOffset, 0.07 * canvasHeight + yOffset);
-        gc.fillText("RL = Take Off RESA/Slope", 0.785 * canvasWidth + xOffset, 0.12 * canvasHeight + yOffset);
-        gc.fillText("DT = Displaced Treshold", 0.785 * canvasWidth + xOffset, 0.17 * canvasHeight + yOffset);
-        gc.fillText("60 = Strip End", 0.785 * canvasWidth + xOffset, 0.22 * canvasHeight + yOffset);
+        if(topDownRotation != false && runway != null && rotationAngle >= 90 && rotationAngle < 270)
+        {
+            gc.save();
+            rotate.appendRotation(180, 0.5 * canvasWidth + xOffset, 0.5 * canvasHeight + yOffset);
+            gc.setTransform(rotate);
+            gc.fillText("RL = Landing RESA/Slope", 0.038 * canvasWidth + xOffset, 0.803 * canvasHeight + yOffset);
+            gc.fillText("RT = Take Off RESA/Slope", 0.038 * canvasWidth + xOffset, 0.853 * canvasHeight + yOffset);
+            gc.fillText("DT = Displaced Treshold", 0.038 * canvasWidth + xOffset, 0.903 * canvasHeight + yOffset);
+            gc.fillText("60 = Strip End", 0.038 * canvasWidth + xOffset, 0.953 * canvasHeight + yOffset);
+            gc.restore();
+            rotate.appendRotation(-180, 0.5 * canvasWidth + xOffset, 0.5 * canvasHeight + yOffset);
+        }
+        else
+        {
+            gc.fillText("RL = Landing RESA/Slope", 0.785 * canvasWidth + xOffset, 0.07 * canvasHeight + yOffset);
+            gc.fillText("RT = Take Off RESA/Slope", 0.785 * canvasWidth + xOffset, 0.12 * canvasHeight + yOffset);
+            gc.fillText("DT = Displaced Treshold", 0.785 * canvasWidth + xOffset, 0.17 * canvasHeight + yOffset);
+            gc.fillText("60 = Strip End", 0.785 * canvasWidth + xOffset, 0.22 * canvasHeight + yOffset);
+        }
     }
 
     private void drawSideOnRunwayDirection(Canvas canvas, int pallete) {
         Rectangle backgroundRect = new Rectangle(0.025 * canvasWidth, 0.03 * canvasHeight, 0.342 * canvasWidth, 0.13 * canvasHeight);
         gc.setFill(Color.rgb(0, 0, 0, 0.5));
         fillRect(backgroundRect);
-            drawHorizontalArrow(0.03, 0.08, 0.33, true, false, runway.getName() + " - Landing and Take-off in this direction", Color.WHITE);
+            drawHorizontalArrow(0.03, 0.08, 0.33, true, false, runway.getName() + " - Landing and Take-off in this direction", Color.WHITE, false);
 
         if (redeclarationComputer.getCalculationCase() == 2 || redeclarationComputer.getCalculationCase() == 4) {
-            drawHorizontalArrow(0.03, 0.13, 0.33, true, false, "Take Off Towards, Landing Towards", Color.WHITE);
+            drawHorizontalArrow(0.03, 0.13, 0.33, true, false, "Take Off Towards, Landing Towards", Color.WHITE, false);
         } else {
-            drawHorizontalArrow(0.03, 0.13, 0.3, true, false, "Take Off Away, Landing Over", Color.WHITE);
+            drawHorizontalArrow(0.03, 0.13, 0.3, true, false, "Take Off Away, Landing Over", Color.WHITE, false);
         }
 
         backgroundRect = new Rectangle(0.77 * canvasWidth, 0.03 * canvasHeight, 0.205 * canvasWidth, 0.21 * canvasHeight);
@@ -686,16 +782,19 @@ public class CanvasDrawer {
         fillRect(lineRect);
 
         // Arrows get drawn here
-        drawHorizontalArrow(ldaX, 0.65, ldaLength, true, true, "LDA = " + lda, pricipalArrows);
+        boolean upsideDownTextOn = false;
+        if(topDownRotation != false && runway != null && rotationAngle >= 90 && rotationAngle < 270)
+            upsideDownTextOn = true;
+        drawHorizontalArrow(ldaX, 0.65, ldaLength, true, true, "LDA = " + lda, Color.WHITE, upsideDownTextOn);
         if ((redeclarationComputer.getCalculationCase() == 2 || redeclarationComputer.getCalculationCase() == 4) && dispTresh != 0)
-            drawHorizontalArrow(dispTreshX, 0.65, dispTreshLength, true, true, "DT", secondaryArrows);
-        drawHorizontalArrow(stripEndLX, 0.65, stripEndLLength, false, false, "60", secondaryArrows);
-        drawHorizontalArrow(resaMinLX, 0.65, resaMinLLength, true, true, "RL", secondaryArrows);
-        drawHorizontalArrow(toraX, 0.75, toraLength, true, true, "TORA = " + tora, pricipalArrows);
-        drawHorizontalArrow(stripEndTX, 0.75, stripEndTLength, false, false, "60", secondaryArrows);
-        drawHorizontalArrow(resaMinTX, 0.75, resaMinTLength, true, true, "RT", secondaryArrows);
-        drawHorizontalArrow(asdaX, 0.85, asdaLength, true, true, "ASDA = " + asda, pricipalArrows);
-        drawHorizontalArrow(todaX, 0.95, todaLength, true, true, "TODA = " + toda, specialArrow);
+            drawHorizontalArrow(dispTreshX, 0.65, dispTreshLength, true, true, "DT", Color.YELLOW, upsideDownTextOn);
+        drawHorizontalArrow(stripEndLX, 0.65, stripEndLLength, false, false, "60", Color.YELLOW, upsideDownTextOn);
+        drawHorizontalArrow(resaMinLX, 0.65, resaMinLLength, true, true, "RL", Color.YELLOW, upsideDownTextOn);
+        drawHorizontalArrow(toraX, 0.75, toraLength, true, true, "TORA = " + tora, Color.WHITE, upsideDownTextOn);
+        drawHorizontalArrow(stripEndTX, 0.75, stripEndTLength, false, false, "60", Color.YELLOW, upsideDownTextOn);
+        drawHorizontalArrow(resaMinTX, 0.75, resaMinTLength, true, true, "RT", Color.YELLOW, upsideDownTextOn);
+        drawHorizontalArrow(asdaX, 0.85, asdaLength, true, true, "ASDA = " + asda, Color.WHITE, upsideDownTextOn);
+        drawHorizontalArrow(todaX, 0.95, todaLength, true, true, "TODA = " + toda, Color.WHITE, upsideDownTextOn);
 
     }
 
@@ -903,16 +1002,16 @@ public class CanvasDrawer {
         fillRect(lineRect);
 
         // Arrows get drawn here
-        drawHorizontalArrow(ldaX, 0.65, ldaLength, true, true, "LDA = " + lda, pricipalArrows);
+        drawHorizontalArrow(ldaX, 0.65, ldaLength, true, true, "LDA = " + lda, pricipalArrows, false);
         if ((redeclarationComputer.getCalculationCase() == 2 || redeclarationComputer.getCalculationCase() == 4) && dispTresh != 0)
-            drawHorizontalArrow(dispTreshX, 0.65, dispTreshLength, true, true, "DT", secondaryArrows);
-        drawHorizontalArrow(stripEndLX, 0.65, stripEndLLength, false, false, "60", secondaryArrows);
-        drawHorizontalArrow(resaMinLX, 0.65, resaMinLLength, true, true, "RL", secondaryArrows);
-        drawHorizontalArrow(toraX, 0.75, toraLength, true, true, "TORA = " + tora, pricipalArrows);
-        drawHorizontalArrow(stripEndTX, 0.75, stripEndTLength, false, false, "60", secondaryArrows);
-        drawHorizontalArrow(resaMinTX, 0.75, resaMinTLength, true, true, "RT", secondaryArrows);
-        drawHorizontalArrow(asdaX, 0.85, asdaLength, true, true, "ASDA = " + asda, pricipalArrows);
-        drawHorizontalArrow(todaX, 0.95, todaLength, true, true, "TODA = " + toda, pricipalArrows);
+            drawHorizontalArrow(dispTreshX, 0.65, dispTreshLength, true, true, "DT", secondaryArrows, false);
+        drawHorizontalArrow(stripEndLX, 0.65, stripEndLLength, false, false, "60", secondaryArrows, false);
+        drawHorizontalArrow(resaMinLX, 0.65, resaMinLLength, true, true, "RL", secondaryArrows, false);
+        drawHorizontalArrow(toraX, 0.75, toraLength, true, true, "TORA = " + tora, pricipalArrows, false);
+        drawHorizontalArrow(stripEndTX, 0.75, stripEndTLength, false, false, "60", secondaryArrows, false);
+        drawHorizontalArrow(resaMinTX, 0.75, resaMinTLength, true, true, "RT", secondaryArrows, false);
+        drawHorizontalArrow(asdaX, 0.85, asdaLength, true, true, "ASDA = " + asda, pricipalArrows, false);
+        drawHorizontalArrow(todaX, 0.95, todaLength, true, true, "TODA = " + toda, pricipalArrows, false);
 
 //        horizontalLines.put("LDA", new double[] {ldaX, 0.58, ldaLength});
 
@@ -979,6 +1078,19 @@ public class CanvasDrawer {
             yOffset = (canvas.getHeight() - canvasHeight) / 2;
         }
 
+        if(topDownRotation != false && runway != null)
+        {
+            rotationAngle = 10 * Integer.parseInt(runway.getName().substring(0,2)) + 90;
+
+            int reducedAngle = rotationAngle % 180;
+            if(reducedAngle > 90)
+                reducedAngle = 180 - reducedAngle;
+
+            newWidth = canvasWidth * Math.cos(Math.toRadians(reducedAngle)) + canvasHeight * Math.cos(Math.toRadians(90 - reducedAngle));
+            newHeight = canvasWidth * Math.cos(Math.toRadians(90 - reducedAngle)) + canvasHeight * Math.cos(Math.toRadians(reducedAngle));
+
+            scaleFactor = Math.min(canvas.getWidth() / newWidth, canvas.getHeight() / newHeight);
+        }
     }
 
     private void fillRect(Rectangle rect) {
@@ -1001,6 +1113,11 @@ public class CanvasDrawer {
 
     public void setRedeclarationComputer(RedeclarationComputer redeclarationComputer) {
         this.redeclarationComputer = redeclarationComputer;
+    }
+
+    public void setTopDownRotation(boolean topDownRotation)
+    {
+        this.topDownRotation = topDownRotation;
     }
 
 

@@ -49,7 +49,7 @@ public class EmailController {
         properties.put("mail.smtp.host", "smtp.googlemail.com");
         properties.put("mail.smtp.port", "587");
 
-        Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
+        Session session = Session.getInstance(properties, new Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(username,password);
             }

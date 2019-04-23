@@ -60,7 +60,7 @@
         </MenuBar>
         <SplitPane dividerPositions="0.1624790619765494" layoutY="23.0" prefHeight="632.0" prefWidth="1196.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="23.0">
             <items>
-                <ScrollPane maxWidth="191.0" minHeight="191.0" prefHeight="725.0" prefWidth="191.0">
+                <ScrollPane maxWidth="191.0" prefHeight="725.0">
                     <content>
                         <AnchorPane maxWidth="175.0" minHeight="0.0" minWidth="175.0" prefHeight="724.0" prefWidth="175.0">
                             <children>
@@ -258,24 +258,24 @@
                         </AnchorPane>
                     </content>
                 </ScrollPane>
-                <AnchorPane minHeight="0.0" minWidth="994.0" prefHeight="725.0" prefWidth="994.0">
+                <AnchorPane>
                     <children>
                         <TabPane layoutX="-8.0" layoutY="-7.0" prefHeight="663.0" prefWidth="1029.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <tabs>
                                 <Tab text="Top-down view">
                                     <content>
-                                        <Pane fx:id="topDownPane" prefHeight="632.0" prefWidth="1029.0">
+                                        <Pane fx:id="topDownPane">
                                             <children>
-                                                <Canvas fx:id="topDownCanvas" height="696.0" layoutX="8.0" width="1000.0" />
+                                                <Canvas fx:id="topDownCanvas" height="600.0" layoutX="-2.0" width="1000.0" />
                                             </children>
                                         </Pane>
                                     </content>
                                 </Tab>
                                 <Tab text="Side-on view">
                                     <content>
-                                        <Pane fx:id="sideOnPane" prefHeight="200.0" prefWidth="0.0">
+                                        <Pane fx:id="sideOnPane">
                                             <children>
-                                                <Canvas fx:id="sideOnCanvas" height="634.0" width="1028.0" />
+                                                <Canvas fx:id="sideOnCanvas" height="598.0" width="998.0" />
                                             </children>
                                         </Pane>
                                     </content>
