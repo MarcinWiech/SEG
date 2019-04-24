@@ -32,8 +32,6 @@ import javax.imageio.ImageIO;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class DashboardController {
     Airport currentAirport;
@@ -99,7 +97,7 @@ public class DashboardController {
     private Notification notification;
 
     public int pallete = 1;
-    private boolean runwayRotationEnabled = true;
+    private boolean runwayRotationEnabled = false;
 
 /*==================================================================================================================================
 //  Initialize
@@ -822,5 +820,20 @@ public class DashboardController {
         }
     }
 
+    public void runwayRotationButton(ActionEvent actionEvent) {
+        runwayRotationEnabled = !runwayRotationEnabled;
+
+        //  Canvas drawing gets triggered here
+        if(currentRunway != null && redeclarationComputer != null && redeclarationComputer.getRunway() != null) {
+            canvasDrawer.setRedeclarationComputer(redeclarationComputer);
+            canvasDrawer.setRunway(currentRunway);
+            canvasDrawer.setTopDownRotation(runwayRotationEnabled);
+            canvasDrawer.drawTopDownCanvas(topDownCanvas, getPallete());
+            canvasDrawer.setTopDownRotation(false);
+            canvasDrawer.drawSideOnCanvas(sideOnCanvas, getPallete());
+            canvasDrawer.drawTopDownCanvas(topDownCanvasCopy, getPallete());
+            canvasDrawer.drawSideOnCanvas(sideOnCanvasCopy, getPallete());
+        }
+    }
 }
 
