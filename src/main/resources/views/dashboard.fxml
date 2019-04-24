@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
@@ -25,7 +32,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="697.0" prefWidth="1196.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seg.java.controllers.DashboardController">
+<AnchorPane prefHeight="697.0" prefWidth="1196.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seg.java.controllers.DashboardController">
     <children>
         <MenuBar prefHeight="705.0" prefWidth="1196.0" AnchorPane.bottomAnchor="-8.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <menus>
@@ -235,7 +242,7 @@
                                         <Tooltip text="Click this to view the reciprocal runway. " />
                                     </tooltip>
                                 </Button>
-                                <ComboBox layoutX="13.0" layoutY="442.0" prefHeight="25.0" prefWidth="158.0">
+                                <ComboBox layoutX="13.0" layoutY="442.0" prefHeight="25.0" prefWidth="158.0" promptText="Select Obstacle">
                                     <tooltip>
                                         <Tooltip text="Pick an obstacle from the list of predefined obstacles." />
                                     </tooltip>
