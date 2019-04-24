@@ -44,6 +44,7 @@
                         <MenuItem mnemonicParsing="false" onAction="#configureAirports" text="Configure Airports / Runways" />
                         <MenuItem mnemonicParsing="false" onAction="#changeColorScheme" text="Change color scheme" />
                         <MenuItem disable="true" mnemonicParsing="false" text="Configure Obstacles" />
+                  <MenuItem mnemonicParsing="false" onAction="#enableDisableRunwayRotation" text="Enable/Disable runway rotation" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Help">
