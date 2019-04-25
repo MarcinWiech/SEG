@@ -412,7 +412,7 @@ public class DashboardController {
         }
 
         //set up the image
-        ImageView imageView = new ImageView("/images/side-view-plane.png");
+        ImageView imageView = new ImageView("/images/side-view-plane-simulation.png");
         imageView.setPreserveRatio(true);
         imageView.setFitHeight(canvas.getHeight()*0.03);
         Rotate flipRotationX = new Rotate(180, Rotate.X_AXIS);
@@ -448,7 +448,7 @@ public class DashboardController {
         }
 
         //set up the image
-        ImageView imageView = new ImageView("/images/side-view-plane.png");
+        ImageView imageView = new ImageView("/images/side-view-plane-simulation.png");
         imageView = transformImageView(imageView,canvas);
 
 
