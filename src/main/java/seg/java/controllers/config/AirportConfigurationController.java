@@ -138,9 +138,8 @@ public class AirportConfigurationController implements Initializable {
             PrintWriter pw = new PrintWriter(fs);
 
             pw.println("<?xml version=\"1.0\"?>");
-            pw.println(String.format("<Airport name=\"%s\">", airport.getName()));
             pw.println(String.format("<Airports>"));
-            pw.println(String.format("<Airport>"));
+            pw.println(String.format("<Airport name=\"%s\">", airport.getName()));
 
             ObservableList<Runway> list = tableView.getItems();
             for(Runway r: list){
