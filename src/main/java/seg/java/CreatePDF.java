@@ -1,34 +1,34 @@
 package seg.java;
 
 import com.itextpdf.io.font.FontConstants;
+import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
-import com.itextpdf.layout.element.Cell;
-import com.itextpdf.layout.element.Paragraph;
-import com.itextpdf.layout.element.Table;
-import com.itextpdf.layout.element.Text;
+import com.itextpdf.layout.element.*;
 import seg.java.models.Runway;
-
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class CreatePDF {
-    private static final String username = "runwayredeclaration11@gmail.com";
-    private static final String password = "runway123**";
     public static final String DEST = "src/main/outputs/redeclared_runway.pdf";
     private PdfFont font = PdfFontFactory.createFont(FontConstants.HELVETICA_BOLD);
     private RedeclarationComputer redeclarationComputer;
     private Runway runway;
     private File file;
+    private Image sideOnImage;
+    private Image topDownImage;
 
     public CreatePDF(RedeclarationComputer redeclarationComputer, Runway runway, File file) throws IOException {
         this.redeclarationComputer = redeclarationComputer;
         this.runway = runway;
+
+        sideOnImage =  new Image(ImageDataFactory.create("src/main/outputs/sideOnImage.png"));
+        topDownImage = new Image(ImageDataFactory.create("src/main/outputs/topDownImage.png"));
 
         if (file == null) {
             this.file = new File(DEST);
@@ -51,6 +51,7 @@ public class CreatePDF {
 
     public void createDocument(Document document) {
         //adding all components to the page
+        document.setBottomMargin(0);
         document.add(pdfTitle());
         document.add(redeclaredRunwayText());
         document.add(valuesTableTitle("Runway Values"));
@@ -62,7 +63,14 @@ public class CreatePDF {
         document.add(calculationBreakdown("TODA: ", redeclarationComputer.getTodaBD()));
         document.add(calculationBreakdown("ASDA: ", redeclarationComputer.getAsdaBD()));
         document.add(calculationBreakdown("LDA: ", redeclarationComputer.getLdaBD()));
+        document.add(new AreaBreak());
         document.add(valuesTableTitle("Diagrams"));
+        document.add(new Paragraph("Top down view:"));
+        topDownImage.scaleToFit(525,525);
+        document.add(topDownImage);
+        sideOnImage.scaleToFit(525,525);
+        document.add(new Paragraph("Side on view:"));
+        document.add(sideOnImage);
         document.close();
     }
 

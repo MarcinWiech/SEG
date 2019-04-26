@@ -5,7 +5,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import seg.java.CreatePDF;
 import seg.java.Notification;
 import seg.java.models.Runway;
 
@@ -20,7 +19,6 @@ public class EmailController {
     private static final String username = "runwayredeclaration11@gmail.com";
     private static final String password = "runway123**";
     private static final String DEST = "src/main/outputs/redeclared_runway.pdf";
-    private CreatePDF pdf;
     private Runway runway;
     private Notification notification;
     private Image emailIcon;

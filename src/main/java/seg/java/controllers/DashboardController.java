@@ -101,6 +101,8 @@ public class DashboardController {
     private  ArrayList<Obstacle> obstacleArrayList;
     public int pallete = 1;
     private boolean runwayRotationEnabled = false;
+    private String sideOnPathname = null;
+    private String topDownPathname = null;
 
 /*==================================================================================================================================
 //  Initialize
@@ -745,25 +747,27 @@ public class DashboardController {
 
     /** SAVING **/
     public void saveTopDown(ActionEvent actionEvent) throws IOException {
-
-
-
         /**
          * Setting up the extension
          */
-        FileChooser.ExtensionFilter e1 = new FileChooser.ExtensionFilter("png files (*.png)", "*.png");
-        FileChooser.ExtensionFilter e2 = new FileChooser.ExtensionFilter("jpg files (*.jpg)", "*.jpg");
-        FileChooser.ExtensionFilter e3 = new FileChooser.ExtensionFilter("jpeg files (*.jpeg)", "*.jpeg");
+        File file;
+
+        if (topDownPathname == null) {
+            FileChooser.ExtensionFilter e1 = new FileChooser.ExtensionFilter("png files (*.png)", "*.png");
+            FileChooser.ExtensionFilter e2 = new FileChooser.ExtensionFilter("jpg files (*.jpg)", "*.jpg");
+            FileChooser.ExtensionFilter e3 = new FileChooser.ExtensionFilter("jpeg files (*.jpeg)", "*.jpeg");
 
 
-        FileChooser f= new FileChooser();
-        Stage stage = (Stage) topDownCanvas.getScene().getWindow();
-        f.getExtensionFilters().add(e1);
-        f.getExtensionFilters().add(e2);
-        f.getExtensionFilters().add(e3);
+            FileChooser f = new FileChooser();
+            Stage stage = (Stage) topDownCanvas.getScene().getWindow();
+            f.getExtensionFilters().add(e1);
+            f.getExtensionFilters().add(e2);
+            f.getExtensionFilters().add(e3);
 
-
-        File file = f.showSaveDialog(stage);
+            file = f.showSaveDialog(stage);
+        } else {
+            file = new File(topDownPathname);
+        }
 
         if(file != null){
 
@@ -774,38 +778,39 @@ public class DashboardController {
 
         }
 
-        notification.makeNotification("Top Down view saved", "The view has been saved as image", greentickIcon);
-
+        if (topDownPathname == null) notification.makeNotification("Top Down view saved", "The view has been saved as image", greentickIcon);
     }
 
     public void saveSideOn(ActionEvent actionEvent) throws IOException {
-
-
         /**
          * Setting up the extension
          */
-        FileChooser.ExtensionFilter e1 = new FileChooser.ExtensionFilter("png files (*.png)", "*.png");
-        FileChooser.ExtensionFilter e2 = new FileChooser.ExtensionFilter("jpg files (*.jpg)", "*.jpg");
-        FileChooser.ExtensionFilter e3 = new FileChooser.ExtensionFilter("jpeg files (*.jpeg)", "*.jpeg");
+        File file;
+        if (sideOnPathname == null) {
+            FileChooser.ExtensionFilter e1 = new FileChooser.ExtensionFilter("png files (*.png)", "*.png");
+            FileChooser.ExtensionFilter e2 = new FileChooser.ExtensionFilter("jpg files (*.jpg)", "*.jpg");
+            FileChooser.ExtensionFilter e3 = new FileChooser.ExtensionFilter("jpeg files (*.jpeg)", "*.jpeg");
 
-        FileChooser f = new FileChooser();
-        Stage stage = (Stage) sideOnCanvas.getScene().getWindow();
-        f.getExtensionFilters().add(e1);
-        f.getExtensionFilters().add(e2);
-        f.getExtensionFilters().add(e3);
 
-        File file = f.showSaveDialog(stage);
+            FileChooser f = new FileChooser();
+            Stage stage = (Stage) sideOnCanvas.getScene().getWindow();
+            f.getExtensionFilters().add(e1);
+            f.getExtensionFilters().add(e2);
+            f.getExtensionFilters().add(e3);
 
-        if(file != null){
-
-                WritableImage img = new WritableImage((int)topDownCanvas.getWidth(), (int)topDownCanvas.getHeight());
-                sideOnCanvas.snapshot(null, img);
-                RenderedImage renderedImage = SwingFXUtils.fromFXImage(img, null);
-                ImageIO.write(renderedImage, "png", file);
-
+            file = f.showSaveDialog(stage);
+        } else {
+            file = new File(sideOnPathname);
         }
-        notification.makeNotification("Side on view saved", "The view has been saved as image", greentickIcon);
 
+        if (file != null) {
+            WritableImage img = new WritableImage((int) topDownCanvas.getWidth(), (int) topDownCanvas.getHeight());
+            sideOnCanvas.snapshot(null, img);
+            RenderedImage renderedImage = SwingFXUtils.fromFXImage(img, null);
+            ImageIO.write(renderedImage, "png", file);
+        }
+
+        if (topDownPathname == null) notification.makeNotification("Side on view saved", "The view has been saved as image", greentickIcon);
     }
 
     public void exportPDF(ActionEvent actionEvent) throws IOException {
@@ -816,6 +821,12 @@ public class DashboardController {
         fileChooser.getExtensionFilters().add(pdfExtensionFilter);
         fileChooser.setSelectedExtensionFilter(pdfExtensionFilter);
         File file = fileChooser.showSaveDialog(stage);
+
+
+        sideOnPathname = "src/main/outputs/sideOnImage.png";
+        topDownPathname = "src/main/outputs/topDownImage.png";
+        saveSideOn(new ActionEvent());
+        saveTopDown(new ActionEvent());
 
         if (file != null) {
             CreatePDF createPDF = new CreatePDF(redeclarationComputer, currentRunway, file);
