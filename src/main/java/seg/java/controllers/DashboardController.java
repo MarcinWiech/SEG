@@ -712,6 +712,8 @@ public class DashboardController {
     }
 
     public void configureAirports(ActionEvent actionEvent) {
+        Stage stage = (Stage) toraNewTextbox.getScene().getWindow();
+        stage.close();
         openFXML("/views/config/airportConfig.fxml","Configure Airport");
     }
 
