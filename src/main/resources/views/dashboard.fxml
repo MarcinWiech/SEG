@@ -33,7 +33,8 @@
                     <items>
                         <MenuItem mnemonicParsing="false" onAction="#switchAirport" text="Switch airport" />
                         <MenuItem disable="true" mnemonicParsing="false" text="Export to XML file" />
-                  <MenuItem mnemonicParsing="false" onAction="#openEmailForm" text="Share via Email" />
+                  <MenuItem mnemonicParsing="false" onAction="#printPDF" text="Print PDF" />
+                  <MenuItem mnemonicParsing="false" onAction="#openEmailForm" text="Share PDF via Email" />
                   <Menu mnemonicParsing="false" text="Save">
                     <items>
                         <MenuItem mnemonicParsing="false" onAction="#exportPDF" text="Save as PDF" />

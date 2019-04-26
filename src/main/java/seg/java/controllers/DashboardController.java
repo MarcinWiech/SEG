@@ -20,6 +20,8 @@ import javafx.scene.transform.Rotate;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.printing.PDFPageable;
 import seg.java.*;
 import seg.java.controllers.config.AirportConfigurationController;
 import seg.java.models.Airport;
@@ -28,6 +30,8 @@ import seg.java.models.Runway;
 
 import javax.imageio.ImageIO;
 import java.awt.image.RenderedImage;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -855,6 +859,17 @@ public class DashboardController {
 
     public void setPallete(int pallete){
         this.pallete = pallete;
+    }
+
+    public void printPDF(ActionEvent actionEvent) throws IOException, PrinterException {
+        CreatePDF createPDF = new CreatePDF(redeclarationComputer, currentRunway, null);
+        PDDocument document = PDDocument.load(new File("src/main/outputs/redeclared_runway.pdf"));
+        PrinterJob job = PrinterJob.getPrinterJob();
+        job.setPageable(new PDFPageable(document));
+        if (job.printDialog())
+        {
+            job.print();
+        }
     }
 }
 
