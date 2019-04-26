@@ -1,5 +1,6 @@
 package seg.java.controllers.config;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,10 +13,12 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import seg.java.models.Airport;
 import seg.java.models.Runway;
 
+import java.io.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -127,5 +130,48 @@ public class AirportConfigurationController implements Initializable {
             airport.deleteRunway(getSelectedRunway());
             tableView.setItems(airport.getRunways());
         }
+    }
+
+    private void saveToFile(File file){
+        try{
+            FileWriter fs = new FileWriter(file);
+            PrintWriter pw = new PrintWriter(fs);
+
+            pw.println("<?xml version=\"1.0\"?>");
+            pw.println(String.format("<Airport name=\"%s\">", airport.getName()));
+            pw.println(String.format("<Airports>"));
+            pw.println(String.format("<Airport>"));
+
+            ObservableList<Runway> list = tableView.getItems();
+            for(Runway r: list){
+                pw.println(String.format("<Runway>"));
+                pw.println(String.format("<runwayName>%s</runwayName>", r.getName()));
+                pw.println(String.format("<reciprocalName>%s</reciprocalName>", r.getReciprocalRunway().getName()));
+                pw.println(String.format("<tora>%f</tora>", r.getTora()));
+                pw.println(String.format("<toda>%f</toda>", r.getToda()));
+                pw.println(String.format("<asda>%f</asda>", r.getAsda()));
+                pw.println(String.format("<lda>%f</lda>", r.getLda()));
+                pw.println(String.format("<threshold>%f</threshold>", r.getThreshold()));
+                pw.println(String.format("</Runway>"));
+            }
+            pw.println(String.format("</Airport>"));
+            pw.println(String.format("</Airports>"));
+            pw.close();
+        } catch (IOException e) {
+            new Alert(Alert.AlertType.ERROR, "Unable to save.").showAndWait();
+        }
+    }
+
+    public void saveButtonPressed(ActionEvent actionEvent){
+        saveToFile(new File("airports.xml"));
+    }
+
+    public void saveAsButtonPressed(ActionEvent actionEvent){
+        FileChooser fc = new FileChooser();
+        fc.setTitle("Select save location.");
+        fc.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("XML Airport Database", "xml"));
+        File f = fc.showSaveDialog(airportName.getScene().getWindow());
+
+        saveToFile(f);
     }
 }
