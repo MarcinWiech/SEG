@@ -12,8 +12,8 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import seg.java.XMLLoader;
-import seg.java.controllers.config.AirportCreationController;
 import seg.java.models.Airport;
+import seg.java.controllers.config.AirportCreationController;
 
 import java.net.URL;
 import java.util.ResourceBundle;
