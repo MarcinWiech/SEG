@@ -96,7 +96,7 @@ public class DashboardController {
     private double obstacleXL = 0;
     private double obstacleXR = 0;
     private double toraInput, todaInput, asdaInput,ldaInput,dispThresholdInput  ;
-    private Image greentickIcon,warningIcon ,switchIcon ;
+    private Image greentickIcon,warningIcon ,switchIcon, redCrossIcon;
     private Notification notification;
     private  ArrayList<Obstacle> obstacleArrayList;
     public int pallete = 1;
@@ -155,6 +155,7 @@ public class DashboardController {
         greentickIcon = new Image("/images/greentick.png");
         warningIcon = new Image("/images/alert-triangle-yellow.png");
         switchIcon = new Image("/images/switch.png");
+        redCrossIcon = new Image("/images/redCross.png");
     }
 
 /*==================================================================================================================================
@@ -338,7 +339,29 @@ public class DashboardController {
 
     /**
      * FUNCTIONALITY
-     * **/
+     **/
+    public void runwayRotationButton(ActionEvent actionEvent) {
+        runwayRotationEnabled = !runwayRotationEnabled;
+
+        //  Canvas drawing gets triggered here
+        if(currentRunway != null && redeclarationComputer != null && redeclarationComputer.getRunway() != null) {
+            canvasDrawer.setRedeclarationComputer(redeclarationComputer);
+            canvasDrawer.setRunway(currentRunway);
+            canvasDrawer.setTopDownRotation(runwayRotationEnabled);
+            canvasDrawer.drawTopDownCanvas(topDownCanvas, getPallete());
+            canvasDrawer.setTopDownRotation(false);
+            canvasDrawer.drawSideOnCanvas(sideOnCanvas, getPallete());
+            canvasDrawer.drawTopDownCanvas(topDownCanvasCopy, getPallete());
+            canvasDrawer.drawSideOnCanvas(sideOnCanvasCopy, getPallete());
+        }
+
+        if (runwayRotationEnabled == true) {
+            notification.makeNotification("Runway rotation enabled", "The runway rotation has now been enabled.", greentickIcon);
+        } else {
+            notification.makeNotification("Runway rotation disabled", "The runway rotation has now been disabled.",redCrossIcon);
+        }
+    }
+
     public void setAirport(Airport airport) {
         currentAirport = airport;
         updateRunwayDropList();
@@ -354,6 +377,7 @@ public class DashboardController {
         try {
             Runway runway = currentAirport.getRunwayByName(runwayDroplist.getValue().toString());
             setCurrentRunway(runway);
+            notification.makeNotification("Runway selected", "A runway has been selected.", switchIcon);
         } catch (Exception e) {
             new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong :(").showAndWait();
         }
@@ -380,6 +404,8 @@ public class DashboardController {
                 xRTextbox.setText(Float.toString(curr.getXr()));
                 heightTextbox.setText(Float.toString(curr.getHeight()));
                 yTextbox.setText(Float.toString(curr.getY()));
+
+                notification.makeNotification("Obstacle selected", "An obstacle has been selected.", switchIcon);
             }
         }
     }
@@ -688,21 +714,6 @@ public class DashboardController {
         CreatePDF createPDF = new CreatePDF(redeclarationComputer, currentRunway, null);
     }
 
-    public void exportPDF(ActionEvent actionEvent) throws IOException {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Save Report");
-        Stage stage = (Stage) thresholdInitialTextbox.getScene().getWindow();
-        FileChooser.ExtensionFilter pdfExtensionFilter = new FileChooser.ExtensionFilter("PDF - Portable Document Format (.pdf)", "*.pdf");
-        fileChooser.getExtensionFilters().add(pdfExtensionFilter);
-        fileChooser.setSelectedExtensionFilter(pdfExtensionFilter);
-        File file = fileChooser.showSaveDialog(stage);
-
-        if (file != null) {
-            CreatePDF createPDF = new CreatePDF(redeclarationComputer, currentRunway, file);
-            notification.makeNotification("PDF save successful", "PDF has been successfully saved", greentickIcon);
-        }
-    }
-
     public void openFXML(String path, String title) {
         try {
             Stage stage = (Stage) yTextbox.getScene().getWindow();
@@ -727,34 +738,12 @@ public class DashboardController {
         }
     }
 
-    public void changeColorScheme(ActionEvent actionEvent) {
-        if(pallete == 1){
-            pallete = 2;
-        }else{
-            pallete = 1;
-        }
-        //  Canvas drawing gets triggered here
-        canvasDrawer.setRunway(currentRunway);
-        canvasDrawer.drawTopDownCanvas(topDownCanvas,getPallete());
-        canvasDrawer.drawSideOnCanvas(sideOnCanvas,getPallete());
-        canvasDrawer.drawTopDownCanvas(topDownCanvasCopy,getPallete());
-        canvasDrawer.drawSideOnCanvas(sideOnCanvasCopy,getPallete());
-    }
-
-    public int getPallete(){
-        return pallete;
-    }
-
-    public void setPallete(int pallete){
-        this.pallete = pallete;
-    }
-
 
     /**
-     * Action to save the TOP DOWN view as an image
-     * @param actionEvent
-     * @throws IOException
-     */
+     * MENU OPTIONS
+     **/
+
+    /** SAVING **/
     public void saveTopDown(ActionEvent actionEvent) throws IOException {
 
 
@@ -789,12 +778,6 @@ public class DashboardController {
 
     }
 
-
-    /**
-     * Action to save the SIDE ON view as an image
-     * @param actionEvent
-     * @throws IOException
-     */
     public void saveSideOn(ActionEvent actionEvent) throws IOException {
 
 
@@ -825,37 +808,42 @@ public class DashboardController {
 
     }
 
-    public void enableDisableRunwayRotation()
-    {
-        runwayRotationEnabled = !runwayRotationEnabled;
+    public void exportPDF(ActionEvent actionEvent) throws IOException {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save Report");
+        Stage stage = (Stage) thresholdInitialTextbox.getScene().getWindow();
+        FileChooser.ExtensionFilter pdfExtensionFilter = new FileChooser.ExtensionFilter("PDF - Portable Document Format (.pdf)", "*.pdf");
+        fileChooser.getExtensionFilters().add(pdfExtensionFilter);
+        fileChooser.setSelectedExtensionFilter(pdfExtensionFilter);
+        File file = fileChooser.showSaveDialog(stage);
 
-        //  Canvas drawing gets triggered here
-        if(currentRunway != null && redeclarationComputer != null && redeclarationComputer.getRunway() != null) {
-            canvasDrawer.setRedeclarationComputer(redeclarationComputer);
-            canvasDrawer.setRunway(currentRunway);
-            canvasDrawer.setTopDownRotation(runwayRotationEnabled);
-            canvasDrawer.drawTopDownCanvas(topDownCanvas, getPallete());
-            canvasDrawer.setTopDownRotation(false);
-            canvasDrawer.drawSideOnCanvas(sideOnCanvas, getPallete());
-            canvasDrawer.drawTopDownCanvas(topDownCanvasCopy, getPallete());
-            canvasDrawer.drawSideOnCanvas(sideOnCanvasCopy, getPallete());
+        if (file != null) {
+            CreatePDF createPDF = new CreatePDF(redeclarationComputer, currentRunway, file);
+            notification.makeNotification("PDF save successful", "PDF has been successfully saved", greentickIcon);
         }
     }
 
-    public void runwayRotationButton(ActionEvent actionEvent) {
-        runwayRotationEnabled = !runwayRotationEnabled;
-
-        //  Canvas drawing gets triggered here
-        if(currentRunway != null && redeclarationComputer != null && redeclarationComputer.getRunway() != null) {
-            canvasDrawer.setRedeclarationComputer(redeclarationComputer);
-            canvasDrawer.setRunway(currentRunway);
-            canvasDrawer.setTopDownRotation(runwayRotationEnabled);
-            canvasDrawer.drawTopDownCanvas(topDownCanvas, getPallete());
-            canvasDrawer.setTopDownRotation(false);
-            canvasDrawer.drawSideOnCanvas(sideOnCanvas, getPallete());
-            canvasDrawer.drawTopDownCanvas(topDownCanvasCopy, getPallete());
-            canvasDrawer.drawSideOnCanvas(sideOnCanvasCopy, getPallete());
+    /** COLOUR SCHEME **/
+    public void changeColorScheme(ActionEvent actionEvent) {
+        if(pallete == 1){
+            pallete = 2;
+        }else{
+            pallete = 1;
         }
+        //  Canvas drawing gets triggered here
+        canvasDrawer.setRunway(currentRunway);
+        canvasDrawer.drawTopDownCanvas(topDownCanvas,getPallete());
+        canvasDrawer.drawSideOnCanvas(sideOnCanvas,getPallete());
+        canvasDrawer.drawTopDownCanvas(topDownCanvasCopy,getPallete());
+        canvasDrawer.drawSideOnCanvas(sideOnCanvasCopy,getPallete());
+    }
+
+    public int getPallete(){
+        return pallete;
+    }
+
+    public void setPallete(int pallete){
+        this.pallete = pallete;
     }
 }
 
