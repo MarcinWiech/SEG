@@ -116,3 +116,4 @@ hs_err_pid*
 META-INF/
 src/main/outputs/
 target/
+.attach_pid*
