@@ -138,15 +138,20 @@ public class AirportConfigurationController implements Initializable {
             PrintWriter pw = new PrintWriter(fs);
 
             pw.println("<?xml version=\"1.0\"?>");
-            pw.println(String.format("<Airport name=\"%s\">", airport.getName()));
             pw.println(String.format("<Airports>"));
-            pw.println(String.format("<Airport>"));
+            pw.println(String.format("<Airport name=\"%s\">", airport.getName()));
 
             ObservableList<Runway> list = tableView.getItems();
             for(Runway r: list){
                 pw.println(String.format("<Runway>"));
                 pw.println(String.format("<runwayName>%s</runwayName>", r.getName()));
-                pw.println(String.format("<reciprocalName>%s</reciprocalName>", r.getReciprocalRunway().getName()));
+
+                String name = "";
+                if (r.getReciprocalRunway() != null) {
+                    name = r.getReciprocalRunway().getName();
+                }
+
+                pw.println(String.format("<reciprocalName>%s</reciprocalName>", name));
                 pw.println(String.format("<tora>%f</tora>", r.getTora()));
                 pw.println(String.format("<toda>%f</toda>", r.getToda()));
                 pw.println(String.format("<asda>%f</asda>", r.getAsda()));
@@ -157,7 +162,9 @@ public class AirportConfigurationController implements Initializable {
             pw.println(String.format("</Airport>"));
             pw.println(String.format("</Airports>"));
             pw.close();
+            new Alert(Alert.AlertType.INFORMATION, "Successfully exported airport information.").showAndWait();
         } catch (IOException e) {
+            e.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "Unable to save.").showAndWait();
         }
     }
@@ -169,9 +176,8 @@ public class AirportConfigurationController implements Initializable {
     public void saveAsButtonPressed(ActionEvent actionEvent){
         FileChooser fc = new FileChooser();
         fc.setTitle("Select save location.");
-        fc.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("XML Airport Database", "xml"));
+        fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML Airport Database", "xml"));
         File f = fc.showSaveDialog(airportName.getScene().getWindow());
-
         saveToFile(f);
     }
 }
