@@ -20,6 +20,8 @@ import javafx.scene.transform.Rotate;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.printing.PDFPageable;
 import seg.java.*;
 import seg.java.controllers.config.AirportConfigurationController;
 import seg.java.models.Airport;
@@ -28,8 +30,11 @@ import seg.java.models.Runway;
 
 import javax.imageio.ImageIO;
 import java.awt.image.RenderedImage;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class DashboardController {
     Airport currentAirport;
@@ -95,11 +100,13 @@ public class DashboardController {
     private double obstacleXL = 0;
     private double obstacleXR = 0;
     private double toraInput, todaInput, asdaInput,ldaInput,dispThresholdInput  ;
-    private Image greentickIcon,warningIcon ,switchIcon ;
+    private Image greentickIcon,warningIcon ,switchIcon, redCrossIcon;
     private Notification notification;
-
+    private  ArrayList<Obstacle> obstacleArrayList;
     public int pallete = 1;
     private boolean runwayRotationEnabled = false;
+    private String sideOnPathname = null;
+    private String topDownPathname = null;
 
 /*==================================================================================================================================
 //  Initialize
@@ -115,8 +122,9 @@ public class DashboardController {
         canvasDrawer = new CanvasDrawer(redeclarationComputer);
 
         XMLLoader loader = XMLLoader.getInstance();
-        for(Obstacle ob : loader.getObstacleArrayList()){
-            obstacleSelector.getItems().add(ob);
+        obstacleArrayList = loader.getObstacleArrayList();
+        for(Obstacle ob : obstacleArrayList){
+            obstacleSelector.getItems().add(ob.getName());
         }
 
 
@@ -153,6 +161,7 @@ public class DashboardController {
         greentickIcon = new Image("/images/greentick.png");
         warningIcon = new Image("/images/alert-triangle-yellow.png");
         switchIcon = new Image("/images/switch.png");
+        redCrossIcon = new Image("/images/redCross.png");
     }
 
 /*==================================================================================================================================
@@ -336,7 +345,29 @@ public class DashboardController {
 
     /**
      * FUNCTIONALITY
-     * **/
+     **/
+    public void runwayRotationButton(ActionEvent actionEvent) {
+        runwayRotationEnabled = !runwayRotationEnabled;
+
+        //  Canvas drawing gets triggered here
+        if(currentRunway != null && redeclarationComputer != null && redeclarationComputer.getRunway() != null) {
+            canvasDrawer.setRedeclarationComputer(redeclarationComputer);
+            canvasDrawer.setRunway(currentRunway);
+            canvasDrawer.setTopDownRotation(runwayRotationEnabled);
+            canvasDrawer.drawTopDownCanvas(topDownCanvas, getPallete());
+            canvasDrawer.setTopDownRotation(false);
+            canvasDrawer.drawSideOnCanvas(sideOnCanvas, getPallete());
+            canvasDrawer.drawTopDownCanvas(topDownCanvasCopy, getPallete());
+            canvasDrawer.drawSideOnCanvas(sideOnCanvasCopy, getPallete());
+        }
+
+        if (runwayRotationEnabled == true) {
+            notification.makeNotification("Runway rotation enabled", "The runway rotation has now been enabled.", greentickIcon);
+        } else {
+            notification.makeNotification("Runway rotation disabled", "The runway rotation has now been disabled.",redCrossIcon);
+        }
+    }
+
     public void setAirport(Airport airport) {
         currentAirport = airport;
         updateRunwayDropList();
@@ -352,6 +383,7 @@ public class DashboardController {
         try {
             Runway runway = currentAirport.getRunwayByName(runwayDroplist.getValue().toString());
             setCurrentRunway(runway);
+            notification.makeNotification("Runway selected", "A runway has been selected.", switchIcon);
         } catch (Exception e) {
             new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong :(").showAndWait();
         }
@@ -370,11 +402,18 @@ public class DashboardController {
     }
 
     public void obstacleSelected(){
-        Obstacle curr = (Obstacle) obstacleSelector.getValue();
-        xLTextbox.setText(Float.toString(curr.getXl()));
-        xRTextbox.setText(Float.toString(curr.getXr()));
-        heightTextbox.setText(Float.toString(curr.getHeight()));
-        yTextbox.setText(Float.toString(curr.getY()));
+        Obstacle curr;
+        for (Obstacle o: obstacleArrayList) {
+            if (o.getName() == obstacleSelector.getValue()) {
+                curr = o;
+                xLTextbox.setText(Float.toString(curr.getXl()));
+                xRTextbox.setText(Float.toString(curr.getXr()));
+                heightTextbox.setText(Float.toString(curr.getHeight()));
+                yTextbox.setText(Float.toString(curr.getY()));
+
+                notification.makeNotification("Obstacle selected", "An obstacle has been selected.", switchIcon);
+            }
+        }
     }
 
     /**
@@ -681,21 +720,6 @@ public class DashboardController {
         CreatePDF createPDF = new CreatePDF(redeclarationComputer, currentRunway, null);
     }
 
-    public void exportPDF(ActionEvent actionEvent) throws IOException {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Save Report");
-        Stage stage = (Stage) thresholdInitialTextbox.getScene().getWindow();
-        FileChooser.ExtensionFilter pdfExtensionFilter = new FileChooser.ExtensionFilter("PDF - Portable Document Format (.pdf)", "*.pdf");
-        fileChooser.getExtensionFilters().add(pdfExtensionFilter);
-        fileChooser.setSelectedExtensionFilter(pdfExtensionFilter);
-        File file = fileChooser.showSaveDialog(stage);
-
-        if (file != null) {
-            CreatePDF createPDF = new CreatePDF(redeclarationComputer, currentRunway, file);
-            notification.makeNotification("PDF save successful", "PDF has been successfully saved", greentickIcon);
-        }
-    }
-
     public void openFXML(String path, String title) {
         try {
             Stage stage = (Stage) yTextbox.getScene().getWindow();
@@ -720,6 +744,101 @@ public class DashboardController {
         }
     }
 
+
+    /**
+     * MENU OPTIONS
+     **/
+
+    /** SAVING **/
+    public void saveTopDown(ActionEvent actionEvent) throws IOException {
+        /**
+         * Setting up the extension
+         */
+        File file;
+
+        if (topDownPathname == null) {
+            FileChooser.ExtensionFilter e1 = new FileChooser.ExtensionFilter("png files (*.png)", "*.png");
+            FileChooser.ExtensionFilter e2 = new FileChooser.ExtensionFilter("jpg files (*.jpg)", "*.jpg");
+            FileChooser.ExtensionFilter e3 = new FileChooser.ExtensionFilter("jpeg files (*.jpeg)", "*.jpeg");
+
+
+            FileChooser f = new FileChooser();
+            Stage stage = (Stage) topDownCanvas.getScene().getWindow();
+            f.getExtensionFilters().add(e1);
+            f.getExtensionFilters().add(e2);
+            f.getExtensionFilters().add(e3);
+
+            file = f.showSaveDialog(stage);
+        } else {
+            file = new File(topDownPathname);
+        }
+
+        if(file != null){
+
+                WritableImage img = new WritableImage((int)topDownCanvas.getWidth(), (int)topDownCanvas.getHeight());
+                topDownCanvas.snapshot(null,img);
+                RenderedImage renderedImage = SwingFXUtils.fromFXImage(img, null);
+                ImageIO.write(renderedImage,"png",file);
+
+        }
+
+        if (topDownPathname == null) notification.makeNotification("Top Down view saved", "The view has been saved as image", greentickIcon);
+    }
+
+    public void saveSideOn(ActionEvent actionEvent) throws IOException {
+        /**
+         * Setting up the extension
+         */
+        File file;
+        if (sideOnPathname == null) {
+            FileChooser.ExtensionFilter e1 = new FileChooser.ExtensionFilter("png files (*.png)", "*.png");
+            FileChooser.ExtensionFilter e2 = new FileChooser.ExtensionFilter("jpg files (*.jpg)", "*.jpg");
+            FileChooser.ExtensionFilter e3 = new FileChooser.ExtensionFilter("jpeg files (*.jpeg)", "*.jpeg");
+
+
+            FileChooser f = new FileChooser();
+            Stage stage = (Stage) sideOnCanvas.getScene().getWindow();
+            f.getExtensionFilters().add(e1);
+            f.getExtensionFilters().add(e2);
+            f.getExtensionFilters().add(e3);
+
+            file = f.showSaveDialog(stage);
+        } else {
+            file = new File(sideOnPathname);
+        }
+
+        if (file != null) {
+            WritableImage img = new WritableImage((int) topDownCanvas.getWidth(), (int) topDownCanvas.getHeight());
+            sideOnCanvas.snapshot(null, img);
+            RenderedImage renderedImage = SwingFXUtils.fromFXImage(img, null);
+            ImageIO.write(renderedImage, "png", file);
+        }
+
+        if (topDownPathname == null) notification.makeNotification("Side on view saved", "The view has been saved as image", greentickIcon);
+    }
+
+    public void exportPDF(ActionEvent actionEvent) throws IOException {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save Report");
+        Stage stage = (Stage) thresholdInitialTextbox.getScene().getWindow();
+        FileChooser.ExtensionFilter pdfExtensionFilter = new FileChooser.ExtensionFilter("PDF - Portable Document Format (.pdf)", "*.pdf");
+        fileChooser.getExtensionFilters().add(pdfExtensionFilter);
+        fileChooser.setSelectedExtensionFilter(pdfExtensionFilter);
+        File file = fileChooser.showSaveDialog(stage);
+
+
+        sideOnPathname = "src/main/outputs/sideOnImage.png";
+        topDownPathname = "src/main/outputs/topDownImage.png";
+        saveSideOn(new ActionEvent());
+        saveTopDown(new ActionEvent());
+
+        if (file != null) {
+            CreatePDF createPDF = new CreatePDF(redeclarationComputer, currentRunway, file);
+            notification.makeNotification("PDF save successful", "PDF has been successfully saved", greentickIcon);
+        }
+    }
+
+    /** COLOUR SCHEME **/
     public void changeColorScheme(ActionEvent actionEvent) {
         if(pallete == 1){
             pallete = 2;
@@ -742,112 +861,14 @@ public class DashboardController {
         this.pallete = pallete;
     }
 
-
-    /**
-     * Action to save the TOP DOWN view as an image
-     * @param actionEvent
-     * @throws IOException
-     */
-    public void saveTopDown(ActionEvent actionEvent) throws IOException {
-
-
-
-        /**
-         * Setting up the extension
-         */
-        FileChooser.ExtensionFilter e1 = new FileChooser.ExtensionFilter("png files (*.png)", "*.png");
-        FileChooser.ExtensionFilter e2 = new FileChooser.ExtensionFilter("jpg files (*.jpg)", "*.jpg");
-        FileChooser.ExtensionFilter e3 = new FileChooser.ExtensionFilter("jpeg files (*.jpeg)", "*.jpeg");
-
-
-        FileChooser f= new FileChooser();
-        Stage stage = (Stage) topDownCanvas.getScene().getWindow();
-        f.getExtensionFilters().add(e1);
-        f.getExtensionFilters().add(e2);
-        f.getExtensionFilters().add(e3);
-
-
-        File file = f.showSaveDialog(stage);
-
-        if(file != null){
-
-                WritableImage img = new WritableImage((int)topDownCanvas.getWidth(), (int)topDownCanvas.getHeight());
-                topDownCanvas.snapshot(null,img);
-                RenderedImage renderedImage = SwingFXUtils.fromFXImage(img, null);
-                ImageIO.write(renderedImage,"png",file);
-
-        }
-
-        notification.makeNotification("Top Down view saved", "The view has been saved as image", greentickIcon);
-
-    }
-
-
-    /**
-     * Action to save the SIDE ON view as an image
-     * @param actionEvent
-     * @throws IOException
-     */
-    public void saveSideOn(ActionEvent actionEvent) throws IOException {
-
-
-        /**
-         * Setting up the extension
-         */
-        FileChooser.ExtensionFilter e1 = new FileChooser.ExtensionFilter("png files (*.png)", "*.png");
-        FileChooser.ExtensionFilter e2 = new FileChooser.ExtensionFilter("jpg files (*.jpg)", "*.jpg");
-        FileChooser.ExtensionFilter e3 = new FileChooser.ExtensionFilter("jpeg files (*.jpeg)", "*.jpeg");
-
-        FileChooser f = new FileChooser();
-        Stage stage = (Stage) sideOnCanvas.getScene().getWindow();
-        f.getExtensionFilters().add(e1);
-        f.getExtensionFilters().add(e2);
-        f.getExtensionFilters().add(e3);
-
-        File file = f.showSaveDialog(stage);
-
-        if(file != null){
-
-                WritableImage img = new WritableImage((int)topDownCanvas.getWidth(), (int)topDownCanvas.getHeight());
-                sideOnCanvas.snapshot(null, img);
-                RenderedImage renderedImage = SwingFXUtils.fromFXImage(img, null);
-                ImageIO.write(renderedImage, "png", file);
-
-        }
-        notification.makeNotification("Side on view saved", "The view has been saved as image", greentickIcon);
-
-    }
-
-    public void enableDisableRunwayRotation()
-    {
-        runwayRotationEnabled = !runwayRotationEnabled;
-
-        //  Canvas drawing gets triggered here
-        if(currentRunway != null && redeclarationComputer != null && redeclarationComputer.getRunway() != null) {
-            canvasDrawer.setRedeclarationComputer(redeclarationComputer);
-            canvasDrawer.setRunway(currentRunway);
-            canvasDrawer.setTopDownRotation(runwayRotationEnabled);
-            canvasDrawer.drawTopDownCanvas(topDownCanvas, getPallete());
-            canvasDrawer.setTopDownRotation(false);
-            canvasDrawer.drawSideOnCanvas(sideOnCanvas, getPallete());
-            canvasDrawer.drawTopDownCanvas(topDownCanvasCopy, getPallete());
-            canvasDrawer.drawSideOnCanvas(sideOnCanvasCopy, getPallete());
-        }
-    }
-
-    public void runwayRotationButton(ActionEvent actionEvent) {
-        runwayRotationEnabled = !runwayRotationEnabled;
-
-        //  Canvas drawing gets triggered here
-        if(currentRunway != null && redeclarationComputer != null && redeclarationComputer.getRunway() != null) {
-            canvasDrawer.setRedeclarationComputer(redeclarationComputer);
-            canvasDrawer.setRunway(currentRunway);
-            canvasDrawer.setTopDownRotation(runwayRotationEnabled);
-            canvasDrawer.drawTopDownCanvas(topDownCanvas, getPallete());
-            canvasDrawer.setTopDownRotation(false);
-            canvasDrawer.drawSideOnCanvas(sideOnCanvas, getPallete());
-            canvasDrawer.drawTopDownCanvas(topDownCanvasCopy, getPallete());
-            canvasDrawer.drawSideOnCanvas(sideOnCanvasCopy, getPallete());
+    public void printPDF(ActionEvent actionEvent) throws IOException, PrinterException {
+        CreatePDF createPDF = new CreatePDF(redeclarationComputer, currentRunway, null);
+        PDDocument document = PDDocument.load(new File("src/main/outputs/redeclared_runway.pdf"));
+        PrinterJob job = PrinterJob.getPrinterJob();
+        job.setPageable(new PDFPageable(document));
+        if (job.printDialog())
+        {
+            job.print();
         }
     }
 }

@@ -15,7 +15,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import seg.java.controllers.DashboardController;
 import seg.java.models.Airport;
 import seg.java.models.Runway;
 
@@ -73,22 +72,8 @@ public class AirportConfigurationController implements Initializable {
     // Actions
 
     public void backButtonPressed(ActionEvent actionEvent) {
-        try {
-            Stage stage = (Stage) backButton.getScene().getWindow();
-            stage.close();
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/dashboard.fxml"));
-            Parent root1 = fxmlLoader.load();
-            stage = new Stage();
-            stage.setTitle("Dashboard");
-            stage.setScene(new Scene(root1));
-            stage.show();
-
-            DashboardController dashboardController = fxmlLoader.getController();
-            dashboardController.setAirport(airport);
-        } catch (IOException e) {
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Uh oh, something went wrong :(").showAndWait();
-        }
+        Stage stage = (Stage) backButton.getScene().getWindow();
+        stage.close();
     }
 
     public void newRunwayButtonPressed(ActionEvent ae) {

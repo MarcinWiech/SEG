@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.canvas.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
@@ -32,19 +25,23 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="697.0" prefWidth="1196.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seg.java.controllers.DashboardController">
+<AnchorPane prefHeight="697.0" prefWidth="1196.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seg.java.controllers.DashboardController">
     <children>
         <MenuBar prefHeight="705.0" prefWidth="1196.0" AnchorPane.bottomAnchor="-8.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <menus>
                 <Menu mnemonicParsing="false" text="File">
                     <items>
                         <MenuItem mnemonicParsing="false" onAction="#switchAirport" text="Switch airport" />
-                        <MenuItem disable="true" mnemonicParsing="false" text="Import obstacle from XML file" />
                         <MenuItem disable="true" mnemonicParsing="false" text="Export to XML file" />
-                  <MenuItem mnemonicParsing="false" onAction="#openEmailForm" text="Share via Email" />
-                  <MenuItem mnemonicParsing="false" onAction="#exportPDF" text="Export as PDF" />
-                  <MenuItem mnemonicParsing="false" onAction="#saveTopDown" text="Save Top Down view" />
-                  <MenuItem mnemonicParsing="false" onAction="#saveSideOn" text="Save Side On view " />
+                  <MenuItem mnemonicParsing="false" onAction="#printPDF" text="Print PDF" />
+                  <MenuItem mnemonicParsing="false" onAction="#openEmailForm" text="Share PDF via Email" />
+                  <Menu mnemonicParsing="false" text="Save">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#exportPDF" text="Save as PDF" />
+                        <MenuItem mnemonicParsing="false" onAction="#saveTopDown" text="Save Top Down view" />
+                        <MenuItem mnemonicParsing="false" onAction="#saveSideOn" text="Save Side On view " />
+                    </items>
+                  </Menu>
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Configure">
@@ -52,7 +49,6 @@
                         <MenuItem mnemonicParsing="false" onAction="#configureAirports" text="Configure Airports / Runways" />
                         <MenuItem mnemonicParsing="false" onAction="#changeColorScheme" text="Change color scheme" />
                         <MenuItem disable="true" mnemonicParsing="false" text="Configure Obstacles" />
-                  <MenuItem mnemonicParsing="false" onAction="#enableDisableRunwayRotation" text="Enable/Disable runway rotation" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Help">
@@ -242,7 +238,7 @@
                                         <Tooltip text="Click this to view the reciprocal runway. " />
                                     </tooltip>
                                 </Button>
-                                <ComboBox fx:id="obstacleSelector" layoutX="13.0" layoutY="442.0" prefHeight="25.0" prefWidth="158.0" promptText="Select Obstacle" onAction="#obstacleSelected">
+                                <ComboBox fx:id="obstacleSelector" layoutX="13.0" layoutY="442.0" onAction="#obstacleSelected" prefHeight="25.0" prefWidth="158.0" promptText="Select Obstacle">
                                     <tooltip>
                                         <Tooltip text="Pick an obstacle from the list of predefined obstacles." />
                                     </tooltip>
