@@ -30,6 +30,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class DashboardController {
     Airport currentAirport;
@@ -97,7 +98,7 @@ public class DashboardController {
     private double toraInput, todaInput, asdaInput,ldaInput,dispThresholdInput  ;
     private Image greentickIcon,warningIcon ,switchIcon ;
     private Notification notification;
-
+    private  ArrayList<Obstacle> obstacleArrayList;
     public int pallete = 1;
     private boolean runwayRotationEnabled = false;
 
@@ -115,8 +116,9 @@ public class DashboardController {
         canvasDrawer = new CanvasDrawer(redeclarationComputer);
 
         XMLLoader loader = XMLLoader.getInstance();
-        for(Obstacle ob : loader.getObstacleArrayList()){
-            obstacleSelector.getItems().add(ob);
+        obstacleArrayList = loader.getObstacleArrayList();
+        for(Obstacle ob : obstacleArrayList){
+            obstacleSelector.getItems().add(ob.getName());
         }
 
 
@@ -370,11 +372,16 @@ public class DashboardController {
     }
 
     public void obstacleSelected(){
-        Obstacle curr = (Obstacle) obstacleSelector.getValue();
-        xLTextbox.setText(Float.toString(curr.getXl()));
-        xRTextbox.setText(Float.toString(curr.getXr()));
-        heightTextbox.setText(Float.toString(curr.getHeight()));
-        yTextbox.setText(Float.toString(curr.getY()));
+        Obstacle curr;
+        for (Obstacle o: obstacleArrayList) {
+            if (o.getName() == obstacleSelector.getValue()) {
+                curr = o;
+                xLTextbox.setText(Float.toString(curr.getXl()));
+                xRTextbox.setText(Float.toString(curr.getXr()));
+                heightTextbox.setText(Float.toString(curr.getHeight()));
+                yTextbox.setText(Float.toString(curr.getY()));
+            }
+        }
     }
 
     /**
