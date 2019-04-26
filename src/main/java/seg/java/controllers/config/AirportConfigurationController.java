@@ -147,8 +147,10 @@ public class AirportConfigurationController implements Initializable {
                 pw.println(String.format("<Runway>"));
                 pw.println(String.format("<runwayName>%s</runwayName>", r.getName()));
 
-                String name = r.getReciprocalRunway().getName();
-                if (name == null) name = "";
+                String name = "";
+                if (r.getReciprocalRunway() != null) {
+                    name = r.getReciprocalRunway().getName();
+                }
 
                 pw.println(String.format("<reciprocalName>%s</reciprocalName>", name));
                 pw.println(String.format("<tora>%f</tora>", r.getTora()));
@@ -161,7 +163,9 @@ public class AirportConfigurationController implements Initializable {
             pw.println(String.format("</Airport>"));
             pw.println(String.format("</Airports>"));
             pw.close();
+            new Alert(Alert.AlertType.INFORMATION, "Successfully exported airport information.").showAndWait();
         } catch (IOException e) {
+            e.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "Unable to save.").showAndWait();
         }
     }
@@ -175,7 +179,6 @@ public class AirportConfigurationController implements Initializable {
         fc.setTitle("Select save location.");
         fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML Airport Database", "xml"));
         File f = fc.showSaveDialog(airportName.getScene().getWindow());
-
         saveToFile(f);
     }
 }
