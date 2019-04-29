@@ -11,6 +11,7 @@ import com.itextpdf.layout.element.*;
 import seg.java.models.Runway;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -20,8 +21,7 @@ public class CreatePDF {
     private RedeclarationComputer redeclarationComputer;
     private Runway runway;
     private File file;
-    private Image sideOnImage;
-    private Image topDownImage;
+    private Image sideOnImage, topDownImage;
 
     public CreatePDF(RedeclarationComputer redeclarationComputer, Runway runway, File file) throws IOException {
         this.redeclarationComputer = redeclarationComputer;
@@ -40,7 +40,7 @@ public class CreatePDF {
         createPdf();
     }
 
-    public void createPdf() throws IOException {
+    public void createPdf() throws FileNotFoundException {
         //creating the PDF
         FileOutputStream fos = new FileOutputStream(file);
         PdfWriter writer = new PdfWriter(fos);
@@ -50,28 +50,28 @@ public class CreatePDF {
     }
 
     public void createDocument(Document document) {
-        //adding all components to the page
-        document.setBottomMargin(0);
-        document.add(pdfTitle());
-        document.add(redeclaredRunwayText());
-        document.add(valuesTableTitle("Runway Values"));
-        document.add(createRunwayTable());
-        document.add(valuesTableTitle("Obstacle Values"));
-        document.add(createObstacleTable());
-        document.add(valuesTableTitle("Calculations"));
-        document.add(calculationBreakdown("TORA: ", redeclarationComputer.getToraBD()));
-        document.add(calculationBreakdown("TODA: ", redeclarationComputer.getTodaBD()));
-        document.add(calculationBreakdown("ASDA: ", redeclarationComputer.getAsdaBD()));
-        document.add(calculationBreakdown("LDA: ", redeclarationComputer.getLdaBD()));
-        document.add(new AreaBreak());
-        document.add(valuesTableTitle("Diagrams"));
-        document.add(new Paragraph("Top down view:"));
-        topDownImage.scaleToFit(525,525);
-        document.add(topDownImage);
-        sideOnImage.scaleToFit(525,525);
-        document.add(new Paragraph("Side on view:"));
-        document.add(sideOnImage);
-        document.close();
+            //adding all components to the page
+            document.setBottomMargin(0);
+            document.add(pdfTitle());
+            document.add(redeclaredRunwayText());
+            document.add(valuesTableTitle("Runway Values"));
+            document.add(createRunwayTable());
+            document.add(valuesTableTitle("Obstacle Values"));
+            document.add(createObstacleTable());
+            document.add(valuesTableTitle("Calculations"));
+            document.add(calculationBreakdown("TORA: ", redeclarationComputer.getToraBD()));
+            document.add(calculationBreakdown("TODA: ", redeclarationComputer.getTodaBD()));
+            document.add(calculationBreakdown("ASDA: ", redeclarationComputer.getAsdaBD()));
+            document.add(calculationBreakdown("LDA: ", redeclarationComputer.getLdaBD()));
+            document.add(new AreaBreak());
+            document.add(valuesTableTitle("Diagrams"));
+            document.add(new Paragraph("Top down view:"));
+            topDownImage.scaleToFit(525,525);
+            document.add(topDownImage);
+            sideOnImage.scaleToFit(525,525);
+            document.add(new Paragraph("Side on view:"));
+            document.add(sideOnImage);
+            document.close();
     }
 
     public Paragraph calculationBreakdown(String name, String value) {

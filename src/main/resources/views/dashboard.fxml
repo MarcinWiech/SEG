@@ -31,8 +31,6 @@
             <menus>
                 <Menu mnemonicParsing="false" text="File">
                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#switchAirport" text="Switch airport" />
-                        <MenuItem disable="true" mnemonicParsing="false" text="Export to XML file" />
                   <MenuItem mnemonicParsing="false" onAction="#printPDF" text="Print PDF" />
                   <MenuItem mnemonicParsing="false" onAction="#openEmailForm" text="Share PDF via Email" />
                   <Menu mnemonicParsing="false" text="Save">
@@ -47,19 +45,18 @@
                 <Menu mnemonicParsing="false" text="Configure">
                     <items>
                         <MenuItem mnemonicParsing="false" onAction="#configureAirports" text="Configure Airports / Runways" />
-                        <MenuItem mnemonicParsing="false" onAction="#changeColorScheme" text="Change color scheme" />
-                        <MenuItem disable="true" mnemonicParsing="false" text="Configure Obstacles" />
+                        <MenuItem mnemonicParsing="false" onAction="#changeColorScheme" text="Colour blind colour filter" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Help">
-                    <items>
-                        <MenuItem disable="true" mnemonicParsing="false" text="FAQ" />
-                    </items>
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#openFAQ" text="FAQs" />
+               </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="About">
-                    <items>
-                        <MenuItem disable="true" mnemonicParsing="false" text="About this program " />
-                    </items>
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#openAbout" text="About this application" />
+               </items>
                 </Menu>
             </menus>
         </MenuBar>

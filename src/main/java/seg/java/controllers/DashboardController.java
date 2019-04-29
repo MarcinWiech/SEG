@@ -162,6 +162,7 @@ public class DashboardController {
         warningIcon = new Image("/images/alert-triangle-yellow.png");
         switchIcon = new Image("/images/switch.png");
         redCrossIcon = new Image("/images/redCross.png");
+        
     }
 
 /*==================================================================================================================================
@@ -707,10 +708,6 @@ public class DashboardController {
     /**
      * OPENING VIEWS
      * **/
-    public void switchAirport(ActionEvent actionEvent) {
-        openFXML("/views/airportSelection.fxml","Switch Airport");
-    }
-
     public void configureAirports(ActionEvent actionEvent) {
         Stage stage = (Stage) toraNewTextbox.getScene().getWindow();
         stage.close();
@@ -718,8 +715,20 @@ public class DashboardController {
     }
 
     public void openEmailForm(ActionEvent actionEvent) throws IOException {
-        openFXML("/views/emailForm.fxml", "Share");
-        CreatePDF createPDF = new CreatePDF(redeclarationComputer, currentRunway, null);
+        if (redeclarationComputer.getTora() != null) {
+            openFXML("/views/emailForm.fxml", "Share");
+            CreatePDF createPDF = new CreatePDF(redeclarationComputer, currentRunway, null);
+        } else {
+        new Alert(Alert.AlertType.WARNING, "You can't email until you have redeclared the runway!").showAndWait();
+    }
+    }
+
+    public void openFAQ(ActionEvent actionEvent) {
+        openFXML("/views/faqView.fxml", "FAQs");
+    }
+
+    public void openAbout(ActionEvent actionEvent) {
+        openFXML("/views/aboutView.fxml", "About us");
     }
 
     public void openFXML(String path, String title) {
@@ -753,90 +762,102 @@ public class DashboardController {
 
     /** SAVING **/
     public void saveTopDown(ActionEvent actionEvent) throws IOException {
-        /**
-         * Setting up the extension
-         */
-        File file;
+        if (redeclarationComputer.getTora() != null) {
+            File file;
 
-        if (topDownPathname == null) {
-            FileChooser.ExtensionFilter e1 = new FileChooser.ExtensionFilter("png files (*.png)", "*.png");
-            FileChooser.ExtensionFilter e2 = new FileChooser.ExtensionFilter("jpg files (*.jpg)", "*.jpg");
-            FileChooser.ExtensionFilter e3 = new FileChooser.ExtensionFilter("jpeg files (*.jpeg)", "*.jpeg");
+            if (topDownPathname == null) {
+                FileChooser.ExtensionFilter e1 = new FileChooser.ExtensionFilter("png files (*.png)", "*.png");
+                FileChooser.ExtensionFilter e2 = new FileChooser.ExtensionFilter("jpg files (*.jpg)", "*.jpg");
+                FileChooser.ExtensionFilter e3 = new FileChooser.ExtensionFilter("jpeg files (*.jpeg)", "*.jpeg");
 
 
-            FileChooser f = new FileChooser();
-            Stage stage = (Stage) topDownCanvas.getScene().getWindow();
-            f.getExtensionFilters().add(e1);
-            f.getExtensionFilters().add(e2);
-            f.getExtensionFilters().add(e3);
+                FileChooser f = new FileChooser();
+                Stage stage = (Stage) topDownCanvas.getScene().getWindow();
+                f.getExtensionFilters().add(e1);
+                f.getExtensionFilters().add(e2);
+                f.getExtensionFilters().add(e3);
 
-            file = f.showSaveDialog(stage);
-        } else {
-            file = new File(topDownPathname);
-        }
+                file = f.showSaveDialog(stage);
+            } else {
+                file = new File(topDownPathname);
+            }
 
-        if(file != null){
+            if (file != null) {
 
-                WritableImage img = new WritableImage((int)topDownCanvas.getWidth(), (int)topDownCanvas.getHeight());
-                topDownCanvas.snapshot(null,img);
+                WritableImage img = new WritableImage((int) topDownCanvas.getWidth(), (int) topDownCanvas.getHeight());
+                topDownCanvas.snapshot(null, img);
                 RenderedImage renderedImage = SwingFXUtils.fromFXImage(img, null);
-                ImageIO.write(renderedImage,"png",file);
+                ImageIO.write(renderedImage, "png", file);
 
+            }
+
+            if (topDownPathname == null)
+                notification.makeNotification("Top Down view saved", "The view has been saved as image", greentickIcon);
+        } else {
+            new Alert(Alert.AlertType.WARNING, "You can't save until you have redeclared the runway!").showAndWait();
         }
 
-        if (topDownPathname == null) notification.makeNotification("Top Down view saved", "The view has been saved as image", greentickIcon);
     }
 
     public void saveSideOn(ActionEvent actionEvent) throws IOException {
-        /**
-         * Setting up the extension
-         */
-        File file;
-        if (sideOnPathname == null) {
-            FileChooser.ExtensionFilter e1 = new FileChooser.ExtensionFilter("png files (*.png)", "*.png");
-            FileChooser.ExtensionFilter e2 = new FileChooser.ExtensionFilter("jpg files (*.jpg)", "*.jpg");
-            FileChooser.ExtensionFilter e3 = new FileChooser.ExtensionFilter("jpeg files (*.jpeg)", "*.jpeg");
+        if (redeclarationComputer.getTora() != null) {
+            File file;
+            if (sideOnPathname == null) {
+                FileChooser.ExtensionFilter e1 = new FileChooser.ExtensionFilter("png files (*.png)", "*.png");
+                FileChooser.ExtensionFilter e2 = new FileChooser.ExtensionFilter("jpg files (*.jpg)", "*.jpg");
+                FileChooser.ExtensionFilter e3 = new FileChooser.ExtensionFilter("jpeg files (*.jpeg)", "*.jpeg");
 
 
-            FileChooser f = new FileChooser();
-            Stage stage = (Stage) sideOnCanvas.getScene().getWindow();
-            f.getExtensionFilters().add(e1);
-            f.getExtensionFilters().add(e2);
-            f.getExtensionFilters().add(e3);
+                FileChooser f = new FileChooser();
+                Stage stage = (Stage) sideOnCanvas.getScene().getWindow();
+                f.getExtensionFilters().add(e1);
+                f.getExtensionFilters().add(e2);
+                f.getExtensionFilters().add(e3);
 
-            file = f.showSaveDialog(stage);
+                file = f.showSaveDialog(stage);
+            } else {
+                file = new File(sideOnPathname);
+            }
+
+            if (file != null) {
+                WritableImage img = new WritableImage((int) topDownCanvas.getWidth(), (int) topDownCanvas.getHeight());
+                sideOnCanvas.snapshot(null, img);
+                RenderedImage renderedImage = SwingFXUtils.fromFXImage(img, null);
+                ImageIO.write(renderedImage, "png", file);
+            }
+
+            if (topDownPathname == null) notification.makeNotification("Side on view saved", "The view has been saved as image", greentickIcon);
         } else {
-            file = new File(sideOnPathname);
+            new Alert(Alert.AlertType.WARNING, "You can't save until you have redeclared the runway!").showAndWait();
         }
 
-        if (file != null) {
-            WritableImage img = new WritableImage((int) topDownCanvas.getWidth(), (int) topDownCanvas.getHeight());
-            sideOnCanvas.snapshot(null, img);
-            RenderedImage renderedImage = SwingFXUtils.fromFXImage(img, null);
-            ImageIO.write(renderedImage, "png", file);
-        }
-
-        if (topDownPathname == null) notification.makeNotification("Side on view saved", "The view has been saved as image", greentickIcon);
     }
 
     public void exportPDF(ActionEvent actionEvent) throws IOException {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Save Report");
-        Stage stage = (Stage) thresholdInitialTextbox.getScene().getWindow();
-        FileChooser.ExtensionFilter pdfExtensionFilter = new FileChooser.ExtensionFilter("PDF - Portable Document Format (.pdf)", "*.pdf");
-        fileChooser.getExtensionFilters().add(pdfExtensionFilter);
-        fileChooser.setSelectedExtensionFilter(pdfExtensionFilter);
-        File file = fileChooser.showSaveDialog(stage);
+        if (redeclarationComputer.getTora() != null) {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Save Report");
+            Stage stage = (Stage) thresholdInitialTextbox.getScene().getWindow();
+            FileChooser.ExtensionFilter pdfExtensionFilter = new FileChooser.ExtensionFilter("PDF - Portable Document Format (.pdf)", "*.pdf");
+            fileChooser.getExtensionFilters().add(pdfExtensionFilter);
+            fileChooser.setSelectedExtensionFilter(pdfExtensionFilter);
+            File file = fileChooser.showSaveDialog(stage);
 
 
-        sideOnPathname = "src/main/outputs/sideOnImage.png";
-        topDownPathname = "src/main/outputs/topDownImage.png";
-        saveSideOn(new ActionEvent());
-        saveTopDown(new ActionEvent());
+            sideOnPathname = "src/main/outputs/sideOnImage.png";
+            topDownPathname = "src/main/outputs/topDownImage.png";
+            saveSideOn(new ActionEvent());
+            saveTopDown(new ActionEvent());
 
-        if (file != null) {
-            CreatePDF createPDF = new CreatePDF(redeclarationComputer, currentRunway, file);
-            notification.makeNotification("PDF save successful", "PDF has been successfully saved", greentickIcon);
+            if (file != null) {
+                try {
+                    CreatePDF createPDF = new CreatePDF(redeclarationComputer, currentRunway, file);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        } else {
+            new Alert(Alert.AlertType.WARNING, "You can't save until you have redeclared the runway!").showAndWait();
         }
     }
 
@@ -864,14 +885,18 @@ public class DashboardController {
     }
 
     public void printPDF(ActionEvent actionEvent) throws IOException, PrinterException {
-        CreatePDF createPDF = new CreatePDF(redeclarationComputer, currentRunway, null);
-        PDDocument document = PDDocument.load(new File("src/main/outputs/redeclared_runway.pdf"));
-        PrinterJob job = PrinterJob.getPrinterJob();
-        job.setPageable(new PDFPageable(document));
-        if (job.printDialog())
-        {
-            job.print();
+        if (redeclarationComputer.getTora() != null) {
+            CreatePDF createPDF = new CreatePDF(redeclarationComputer, currentRunway, null);
+            PDDocument document = PDDocument.load(new File("src/main/outputs/redeclared_runway.pdf"));
+            PrinterJob job = PrinterJob.getPrinterJob();
+            job.setPageable(new PDFPageable(document));
+            if (job.printDialog()) {
+                job.print();
+            }
+        } else {
+            new Alert(Alert.AlertType.WARNING, "You can't print until you have redeclared the runway!").showAndWait();
         }
     }
+
 }
 
