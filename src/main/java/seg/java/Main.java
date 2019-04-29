@@ -15,13 +15,13 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/views/airportSelection.fxml"));
-        primaryStage.setTitle("Select Airport");
-        primaryStage.setScene(new Scene(root, 264, 138));  // v: width v1: height
+//        Parent root = FXMLLoader.load(getClass().getResource("/views/airportSelection.fxml"));
+//        primaryStage.setTitle("Select Airport");
+//        primaryStage.setScene(new Scene(root, 264, 138));  // v: width v1: height
 //        To use login screen comment three lines above and uncomment three lines below
-//        Parent root = FXMLLoader.load(getClass().getResource("/seg/resources/views/loginView.fxml"));
-//        primaryStage.setTitle("Login");
-//        primaryStage.setScene(new Scene(root, 385, 230));  // v: width v1: height
+        Parent root = FXMLLoader.load(getClass().getResource("/views/loginView.fxml"));
+        primaryStage.setTitle("Login");
+        primaryStage.setScene(new Scene(root, 375, 166));  // v: width v1: height
         primaryStage.show();
     }
 }
