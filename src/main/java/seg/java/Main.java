@@ -21,7 +21,7 @@ public class Main extends Application {
 //        To use login screen comment three lines above and uncomment three lines below
         Parent root = FXMLLoader.load(getClass().getResource("/views/loginView.fxml"));
         primaryStage.setTitle("Login");
-        primaryStage.setScene(new Scene(root, 385, 230));  // v: width v1: height
+        primaryStage.setScene(new Scene(root, 375, 166));  // v: width v1: height
         primaryStage.show();
     }
 }
