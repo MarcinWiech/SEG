@@ -898,5 +898,10 @@ public class DashboardController {
         }
     }
 
+    public void logOut(ActionEvent actionEvent) {
+        Stage stage = (Stage) toraNewTextbox.getScene().getWindow();
+        stage.close();
+        openFXML("/views/loginView.fxml", "Login");
+    }
 }
 
