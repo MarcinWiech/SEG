@@ -853,6 +853,7 @@ public class DashboardController {
             if (file != null) {
                 try {
                     CreatePDF createPDF = new CreatePDF(redeclarationComputer, currentRunway, file);
+                    notification.makeNotification("PDF saved", "The PDF has been saved.", greentickIcon);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -899,5 +900,10 @@ public class DashboardController {
         }
     }
 
+    public void logOut(ActionEvent actionEvent) {
+        Stage stage = (Stage) toraNewTextbox.getScene().getWindow();
+        stage.close();
+        openFXML("/views/loginView.fxml", "Login");
+    }
 }
 
