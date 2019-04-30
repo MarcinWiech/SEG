@@ -34,7 +34,7 @@
                 <Font size="15.0" />
             </font>
         </Label>
-        <PasswordField fx:id="passwordTextField" layoutX="102.0" layoutY="87.0" prefHeight="26.0" prefWidth="201.0" />
+        <PasswordField fx:id="passwordTextField" layoutX="102.0" layoutY="87.0" prefHeight="26.0" prefWidth="201.0" promptText="password"/>
         <TextField fx:id="loginTextField" layoutX="102.0" layoutY="56.0" prefHeight="26.0" prefWidth="201.0" promptText="username" />
     </children>
 </AnchorPane>

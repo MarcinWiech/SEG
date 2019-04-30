@@ -18,7 +18,7 @@ public class EmailController {
     private InternetAddress toEmail;
     private static final String username = "runwayredeclaration11@gmail.com";
     private static final String password = "runway123**";
-    private static final String DEST = "src/main/outputs/redeclared_runway.pdf";
+    private static final String DEST = "redeclared_runway.pdf";
     private Runway runway;
     private Notification notification;
     private Image emailIcon;
@@ -80,6 +80,7 @@ public class EmailController {
 
             notification.makeNotification("Email sent" , "Email has been successfully sent", emailIcon);
         } catch (MessagingException e) {
+            e.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "Email wasn't sent successfully. Please try again.").showAndWait();
         }
     }

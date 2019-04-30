@@ -20,6 +20,8 @@ import javafx.scene.transform.Rotate;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.apache.commons.io.FileUtils;
+import org.apache.pdfbox.io.IOUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.printing.PDFPageable;
 import seg.java.*;
@@ -29,12 +31,17 @@ import seg.java.models.Obstacle;
 import seg.java.models.Runway;
 
 import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
 import java.awt.image.RenderedImage;
+import java.awt.image.WritableRaster;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 public class DashboardController {
     Airport currentAirport;
@@ -702,7 +709,9 @@ public class DashboardController {
     public void clearSimulation(){
         while(sideOnPane.getChildren().size() > 1)
             sideOnPane.getChildren().remove(sideOnPane.getChildren().size()-1);
-        sideOnPaneCopy.getChildren().remove(sideOnPaneCopy.getChildren().size()-1);
+
+        while(sideOnPaneCopy.getChildren().size() > 1)
+            sideOnPaneCopy.getChildren().remove(sideOnPaneCopy.getChildren().size()-1);
     }
 
     /**
@@ -763,7 +772,7 @@ public class DashboardController {
     /** SAVING **/
     public void saveTopDown(ActionEvent actionEvent) throws IOException {
         if (redeclarationComputer.getTora() != null) {
-            File file;
+            File file = null;
 
             if (topDownPathname == null) {
                 FileChooser.ExtensionFilter e1 = new FileChooser.ExtensionFilter("png files (*.png)", "*.png");
@@ -779,7 +788,7 @@ public class DashboardController {
 
                 file = f.showSaveDialog(stage);
             } else {
-                file = new File(topDownPathname);
+                file = new File("topDownImage.png");
             }
 
             if (file != null) {
@@ -801,7 +810,7 @@ public class DashboardController {
 
     public void saveSideOn(ActionEvent actionEvent) throws IOException {
         if (redeclarationComputer.getTora() != null) {
-            File file;
+            File file = null;
             if (sideOnPathname == null) {
                 FileChooser.ExtensionFilter e1 = new FileChooser.ExtensionFilter("png files (*.png)", "*.png");
                 FileChooser.ExtensionFilter e2 = new FileChooser.ExtensionFilter("jpg files (*.jpg)", "*.jpg");
@@ -816,7 +825,7 @@ public class DashboardController {
 
                 file = f.showSaveDialog(stage);
             } else {
-                file = new File(sideOnPathname);
+                    file = new File("sideOnImage.png");
             }
 
             if (file != null) {
@@ -844,8 +853,8 @@ public class DashboardController {
             File file = fileChooser.showSaveDialog(stage);
 
 
-            sideOnPathname = "src/main/outputs/sideOnImage.png";
-            topDownPathname = "src/main/outputs/topDownImage.png";
+            sideOnPathname = "/sideOnImage.png";
+            topDownPathname = "/topDownImage.png";
             saveSideOn(new ActionEvent());
             saveTopDown(new ActionEvent());
 
@@ -876,6 +885,9 @@ public class DashboardController {
         canvasDrawer.drawSideOnCanvas(sideOnCanvasCopy,getPallete());
     }
 
+
+
+
     public int getPallete(){
         return pallete;
     }
@@ -887,7 +899,7 @@ public class DashboardController {
     public void printPDF(ActionEvent actionEvent) throws IOException, PrinterException {
         if (redeclarationComputer.getTora() != null) {
             CreatePDF createPDF = new CreatePDF(redeclarationComputer, currentRunway, null);
-            PDDocument document = PDDocument.load(new File("src/main/outputs/redeclared_runway.pdf"));
+            PDDocument document = PDDocument.load(new File("redeclared_runway.pdf"));
             PrinterJob job = PrinterJob.getPrinterJob();
             job.setPageable(new PDFPageable(document));
             if (job.printDialog()) {

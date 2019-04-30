@@ -95,7 +95,7 @@ public class RedeclarationComputer {
      * 4 represents the action of TAKE OFF TOWARDS/LANDING TOWARDS + L
      */
     private int determineCalculationCase() {
-        System.out.println("Runway direction = " + runwayDirection);
+
 
         if (runwayDirection == 'R' || runwayDirection == 'C')       // for this one you might want to consider the R dispTresh
         {
@@ -109,7 +109,6 @@ public class RedeclarationComputer {
             else
                 calculationCase = 4;
         }
-        System.out.println("Calculation case = " + calculationCase);
 
         return calculationCase;
     }

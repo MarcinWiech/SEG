@@ -10,13 +10,10 @@ import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.*;
 import seg.java.models.Runway;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 
 public class CreatePDF {
-    public static final String DEST = "src/main/outputs/redeclared_runway.pdf";
+    public static final String DEST = "redeclared_runway.pdf";
     private PdfFont font = PdfFontFactory.createFont(FontConstants.HELVETICA_BOLD);
     private RedeclarationComputer redeclarationComputer;
     private Runway runway;
@@ -27,8 +24,11 @@ public class CreatePDF {
         this.redeclarationComputer = redeclarationComputer;
         this.runway = runway;
 
-        sideOnImage =  new Image(ImageDataFactory.create("src/main/outputs/sideOnImage.png"));
-        topDownImage = new Image(ImageDataFactory.create("src/main/outputs/topDownImage.png"));
+//        System.out.println(getClass().getResource("/sideOnImage.png"));
+
+
+        sideOnImage =  new Image(ImageDataFactory.create(getClass().getResource("/sideOnImage.png")));
+        topDownImage = new Image(ImageDataFactory.create(getClass().getResource("/topDownImage.png")));
 
         if (file == null) {
             this.file = new File(DEST);
@@ -36,7 +36,7 @@ public class CreatePDF {
             this.file = file;
         }
 
-        this.file.getParentFile().mkdirs();
+
         createPdf();
     }
 
