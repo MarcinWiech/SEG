@@ -1,14 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="seg.java.controllers.AboutController"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane maxHeight="214.0" maxWidth="242.0" minHeight="214.0" minWidth="242.0" prefHeight="214.0" prefWidth="242.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seg.java.controllers.AboutController">
+   <children>
+      <ImageView cache="true" fitHeight="110.0" fitWidth="153.0" layoutX="46.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="file:/C:/Users/Flo/Documents/COMPSCI_1819/TERM2/SOFTWARE_ENGINEERING_COMP2211/SEG_Project/SEG/src/main/resources/images/about_airplane.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="88.0" layoutY="152.0" prefHeight="17.0" prefWidth="70.0" text="Version 1.0 " textAlignment="CENTER">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="47.0" layoutY="169.0" text="Created by Group 11 for SEG" />
+      <Label layoutX="60.0" layoutY="194.0" text="Terms of Service | Privacy Policy">
+         <font>
+            <Font size="9.0" />
+         </font>
+      </Label>
+   </children>
 </AnchorPane>

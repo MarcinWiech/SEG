@@ -755,6 +755,7 @@ public class DashboardController {
             }
 
             stage = new Stage();
+            stage.setResizable(false);
             stage.setTitle(title);
             stage.setScene(new Scene(root1));
             stage.show();

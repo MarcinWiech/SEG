@@ -76,6 +76,46 @@
                                         <Font name="System Bold" size="14.0" />
                                     </font>
                                 </Label>
+                                <ChoiceBox fx:id="runwayDroplist" layoutX="16.0" layoutY="32.0" onAction="#selectRunway" prefHeight="25.0" prefWidth="154.0">
+                                    <tooltip>
+                                        <Tooltip text="Select a runway to view." />
+                                    </tooltip>
+                                </ChoiceBox>
+                                <Button fx:id="switchButton" layoutX="16.0" layoutY="69.0" mnemonicParsing="false" onAction="#switchButtonPressed" prefHeight="25.0" prefWidth="154.0" text="Switch to reciprocal">
+                                    <tooltip>
+                                        <Tooltip text="Click this to view the reciprocal runway. " />
+                                    </tooltip>
+                                </Button>
+                                <TextField fx:id="toraInitialTextbox" editable="false" layoutX="87.0" layoutY="128.0" prefHeight="23.0" prefWidth="84.0">
+                                    <font>
+                                        <Font size="10.0" />
+                                    </font>
+                                </TextField>
+                                <TextField fx:id="todaInitialTextbox" editable="false" layoutX="87.0" layoutY="154.0" prefHeight="5.0" prefWidth="84.0">
+                                    <font>
+                                        <Font size="10.0" />
+                                    </font>
+                                </TextField>
+                                <TextField fx:id="asdaInitialTextbox" editable="false" layoutX="87.0" layoutY="180.0" prefHeight="0.0" prefWidth="84.0">
+                                    <font>
+                                        <Font size="10.0" />
+                                    </font>
+                                </TextField>
+                                <TextField fx:id="ldaInitialTextbox" editable="false" layoutX="87.0" layoutY="206.0" prefHeight="0.0" prefWidth="84.0">
+                                    <font>
+                                        <Font size="10.0" />
+                                    </font>
+                                </TextField>
+                                <TextField fx:id="thresholdInitialTextbox" editable="false" layoutX="87.0" layoutY="233.0" prefHeight="0.0" prefWidth="84.0">
+                                    <font>
+                                        <Font size="10.0" />
+                                    </font>
+                                </TextField>
+                                <TextField fx:id="toraNewTextbox" editable="false" layoutX="86.0" layoutY="295.0" prefHeight="2.0" prefWidth="84.0">
+                                    <font>
+                                        <Font size="10.0" />
+                                    </font>
+                                </TextField>
                                 <TextField fx:id="todaNewTextbox" editable="false" layoutX="86.0" layoutY="321.0" prefHeight="23.0" prefWidth="84.0">
                                     <font>
                                         <Font size="10.0" />
@@ -91,7 +131,27 @@
                                         <Font size="10.0" />
                                     </font>
                                 </TextField>
-                                <TextField fx:id="toraNewTextbox" editable="false" layoutX="86.0" layoutY="295.0" prefHeight="2.0" prefWidth="84.0">
+                                <ComboBox fx:id="obstacleSelector" layoutX="13.0" layoutY="442.0" onAction="#obstacleSelected" prefHeight="25.0" prefWidth="158.0" promptText="Select Obstacle">
+                                    <tooltip>
+                                        <Tooltip text="Pick an obstacle from the list of predefined obstacles." />
+                                    </tooltip>
+                                </ComboBox>
+                                <TextField fx:id="heightTextbox" layoutX="86.0" layoutY="476.0" prefHeight="23.0" prefWidth="84.0">
+                                    <font>
+                                        <Font size="10.0" />
+                                    </font>
+                                </TextField>
+                                <TextField layoutX="86.0" layoutY="502.0" prefHeight="1.0" prefWidth="84.0" fx:id="xLTextbox">
+                                    <font>
+                                        <Font size="10.0" />
+                                    </font>
+                                </TextField>
+                                <TextField layoutX="86.0" layoutY="528.0" prefHeight="23.0" prefWidth="84.0" fx:id="xRTextbox">
+                                    <font>
+                                        <Font size="10.0" />
+                                    </font>
+                                </TextField>
+                                <TextField fx:id="yTextbox" layoutX="86.0" layoutY="554.0" prefHeight="23.0" prefWidth="84.0">
                                     <font>
                                         <Font size="10.0" />
                                     </font>
@@ -104,16 +164,6 @@
                                         <Tooltip text="The values after redeclaration. " />
                                     </tooltip>
                                 </Label>
-                                <TextField fx:id="toraInitialTextbox" editable="false" layoutX="87.0" layoutY="128.0" prefHeight="23.0" prefWidth="84.0">
-                                    <font>
-                                        <Font size="10.0" />
-                                    </font>
-                                </TextField>
-                                <TextField fx:id="asdaInitialTextbox" editable="false" layoutX="87.0" layoutY="180.0" prefHeight="0.0" prefWidth="84.0">
-                                    <font>
-                                        <Font size="10.0" />
-                                    </font>
-                                </TextField>
                                 <Label layoutX="40.0" layoutY="298.0" prefHeight="21.0" prefWidth="48.0" text="TORA:">
                                     <tooltip>
                                         <Tooltip contentDisplay="RIGHT" text="Take-Off Run Available (TORA) - the length of the runway available for take-off. (metres)" />
@@ -134,21 +184,6 @@
                                         <Tooltip text="Landing Distance Available (LDA) - the length of the runway available for landing. (metres)" />
                                     </tooltip>
                                 </Label>
-                                <TextField fx:id="todaInitialTextbox" editable="false" layoutX="87.0" layoutY="154.0" prefHeight="5.0" prefWidth="84.0">
-                                    <font>
-                                        <Font size="10.0" />
-                                    </font>
-                                </TextField>
-                                <TextField fx:id="ldaInitialTextbox" editable="false" layoutX="87.0" layoutY="206.0" prefHeight="0.0" prefWidth="84.0">
-                                    <font>
-                                        <Font size="10.0" />
-                                    </font>
-                                </TextField>
-                                <TextField fx:id="thresholdInitialTextbox" editable="false" layoutX="87.0" layoutY="233.0" prefHeight="0.0" prefWidth="84.0">
-                                    <font>
-                                        <Font size="10.0" />
-                                    </font>
-                                </TextField>
                                 <Label layoutX="39.0" layoutY="131.0" prefHeight="21.0" prefWidth="48.0" text="TORA:">
                                     <tooltip>
                                         <Tooltip contentDisplay="RIGHT" text="Take-Off Run Available (TORA) - the length of the runway available for take-off. (metres)" />
@@ -200,68 +235,36 @@
                                     </font>
                                 </Label>
                                 <Line endX="105.66665649414062" layoutX="98.0" layoutY="265.0" startX="-100.0" />
-                                <ChoiceBox fx:id="runwayDroplist" layoutX="16.0" layoutY="32.0" onAction="#selectRunway" prefHeight="25.0" prefWidth="154.0">
-                                    <tooltip>
-                                        <Tooltip text="Select a runway to view." />
-                                    </tooltip>
-                                </ChoiceBox>
                                 <Label layoutX="16.0" layoutY="8.0" text="RUNWAY:">
                                     <font>
                                         <Font name="System Bold" size="14.0" />
                                     </font>
                                 </Label>
-                                <TextField fx:id="heightTextbox" layoutX="86.0" layoutY="476.0" prefHeight="23.0" prefWidth="84.0">
-                                    <font>
-                                        <Font size="10.0" />
-                                    </font>
-                                </TextField>
-                                <TextField layoutX="86.0" layoutY="502.0" prefHeight="1.0" prefWidth="84.0" fx:id="xLTextbox">
-                                    <font>
-                                        <Font size="10.0" />
-                                    </font>
-                                </TextField>
-                                <TextField layoutX="86.0" layoutY="528.0" prefHeight="23.0" prefWidth="84.0" fx:id="xRTextbox">
-                                    <font>
-                                        <Font size="10.0" />
-                                    </font>
-                                </TextField>
                                 <Label layoutX="7.0" layoutY="528.0" prefHeight="21.0" prefWidth="83.0" text="XR Position:">
                                     <tooltip>
                                         <Tooltip text="Distance from obstacle to XXR displaced threshold (where XXR is any runway ending in 'R').  (metres)" />
                                     </tooltip>
                                 </Label>
-                                <TextField fx:id="yTextbox" layoutX="86.0" layoutY="554.0" prefHeight="23.0" prefWidth="84.0">
-                                    <font>
-                                        <Font size="10.0" />
-                                    </font>
-                                </TextField>
-                                <Button fx:id="switchButton" layoutX="16.0" layoutY="69.0" mnemonicParsing="false" onAction="#switchButtonPressed" prefHeight="25.0" prefWidth="154.0" text="Switch to reciprocal">
-                                    <tooltip>
-                                        <Tooltip text="Click this to view the reciprocal runway. " />
-                                    </tooltip>
-                                </Button>
-                                <ComboBox fx:id="obstacleSelector" layoutX="13.0" layoutY="442.0" onAction="#obstacleSelected" prefHeight="25.0" prefWidth="158.0" promptText="Select Obstacle">
-                                    <tooltip>
-                                        <Tooltip text="Pick an obstacle from the list of predefined obstacles." />
-                                    </tooltip>
-                                </ComboBox>
                                 <Label layoutX="13.0" layoutY="424.0" text="Predefined obstacle:" />
                         <Button fx:id="landingButton" layoutX="12.0" layoutY="631.0" mnemonicParsing="false" onAction="#simulateLandingButtonPressed" prefHeight="25.0" prefWidth="158.0" text="Simulate Landing">
                            <tooltip>
-                              <Tooltip text="Click this to redeclare the runway." />
+                              <Tooltip text="Click this for an animation of an airplane landing on the runway." />
                            </tooltip>
                         </Button>
                         <Button layoutX="12.0" layoutY="666.0" mnemonicParsing="false" onAction="#simulateTakeOffButtonPressed" prefHeight="25.0" prefWidth="159.0" text="Simulate Take Off">
                            <tooltip>
-                              <Tooltip text="Click this to redeclare the runway." />
+                              <Tooltip text="Click this for an animation of an airplane taking-off on the runway." />
                            </tooltip>
                         </Button>
                         <Button layoutX="12.0" layoutY="701.0" mnemonicParsing="false" onAction="#clearSimulation" prefHeight="25.0" prefWidth="159.0" text="Clear Simulation">
                            <tooltip>
-                              <Tooltip text="Click this to redeclare the runway." />
+                              <Tooltip text="Click this to clear the animation from the canvas." />
                            </tooltip>
                         </Button>
-                        <ToggleButton layoutX="12.0" layoutY="745.0" mnemonicParsing="false" onAction="#runwayRotationButton" prefHeight="25.0" prefWidth="160.0" text="Rotate Runway" />
+                        <ToggleButton layoutX="12.0" layoutY="745.0" mnemonicParsing="false" onAction="#runwayRotationButton" prefHeight="25.0" prefWidth="160.0" text="Rotate Runway">
+                           <tooltip>
+                              <Tooltip text="Click this to rotate the orientation of the runway strip to match its heading." />
+                           </tooltip></ToggleButton>
                         <Line endX="105.66665649414062" layoutX="90.0" layoutY="622.0" startX="-100.0" />
                         <Line endX="105.66665649414062" layoutX="95.0" layoutY="735.0" startX="-100.0" />
                             </children>
