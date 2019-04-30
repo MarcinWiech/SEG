@@ -58,6 +58,11 @@
                   <MenuItem mnemonicParsing="false" onAction="#openAbout" text="About this application" />
                </items>
                 </Menu>
+                <Menu mnemonicParsing="false" text="Log out">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#logOut" text="Log out" />
+                    </items>
+                </Menu>
             </menus>
         </MenuBar>
         <SplitPane dividerPositions="0.1624790619765494" layoutY="23.0" prefHeight="679.0" prefWidth="1196.0" AnchorPane.bottomAnchor="-5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="23.0">
