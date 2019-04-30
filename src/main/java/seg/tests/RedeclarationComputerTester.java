@@ -13,11 +13,15 @@ public class RedeclarationComputerTester {
 
     public final Runway reciprocal = new Runway("27R", null, 3902.0, 3902.0, 3902.0, 3596.0, 306.0);
     private RedeclarationComputer redeclarationComputer;
+    private RedeclarationComputer reciprocalComputer;
     private Runway runway;
 
     @Before
     public void setUp() throws Exception {
         redeclarationComputer = new RedeclarationComputer();
+        reciprocalComputer = new RedeclarationComputer();
+        redeclarationComputer.setReciprocalComputer(reciprocalComputer);
+        reciprocalComputer.setReciprocalComputer(redeclarationComputer);
     }
 
     @After
@@ -64,7 +68,7 @@ public class RedeclarationComputerTester {
 
         assertEquals(redeclarationComputer.getTora(), 1850, 0.00001);
         assertEquals(redeclarationComputer.getToda(), 1850, 0.00001);
-        assertEquals(redeclarationComputer.getAsda(), (Double) 18500.00001);
+        assertEquals(redeclarationComputer.getAsda(), 1850, 0.00001);
         assertEquals(redeclarationComputer.getLda(), 2553, 0.00001);
     }
 

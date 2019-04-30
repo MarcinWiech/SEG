@@ -702,7 +702,8 @@ public class DashboardController {
     public void clearSimulation(){
         while(sideOnPane.getChildren().size() > 1)
             sideOnPane.getChildren().remove(sideOnPane.getChildren().size()-1);
-        sideOnPaneCopy.getChildren().remove(sideOnPaneCopy.getChildren().size()-1);
+        if(sideOnPaneCopy.getChildren().size() > 1)
+            sideOnPaneCopy.getChildren().remove(sideOnPaneCopy.getChildren().size()-1);
     }
 
     /**
